@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { CheckCircle, Star, ArrowRight } from "lucide-react"
+import { CheckCircle, Star, ArrowRight, Menu, X } from "lucide-react"
 import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation"
 import { useScroll } from "framer-motion"
 
@@ -14,6 +14,7 @@ const castRef = <T extends HTMLElement>(ref: unknown) => ref as RefObject<T>
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const heroAnimation = useScrollAnimation({ threshold: 0.2 })
   const heroImageAnimation = useScrollAnimation({ threshold: 0.1 })
@@ -82,7 +83,8 @@ export default function HomePage() {
           >
             West Wave <span className={isScrolled ? "text-[#D4AF37]" : "text-[#D4AF37]"}>Creative</span>
           </div>
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop nav (xl and up) */}
+          <div className="hidden xl:flex items-center space-x-8">
             <button
               onClick={() => scrollToSection("options")}
               className={`font-sans hover:text-[#D4AF37] transition-colors cursor-pointer ${
@@ -138,11 +140,43 @@ export default function HomePage() {
               Get My Quote
             </Button>
           </div>
+
+          {/* Mobile menu toggle */}
+          <button
+            aria-label="Toggle menu"
+            className={`xl:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors ${
+              isScrolled ? "text-[#0B132B] hover:bg-black/5" : "text-white hover:bg-white/10"
+            }`}
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            {mobileOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+          </button>
         </div>
       </nav>
 
+      {/* Mobile menu panel */}
+      {mobileOpen && (
+        <div className="xl:hidden fixed top-16 left-4 right-4 z-50 rounded-xl border border-black/10 bg-white/95 backdrop-blur-md shadow-xl">
+          <div className="p-3 divide-y divide-black/5">
+            <div className="flex flex-col py-1">
+              <button onClick={() => { setMobileOpen(false); scrollToSection("options") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Options</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("about") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">About</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("services") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Process</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("work") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Work</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("reviews") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Reviews</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("contact") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Contact</button>
+            </div>
+            <div className="p-3">
+              <Button className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold" onClick={() => { setMobileOpen(false); goToFunnel() }}>
+                Get My Quote
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
-      <section className="relative text-white px-4 overflow-hidden pt-[calc(8rem+350px)] pb-[calc(9rem+350px)]">
+      <section className="relative text-white px-4 overflow-hidden min-h-screen">
         <video
           className="absolute inset-0 w-full h-full object-cover"
           src="/AdobeStock_91825109.mov"
@@ -152,22 +186,25 @@ export default function HomePage() {
           playsInline
         />
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-12 gap-8 items-center">
-            {/* Left: Hero content */}
-            <div className="md:col-span-12 space-y-8 text-center max-w-3xl mx-auto">
+        <div className="max-w-7xl xl:max-w-screen-2xl mx-auto relative z-10 min-h-screen flex items-center px-4 md:px-6">
+          {/* Centered hero content group */}
+          <div className="w-full flex flex-col xl:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24">
+            {/* Logo image */}
+            <div className="flex-shrink-0">
+              <img src="/WWC.com (3).png" alt="West Wave Creative logo" className="w-full h-auto max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-none 2xl:max-w-none mx-auto" />
+            </div>
+
+            {/* Headline + CTAs (right-aligned text) */}
+            <div className="text-center xl:text-right">
               <div ref={castRef<HTMLDivElement>(heroAnimation.ref)} className={`animate-fade-in ${heroAnimation.isVisible ? "visible" : ""}`}>
-                <h1 className="font-serif text-4xl md:text-6xl font-bold leading-tight text-balance mb-6">
-                  Websites That Work As Hard As <span className="text-[#D4AF37]">You Do</span>
-                </h1>
-                <p className="font-sans text-xl text-slate-300 leading-relaxed text-pretty mb-8">
-                  We help small businesses and tradespeople look professional online and win more jobs. No fluff, no
-                  hidden fees—just clean, effective websites built fast and priced fairly.
+                <h1 className="font-serif font-extrabold leading-tight mb-3 text-[clamp(26px,3.6vw,52px)] 2xl:text-[60px]">You work hard.</h1>
+                <p className="font-serif font-extrabold text-[#D4AF37] leading-tight mb-5 text-[clamp(20px,3vw,44px)] 2xl:text-[52px] whitespace-normal md:whitespace-nowrap">
+                  Your website should, too.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 items-center sm:justify-center">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center xl:justify-end">
                   <a
                     href="/funnel"
-                    className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                    className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
                   >
                     Get My Quote
                     <svg
@@ -185,7 +222,7 @@ export default function HomePage() {
                   </a>
                   <button
                     onClick={() => scrollToSection("work")}
-                    className="relative inline-flex items-center justify-center bg-white/10 backdrop-blur-xl border border-[#D4AF37]/60 text-white hover:bg-white/20 hover:border-[#D4AF37] font-semibold px-8 py-3 rounded-xl transition-all shadow-lg shadow-black/20"
+                    className="relative inline-flex items-center justify-center bg-white/10 backdrop-blur-xl border border-[#D4AF37]/60 text-white hover:bg-white/20 hover:border-[#D4AF37] font-semibold px-8 py-3 rounded-xl transition-all shadow-lg shadow-black/20 w-full sm:w-auto"
                   >
                     See What We've Built
                   </button>
@@ -603,9 +640,7 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
-                  onClick={() => {
-                    // Link to be added when case study page is created
-                  }}
+                  onClick={() => (window.location.href = "/case-studies/bnb-breeze")}
                 >
                   View Case Study
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -631,7 +666,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Timeline</p>
-                    <p className="font-serif text-2xl text-white font-semibold">3 Weeks</p>
+                    <p className="font-serif text-2xl text-white font-semibold">6 Weeks</p>
                   </div>
                 </div>
               </div>
@@ -715,7 +750,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Impact</p>
-                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">+150% Conversions</p>
+                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">First Digital Presence</p>
                   </div>
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Timeline</p>
@@ -779,9 +814,7 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
-                  onClick={() => {
-                    // Link to be added when case study page is created
-                  }}
+                  onClick={() => (window.location.href = "/case-studies/west-prairie-water")}
                 >
                   View Case Study
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -816,7 +849,65 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Ready to Chat CTA (moved above Reviews) */}
+      <section className="py-20 px-4 bg-[#F5F3F4]">
+        <div
+          ref={castRef<HTMLDivElement>(ctaAnimation.ref)}
+          className={`max-w-7xl mx-auto animate-scale-in ${ctaAnimation.isVisible ? "visible" : ""}`}
+        >
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="font-serif text-4xl md:text-6xl font-bold mb-6 text-[#0B132B] leading-tight">
+                Ready to <span className="text-[#D4AF37]">Chat</span> About Your Project?
+              </h2>
+              <p className="font-sans text-xl mb-8 text-[#3A506B]">
+                We'd love to hear about your business and see how we can help you grow online. No pressure, no sales
+                pitch - just a friendly conversation about your goals.
+              </p>
+              <Button
+                size="lg"
+                className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-xl px-12 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all mb-4"
+                onClick={goToFunnel}
+              >
+                Let's Talk
+                <ArrowRight className="ml-2 h-6 w-6" />
+              </Button>
+            </div>
+            <div className="rounded-2xl p-8 border-2 border-[#D4AF37] bg-white/10 backdrop-blur-xl shadow-xl">
+              <h3 className="font-serif text-2xl font-bold mb-6 text-[#0B132B]">Here's What We'll Cover:</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-6 w-6 text-[#D4AF37] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-sans font-semibold text-[#0B132B] mb-1">Your Business Goals</p>
+                    <p className="font-sans text-sm text-[#3A506B]">
+                      What you want to achieve and how a website can help
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-6 w-6 text-[#D4AF37] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-sans font-semibold text-[#0B132B] mb-1">Quick Ideas & Suggestions</p>
+                    <p className="font-sans text-sm text-[#3A506B]">Some initial thoughts on what might work well</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-6 w-6 text-[#D4AF37] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-sans font-semibold text-[#0B132B] mb-1">Next Steps (If You Want Them)</p>
+                    <p className="font-sans text-sm text-[#3A506B]">
+                      How we could work together, if it feels like a good fit
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section (moved below CTA) */}
       <section id="reviews" className="relative py-24 px-4 bg-[url('/Reviews-bkg.webp')] bg-cover bg-center min-h-[85vh] md:min-h-[95vh] flex items-center">
         <div className="absolute inset-0 bg-black/55"></div>
         <div
@@ -871,66 +962,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Ready to Chat CTA */}
-      <section className="py-20 px-4 bg-gradient-to-r from-[#0B132B] via-[#1C2541] to-[#3A506B] text-white">
-        <div
-          ref={castRef<HTMLDivElement>(ctaAnimation.ref)}
-          className={`max-w-4xl mx-auto animate-scale-in ${ctaAnimation.isVisible ? "visible" : ""}`}
-        >
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="font-serif text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-                Ready to <span className="text-[#D4AF37]">Chat</span> About Your Project?
-              </h2>
-              <p className="font-sans text-xl mb-8 text-[#F5F3F4]/90 leading-relaxed">
-                We'd love to hear about your business and see how we can help you grow online. No pressure, no sales
-                pitch - just a friendly conversation about your goals.
-              </p>
-              <Button
-                size="lg"
-                className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-xl px-12 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all mb-4"
-                onClick={goToFunnel}
-              >
-                Let's Talk
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Button>
-            </div>
-            <div className="bg-[#F5F3F4]/10 backdrop-blur-sm rounded-2xl p-8 border border-[#D4AF37]/30">
-              <h3 className="font-serif text-2xl font-bold mb-6 text-[#D4AF37]">Here's What We'll Cover:</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-[#D4AF37] mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-sans font-semibold text-[#F5F3F4] mb-1">Your Business Goals</p>
-                    <p className="font-sans text-sm text-[#F5F3F4]/80">
-                      What you want to achieve and how a website can help
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-[#D4AF37] mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-sans font-semibold text-[#F5F3F4] mb-1">Quick Ideas & Suggestions</p>
-                    <p className="font-sans text-sm text-[#F5F3F4]/80">Some initial thoughts on what might work well</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-[#D4AF37] mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-sans font-semibold text-[#F5F3F4] mb-1">Next Steps (If You Want Them)</p>
-                    <p className="font-sans text-sm text-[#F5F3F4]/80">
-                      How we could work together, if it feels like a good fit
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-white">
+      <section id="contact" className="py-20 px-4 bg-[#F5F3F4]">
         <div
           ref={castRef<HTMLDivElement>(contactAnimation.ref)}
           className={`max-w-4xl mx-auto animate-fade-in ${contactAnimation.isVisible ? "visible" : ""}`}
@@ -943,15 +976,15 @@ export default function HomePage() {
             </p>
           </div>
 
-          <Card className="border-none shadow-2xl bg-white">
-            <CardContent className="p-8 md:p-12">
+          <div className="rounded-2xl border-2 border-[#D4AF37] bg-white/10 backdrop-blur-xl shadow-2xl">
+            <div className="p-8 md:p-12">
               <form className="space-y-8">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">Your Name *</label>
                     <Input
                       placeholder="Your name"
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg"
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
                     />
                   </div>
                   <div>
@@ -960,7 +993,7 @@ export default function HomePage() {
                     </label>
                     <Input
                       type="email"
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg"
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
                     />
                   </div>
                 </div>
@@ -971,14 +1004,14 @@ export default function HomePage() {
                     </label>
                     <Input
                       type="tel"
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg"
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
                     />
                   </div>
                   <div>
                     <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">
                       Your business name
                     </label>
-                    <Input className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg" />
+                    <Input className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
                   </div>
                 </div>
                 <div>
@@ -987,7 +1020,7 @@ export default function HomePage() {
                   </label>
                   <Textarea
                     placeholder="What kind of business do you have? What are you hoping to achieve with a new website? Any specific ideas or concerns? We'd love to hear it all!"
-                    className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 min-h-[140px] rounded-lg"
+                    className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 min-h-[140px] rounded-lg bg-white/80 backdrop-blur-sm"
                   />
                 </div>
                 <div className="text-center">
@@ -1001,8 +1034,8 @@ export default function HomePage() {
                   </Button>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 
