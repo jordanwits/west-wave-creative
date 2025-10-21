@@ -6,10 +6,18 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 
 export default function InnovationsMFGCaseStudy() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const gallery = [
+    { src: "/mfg hero.png", alt: "Impactful hero section with metal fabrication workshop" },
+    { src: "/mfg services.png", alt: "Clear service offerings section" },
+    { src: "/mfg about.png", alt: "Trust-building about section" },
+    { src: "/mfg contact.png", alt: "Conversion-focused contact page" },
+  ]
 
   const heroAnimation = useScrollAnimation({ threshold: 0.2 })
   const overviewAnimation = useScrollAnimation({ threshold: 0.1 })
@@ -46,6 +54,18 @@ export default function InnovationsMFGCaseStudy() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  // Lightbox keyboard navigation
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") setLightboxIndex((i) => (i === null ? 0 : (i + 1) % gallery.length))
+      if (e.key === "ArrowLeft") setLightboxIndex((i) => (i === null ? 0 : (i - 1 + gallery.length) % gallery.length))
+      if (e.key === "Escape") setLightboxIndex(null)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [lightboxIndex])
 
   // Narrow ref types from HTMLElement to specific elements to satisfy TS
   const castRef = <T extends HTMLElement>(ref: unknown) => ref as RefObject<T>
@@ -84,18 +104,11 @@ export default function InnovationsMFGCaseStudy() {
             </a>
             <a
               href="/funnel"
-              className={`inline-flex items-center gap-2 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold px-4 py-2 rounded-lg transition-all ${
+              className={`inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 hover:shadow-xl text-[#0B132B] font-semibold px-6 py-2 rounded-md transition-all ${
                 isScrolled ? "" : "shadow-lg"
               }`}
             >
               Get My Quote
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                <path
-                  fillRule="evenodd"
-                  d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75-3.75 3.75a.75.75 0 11-1.06-1.06L19.19 12H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
             </a>
           </div>
         </div>
@@ -127,35 +140,23 @@ export default function InnovationsMFGCaseStudy() {
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
               <a
                 href="/funnel"
-                className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
-                Get My Quote
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="ml-2 h-4 w-4"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75-3.75 3.75a.75.75 0 11-1.06-1.06L19.19 12H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                Get Your Free Quote
               </a>
-              <a
-                href="https://www.innovationsmfg.net"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center border-2 border-[#F5F3F4] text-[#F5F3F4] hover:bg-[#F5F3F4] hover:text-[#0B132B] font-semibold px-8 py-3 rounded-lg transition-all bg-transparent"
-              >
-                View Live Site
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="ml-2 h-5 w-5"
+                <a
+                  href="https://www.innovationsmfg.net"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 whitespace-nowrap justify-center border-2 border-[#F5F3F4] text-[#F5F3F4] hover:bg-[#F5F3F4] hover:text-[#0B132B] font-semibold px-8 py-3 rounded-lg transition-all bg-transparent"
                 >
+                View Live Site
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-5 w-5 shrink-0"
+                  >
                   <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
                   <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2-2v-6h-2v6z" />
                 </svg>
@@ -371,7 +372,7 @@ export default function InnovationsMFGCaseStudy() {
                   "CTA placement that supports quote requests",
                 ]}
                 image={{
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-elJSJcvMS2JiFSGkP0LHYufbscZkut.png",
+                  src: "/mfgLaptop.png",
                   alt: "Innovations MFG site on a laptop",
                   objectFit: "object-contain mr-auto max-w-lg",
                   height: "h-auto",
@@ -394,11 +395,12 @@ export default function InnovationsMFGCaseStudy() {
 
               <div ref={castRef<HTMLDivElement>(resultsRef)} className="mt-16 space-y-12">
                 <div className={`space-y-6 stagger-item ${resultItems[0] ? "visible" : ""}`}>
-                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/mfg hero.png"
                       alt="Impactful hero section with metal fabrication workshop"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
+                      onClick={() => setLightboxIndex(0)}
                     />
                   </div>
                   <div>
@@ -411,11 +413,12 @@ export default function InnovationsMFGCaseStudy() {
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[1] ? "visible" : ""}`}>
-                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/mfg services.png"
                       alt="Clear service offerings section"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
+                      onClick={() => setLightboxIndex(1)}
                     />
                   </div>
                   <div>
@@ -428,11 +431,12 @@ export default function InnovationsMFGCaseStudy() {
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[2] ? "visible" : ""}`}>
-                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/mfg about.png"
                       alt="Trust-building about section"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
+                      onClick={() => setLightboxIndex(2)}
                     />
                   </div>
                   <div>
@@ -446,11 +450,12 @@ export default function InnovationsMFGCaseStudy() {
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[3] ? "visible" : ""}`}>
-                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/mfg contact.png"
                       alt="Conversion-focused contact page"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
+                      onClick={() => setLightboxIndex(3)}
                     />
                   </div>
                   <div>
@@ -463,6 +468,44 @@ export default function InnovationsMFGCaseStudy() {
                   </div>
                 </div>
               </div>
+              {/* Lightbox */}
+              <Dialog open={lightboxIndex !== null} onOpenChange={(open) => { if (!open) setLightboxIndex(null) }}>
+                <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-none sm:max-w-none md:max-w-none lg:max-w-none xl:max-w-none 2xl:max-w-none w-screen gap-0" showCloseButton>
+                  {lightboxIndex !== null && (
+                    <div className="relative">
+                      <button
+                        aria-label="Close lightbox"
+                        onClick={() => setLightboxIndex(null)}
+                        className="absolute inset-0 cursor-zoom-out"
+                      />
+                      <div className="relative z-10 mx-auto w-[min(95vw,1400px)] max-h-[85vh] rounded-md overflow-hidden bg-black">
+                        <img
+                          src={gallery[lightboxIndex].src}
+                          alt={gallery[lightboxIndex].alt}
+                          className="block w-full h-auto object-contain"
+                        />
+                      </div>
+                      <div className="relative z-10 mt-2 text-center text-white/90 text-sm">
+                        {lightboxIndex + 1} of {gallery.length}
+                      </div>
+                      <button
+                        aria-label="Previous image"
+                        onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i - 1 + gallery.length) % gallery.length))}
+                        className="fixed left-6 top-1/2 -translate-y-1/2 rounded-full bg-black/50 text-white p-3 hover:bg-black/70"
+                      >
+                        <ChevronLeft className="h-6 w-6" />
+                      </button>
+                      <button
+                        aria-label="Next image"
+                        onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i + 1) % gallery.length))}
+                        className="fixed right-6 top-1/2 -translate-y-1/2 rounded-full bg-black/50 text-white p-3 hover:bg-black/70"
+                      >
+                        <ChevronRight className="h-6 w-6" />
+                      </button>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
             </div>
 
             {/* Visit live site */}
@@ -476,10 +519,10 @@ export default function InnovationsMFGCaseStudy() {
                   href="https://www.innovationsmfg.net"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block rounded-xl border border-slate-300 px-6 py-4 font-semibold hover:bg-slate-50/10 transition-colors bg-[rgba(212,175,55,1)]"
+                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-4 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all"
                 >
                   Visit innovationsmfg.net
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 shrink-0">
                     <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
                     <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2-2v-6h-2v6z" />
                   </svg>
@@ -545,7 +588,7 @@ export default function InnovationsMFGCaseStudy() {
               </p>
               <a
                 href="/case-studies/bnb-breeze"
-                className="inline-block rounded-xl border border-slate-300 px-6 py-3 font-semibold hover:bg-slate-50/10 transition-colors bg-[rgba(212,175,55,1)]"
+                className="inline-block rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-3 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all"
               >
                 View case study
               </a>
@@ -584,7 +627,7 @@ export default function InnovationsMFGCaseStudy() {
               variant="outline"
               size="lg"
               className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] bg-transparent font-bold text-lg px-12 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
-              onClick={() => (window.location.href = "/portfolio")}
+              onClick={() => (window.location.href = "/#work")}
             >
               See more work
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -695,7 +738,7 @@ export default function InnovationsMFGCaseStudy() {
                   variant="outline"
                   size="sm"
                   className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] bg-transparent"
-                  onClick={() => (window.location.href = "/")}
+                  onClick={() => (window.location.href = "/#work")}
                 >
                   View Our Work
                 </Button>

@@ -4,13 +4,14 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { CheckCircle, User, Building, Target, Clock, DollarSign, Globe, ArrowLeft } from "lucide-react"
+import { CheckCircle, User, Building, Target, Clock, Globe, ArrowLeft } from "lucide-react"
 
 interface Question {
   id: number
   question: string
-  type: "intro" | "text" | "select" | "pricing"
+  type: "intro" | "text" | "single" | "multi" | "contact"
   options?: string[]
+  maxSelected?: number
   required: boolean
   icon: React.ReactNode
 }
@@ -25,90 +26,173 @@ const questions: Question[] = [
   },
   {
     id: 2,
-    question: "Great! Let's start with your name.",
-    type: "text",
+    question: "What's your business all about? (This helps us tailor your site to what you do.)",
+    type: "single",
+    options: [
+      "Contractor (e.g., plumber, electrician)",
+      "Salon/Beauty Services",
+      "Cleaning/Home Services",
+      "Lawn Care/Landscaping",
+      "Other Small Business (specify)",
+    ],
     required: true,
-    icon: <User className="h-5 w-5" />,
+    icon: <Building className="h-5 w-5" />,
   },
   {
     id: 3,
-    question: "Hi {firstName}, do you already have a website, or are we starting fresh?",
-    type: "select",
-    options: ["I already have one.", "I'll be starting from scratch."],
+    question: "Where's your online presence at right now?",
+    type: "single",
+    options: [
+      "No website yet",
+      "Using a DIY tool like Wix/Squarespace (but frustrated)",
+      "Have an old/outdated site",
+      "Other (specify)",
+    ],
     required: true,
     icon: <Globe className="h-5 w-5" />,
   },
   {
     id: 4,
-    question: "Perfect! Can you tell me what kind of business you are running?",
-    type: "text",
+    question: "What do you want your website to do for your business? (Select up to 3)",
+    type: "multi",
+    options: [
+      "Generate more leads/calls",
+      "Showcase services/portfolio",
+      "Enable online bookings",
+      "Sell products (e-commerce)",
+      "Build credibility",
+      "Other (specify)",
+    ],
+    maxSelected: 3,
     required: true,
-    icon: <Building className="h-5 w-5" />,
+    icon: <Target className="h-5 w-5" />,
   },
   {
     id: 5,
-    question: "What is the #1 thing you want your site to do for your business?",
-    type: "select",
+    question: "What must-have features are you looking for? (Select up to 5)",
+    type: "multi",
     options: [
-      "Get more leads/customers",
-      "Sell more products",
-      "Showcase your work/portfolio",
-      "Provide info on your business",
-      "Other",
+      "Contact form/lead capture",
+      "Photo gallery/portfolio",
+      "Blog/news section",
+      "Mobile optimization",
+      "SEO setup",
+      "Online booking/calendar",
+      "Payment integration",
+      "Testimonials section",
+      "Other (specify)",
     ],
+    maxSelected: 5,
     required: true,
     icon: <Target className="h-5 w-5" />,
   },
   {
     id: 6,
-    question:
-      "Cool, do you already have your own branding and content ready to go (like logo, photos colors), or do you need help with that as well?",
-    type: "select",
+    question: "How many pages do you think you'll need? (We can adjust this later.)",
+    type: "single",
     options: [
-      "I have everything ready.",
-      "I have some, but I need help with the rest.",
-      "No, I'll need help with branding and content.",
+      "1-3 (Basic: Home, About, Contact)",
+      "4-6 (Standard: Plus services/portfolio)",
+      "7+ (Expanded: With blog/e-commerce)",
+      "Not sure - guide me!",
     ],
     required: true,
     icon: <Target className="h-5 w-5" />,
   },
   {
     id: 7,
-    question: "When are you hoping to have your site live?",
-    type: "select",
-    options: ["ASAP", "In the next 1-2 months", "Just exploring for now"],
+    question: "What vibe are you going for with the design?",
+    type: "single",
+    options: [
+      "Clean and professional",
+      "Modern and bold",
+      "Simple and straightforward",
+      "Industry-specific (e.g., rugged for contractors)",
+      "Not sure - surprise me!",
+    ],
+    required: true,
+    icon: <Target className="h-5 w-5" />,
+  },
+  {
+    id: 8,
+    question: "When do you need this site live?",
+    type: "single",
+    options: ["ASAP (within 2 weeks)", "In the next month", "1-3 months from now", "No rush"],
     required: true,
     icon: <Clock className="h-5 w-5" />,
   },
   {
-    id: 8,
+    id: 9,
     question:
-      "Thanks! Based on the information you shared, a site like yours usually lands around $3,500-$7,500. Would you like me to send you a full proposal with details?",
-    type: "pricing",
-    options: ["Yes, send me a proposal!", "I'd like to discuss this first", "Not ready yet, just exploring"],
+      "What's your budget range? (Our sites start at $1,500 and go up to $4,000 based on features.)",
+    type: "single",
+    options: [
+      "$1,500 - $2,500",
+      "$2,500 - $4,000",
+      "Under $1,500 (we might not be the best fit)",
+      "Over $4,000 (we can refer you)",
+      "Not sure",
+    ],
     required: true,
-    icon: <DollarSign className="h-5 w-5" />,
+    icon: <DollarSignPlaceholder />,
+  },
+  {
+    id: 10,
+    question: "Need anything else to make your site shine? (Select any)",
+    type: "multi",
+    options: [
+      "Logo/branding design",
+      "Content writing",
+      "Domain/hosting setup",
+      "Ongoing maintenance",
+      "None - just the site!",
+    ],
+    maxSelected: 5,
+    required: false,
+    icon: <Target className="h-5 w-5" />,
+  },
+  {
+    id: 11,
+    question: "Almost done! Share your details, and we'll send a personalized quote in 24 hours.",
+    type: "contact",
+    required: true,
+    icon: <User className="h-5 w-5" />,
   },
 ]
 
+// Placeholder icon to keep types simple without adding new import
+function DollarSignPlaceholder() {
+  return (
+    <span className="inline-block w-5 h-5 rounded-sm bg-[#D4AF37]/30 text-[#0B132B] align-middle text-center leading-5 font-semibold">
+      $
+    </span>
+  )
+}
+
 const stepLabels = [
   "Getting started",
-  "Your name",
-  "Current website",
-  "Your business",
-  "Main goal",
-  "Branding & content",
+  "Business type",
+  "Website status",
+  "Main goals",
+  "Key features",
+  "Pages",
+  "Design style",
   "Timeline",
-  "Proposal",
+  "Budget",
+  "Extras",
+  "Contact info",
 ]
 
 export default function SalesFunnel() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [userInput, setUserInput] = useState("")
   const [isComplete, setIsComplete] = useState(false)
-  const [userAnswers, setUserAnswers] = useState<Record<number, string>>({})
+  const [userAnswers, setUserAnswers] = useState<Record<number, string | string[] | Record<string, string>>>({})
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [showContent, setShowContent] = useState(true)
+  const [multiSelection, setMultiSelection] = useState<string[]>([])
+  const [otherText, setOtherText] = useState("")
+  const [otherMultiText, setOtherMultiText] = useState("")
 
   const transitionToNext = () => {
     setIsTransitioning(true)
@@ -153,7 +237,38 @@ export default function SalesFunnel() {
 
   const handleOptionSelect = (option: string) => {
     const currentQ = questions[currentQuestion]
+    // single select flow
     setUserAnswers((prev) => ({ ...prev, [currentQ.id]: option }))
+    // if option includes Other, wait for text input
+    if (option.includes("(specify)")) {
+      return
+    }
+    transitionToNext()
+  }
+
+  const toggleMultiOption = (option: string) => {
+    const q = questions[currentQuestion]
+    const max = q.maxSelected ?? 99
+    setMultiSelection((prev) => {
+      const exists = prev.includes(option)
+      if (exists) {
+        return prev.filter((o) => o !== option)
+      }
+      if (prev.length >= max) return prev
+      return [...prev, option]
+    })
+  }
+
+  const handleMultiNext = () => {
+    if (multiSelection.length === 0) return
+    const q = questions[currentQuestion]
+    const processed = multiSelection.map((opt) =>
+      opt.includes("(specify)") && otherMultiText.trim() ? `${opt.split(" (")[0]}: ${otherMultiText}` : opt
+    )
+    setUserAnswers((prev) => ({ ...prev, [q.id]: processed }))
+    setMultiSelection([])
+    setOtherText("")
+    setOtherMultiText("")
     transitionToNext()
   }
 
@@ -295,44 +410,102 @@ export default function SalesFunnel() {
                     Let's get started!
                   </Button>
                 </div>
-              ) : currentQ.type === "select" || currentQ.type === "pricing" ? (
+              ) : (
+            <div className="space-y-3">
+              {currentQ.type === "single" && currentQ.options?.map((option, index) => (
+                <div key={index} className="space-y-2">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left h-auto py-3 sm:py-4 px-4 sm:px-6 border-2 border-[#3A506B]/20 hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 hover:text-[#0B132B] transition-all duration-200 bg-white text-[#0B132B] font-sans hover:scale-[1.02] hover:shadow-md text-sm sm:text-base"
+                    onClick={() => handleOptionSelect(option)}
+                  >
+                    {option}
+                  </Button>
+                  {userAnswers[currentQ.id] === option && option.includes("(specify)") && (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        if (!otherText.trim()) return
+                        const label = option.startsWith("Other") ? "Other" : option
+                        setUserAnswers((prev) => ({ ...prev, [currentQ.id]: `${label}: ${otherText}` }))
+                        transitionToNext()
+                      }}
+                      className="ml-2"
+                    >
+                      <Input
+                        value={otherText}
+                        onChange={(e) => setOtherText(e.target.value)}
+                        placeholder="Type here..."
+                        className="mt-1 border-2 border-[#3A506B]/20 focus:border-[#D4AF37]"
+                      />
+                      <Button type="submit" className="mt-2 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B]">Continue</Button>
+                    </form>
+                  )}
+                </div>
+              ))}
+
+              {currentQ.type === "multi" && (
                 <div className="space-y-3">
                   {currentQ.options?.map((option, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="w-full justify-start text-left h-auto py-3 sm:py-4 px-4 sm:px-6 border-2 border-[#3A506B]/20 hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-200 bg-white text-[#0B132B] font-sans hover:scale-[1.02] hover:shadow-md text-sm sm:text-base"
-                      onClick={() => handleOptionSelect(option)}
-                    >
-                      {option}
-                    </Button>
+                    <div key={index} className="space-y-2">
+                      <Button
+                        variant="outline"
+                        className={`w-full justify-start text-left h-auto py-3 sm:py-4 px-4 sm:px-6 border-2 transition-all duration-200 bg-white text-[#0B132B] font-sans text-sm sm:text-base ${
+                          multiSelection.includes(option)
+                            ? "border-[#D4AF37] bg-[#D4AF37]/10 hover:text-[#0B132B]"
+                            : "border-[#3A506B]/20 hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 hover:scale-[1.02] hover:shadow-md hover:text-[#0B132B]"
+                        }`}
+                        onClick={() => toggleMultiOption(option)}
+                      >
+                        {option}
+                      </Button>
+                      {option.includes("(specify)") && multiSelection.includes(option) && (
+                        <Input
+                          value={otherMultiText}
+                          onChange={(e) => setOtherMultiText(e.target.value)}
+                          placeholder="Type here..."
+                          className="ml-2 border-2 border-[#3A506B]/20 focus:border-[#D4AF37]"
+                        />
+                      )}
+                    </div>
                   ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs sm:text-sm text-[#3A506B] font-sans">
+                      Selected {multiSelection.length}{currentQ.maxSelected ? ` / ${currentQ.maxSelected}` : ""}
+                    </span>
+                    <Button
+                      onClick={handleMultiNext}
+                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B]"
+                      disabled={multiSelection.length === 0}
+                    >
+                      Next →
+                    </Button>
+                  </div>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder={
-                      currentQuestion === 1
-                        ? "Enter your name..."
-                        : currentQuestion === 3
-                          ? "Tell me about your business..."
-                          : "Your answer..."
-                    }
-                    className="w-full border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 sm:h-14 rounded-lg bg-white text-[#0B132B] font-sans px-4 transition-all duration-200 text-sm sm:text-base"
-                    required={currentQ.required}
-                    autoFocus
-                  />
-                  <Button
-                    type="submit"
-                    className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold px-6 sm:px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105 w-full sm:w-auto"
-                    disabled={!userInput.trim()}
-                  >
-                    Next →
-                  </Button>
+              )}
+
+              {currentQ.type === "contact" && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    setIsComplete(true)
+                  }}
+                  className="space-y-4"
+                >
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Input placeholder="Your name *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input type="email" placeholder="Email *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input type="tel" placeholder="Phone (optional)" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input placeholder="Business name *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                  </div>
+                  <Input placeholder="Any additional notes?" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-xs sm:text-sm text-[#3A506B]">Your info stays private - we only use it for your quote.</p>
+                    <Button type="submit" className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold">Get My Quote Now</Button>
+                  </div>
                 </form>
+              )}
+            </div>
               )}
             </div>
 

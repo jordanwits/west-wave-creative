@@ -5,10 +5,12 @@ import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-an
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowRight } from "lucide-react"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function BNBBreezeCaseStudy() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const heroAnimation = useScrollAnimation({ threshold: 0.2 })
   const overviewAnimation = useScrollAnimation({ threshold: 0.1 })
@@ -21,9 +23,34 @@ export default function BNBBreezeCaseStudy() {
   const ctaAnimation = useScrollAnimation({ threshold: 0.1 })
   const contactAnimation = useScrollAnimation({ threshold: 0.1 })
 
-  const { containerRef: resultsRef, visibleItems: resultItems } = useStaggeredAnimation(4, 200)
+  const { containerRef: resultsRef, visibleItems: resultItems } = useStaggeredAnimation(10, 200)
   const { containerRef: metaRef, visibleItems: metaItems } = useStaggeredAnimation(4, 120)
   const { containerRef: brandRef, visibleItems: brandItems } = useStaggeredAnimation(2, 150)
+
+  const gallery = [
+    { src: "/bnbHero.png", alt: "BNB Breeze hero section" },
+    { src: "/bnbAbout.png", alt: "About section overview" },
+    { src: "/bnbSTR.png", alt: "Short term rentals responsibilities" },
+    { src: "/bnbReviews.png", alt: "Reviews and testimonials" },
+    { src: "/bnbStats.png", alt: "Performance stats" },
+    { src: "/bnbServices.png", alt: "Services included" },
+    { src: "/bnbProcess.png", alt: "Process steps" },
+    { src: "/bnbExpectations.png", alt: "Expectations and what to expect" },
+    { src: "/bnbAllstar.png", alt: "Allstar highlight" },
+    { src: "/bnbContact.png", alt: "Contact section" },
+  ]
+
+  // Lightbox keyboard navigation
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") setLightboxIndex((i) => (i === null ? 0 : (i + 1) % gallery.length))
+      if (e.key === "ArrowLeft") setLightboxIndex((i) => (i === null ? 0 : (i - 1 + gallery.length) % gallery.length))
+      if (e.key === "Escape") setLightboxIndex(null)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [lightboxIndex])
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -82,18 +109,11 @@ export default function BNBBreezeCaseStudy() {
             </a>
             <a
               href="/funnel"
-              className={`inline-flex items-center gap-2 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold px-4 py-2 rounded-lg transition-all ${
+              className={`inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 hover:shadow-xl text-[#0B132B] font-semibold px-6 py-2 rounded-md transition-all ${
                 isScrolled ? "" : "shadow-lg"
               }`}
             >
               Get My Quote
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                <path
-                  fillRule="evenodd"
-                  d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75-3.75 3.75a.75.75 0 11-1.06-1.06L19.19 12H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
             </a>
           </div>
         </div>
@@ -125,10 +145,9 @@ export default function BNBBreezeCaseStudy() {
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
               <a
                 href="/funnel"
-                className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
-                Get My Quote
-                <ArrowRight className="ml-2 h-4 w-4" />
+                Get Your Free Quote
               </a>
               <a
                 href="#"
@@ -156,11 +175,13 @@ export default function BNBBreezeCaseStudy() {
             <h2 className="font-serif text-3xl font-bold text-[#0B132B] mb-6">Project Overview</h2>
             <div className="space-y-4 text-slate-600 font-sans">
               <p className="leading-relaxed">
-                BNB Breeze needed a refreshed web experience to better communicate value to homeowners and streamline
-                the path to getting started.
+                BNB Breeze is a short-term rental management company. We were brought in to redesign one of their most
+                important pages: the Homeowners sales page. This is where they earn the trust of property owners and
+                convert interest into management inquiries.
               </p>
               <p className="leading-relaxed">
-                We modernized the look and information architecture, making it easy to understand services and reach out.
+                The new page centers on homeowner outcomes and clear next steps. We simplified the story, clarified
+                pricing and services, and made the primary action obvious so owners can confidently request a consult.
               </p>
             </div>
           </div>
@@ -191,6 +212,7 @@ export default function BNBBreezeCaseStudy() {
               <div className="flex items-center gap-3">
                 <img src="/figma-logo.png" alt="Figma" className="w-8 h-8" />
                 <img src="/vercel-logo.png" alt="Vercel" className="w-8 h-8" />
+                <img src="/cursorLogo.png" alt="Cursor" className="w-8 h-8" />
               </div>
             </div>
           </div>
@@ -212,34 +234,72 @@ export default function BNBBreezeCaseStudy() {
                 paragraphs={[
                   "The prior page didn’t clearly convey value or make it easy for homeowners to take action.",
                 ]}
-                bullets={["Unclear hierarchy", "Dense content", "Paths to action not obvious"]}
+                bullets={[
+                  "Value propositions were buried, so homeowners struggled to quickly understand why BNB Breeze was the right partner.",
+                  "The information hierarchy felt busy on desktop and cramped on mobile, which made the page hard to scan.",
+                  "Calls to action were inconsistent and easy to miss, leaving visitors unsure of the next step.",
+                  "Proof points like process clarity, pricing context, and social proof weren’t positioned to support decisions at the right moments.",
+                ]}
               />
             </div>
 
             <div ref={castRef<HTMLDivElement>(brandAnimation.ref)} className={`animate-slide-up ${brandAnimation.isVisible ? "visible" : ""}`}>
               <ContentBlock
                 as="div"
-                title="Design Approach"
-                paragraphs={["Clear sections, benefits up front, and strong CTAs that guide the next step."]}
+                title="Brand & System"
+                paragraphs={[
+                  "We developed a simple, trustworthy visual system that keeps attention on outcomes for homeowners and makes next steps obvious across devices.",
+                ]}
                 customContent={
-                  <div ref={brandRef} className="mt-8 grid gap-12 lg:grid-cols-2">
+                  <div ref={castRef<HTMLDivElement>(brandRef)} className="mt-8 grid gap-12 lg:grid-cols-2">
+                    {/* Typography */}
                     <div className={`stagger-item ${brandItems[0] ? "visible" : ""}`}>
-                      <h3 className="text-xl font-bold text-[#0B132B] mb-4">Benefit‑Led Content</h3>
+                      <h3 className="text-xl font-bold text-[#0B132B] mb-4">Typography</h3>
                       <p className="text-slate-600 leading-relaxed mb-6">
-                        Rewrote key sections to emphasize outcomes homeowners care about, not just features.
+                        Raleway is used as the primary typeface in this project. It’s clean and contemporary, supporting clear hierarchy
+                        for headlines, benefits, and calls to action on the Homeowners sales page.
                       </p>
+                      <div className="border border-slate-200 rounded-xl p-6 bg-[rgba(245,243,244,1)]">
+                        <p className="text-xs font-semibold uppercase tracking-widest text-[#D4AF37] mb-3">FONT FAMILY</p>
+                        <h4
+                          className="text-slate-800 text-3xl mb-2 font-semibold"
+                          style={{ fontFamily: "Raleway, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" }}
+                        >
+                          Raleway
+                        </h4>
+                        <p className="text-slate-600 text-sm">Used throughout for headings and emphasized body copy</p>
+                      </div>
                     </div>
+
+                    {/* Design System */}
                     <div className={`stagger-item ${brandItems[1] ? "visible" : ""}`}>
-                      <h3 className="text-xl font-bold text-[#0B132B] mb-4">Modern Visuals</h3>
+                      <h3 className="text-xl font-bold text-[#0B132B] mb-4">Design System</h3>
                       <p className="text-slate-600 leading-relaxed mb-6">
-                        Clean layout, ample space, and focused imagery to reduce friction and build trust.
+                        A focused set of reusable components ensures consistency and keeps the path to inquiry effortless.
                       </p>
+                      <div>
+                        <h4 className="text-lg font-semibold text-[#0B132B] mb-4">Key Components</h4>
+                        <ul className="space-y-3">
+                          <li className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-[#D4AF37] rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-slate-600">Value-first hero with a primary CTA that guides owners to request a consult</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-[#D4AF37] rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-slate-600">STR responsibilities shown clearly so owners see what is handled for them</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-[#D4AF37] rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-slate-600">Services and what's included presented with simple, scannable copy</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 }
                 image={{
-                  src: "/bnb Laptop.png",
-                  alt: "BNB Breeze mockup",
+                  src: "/BNBcolors.png",
+                  alt: "BNB Breeze color palette",
                   objectFit: "object-contain object-center w-full max-w-3xl mx-auto",
                   height: "h-auto",
                 }}
@@ -255,14 +315,34 @@ export default function BNBBreezeCaseStudy() {
                 as="div"
                 title="Process"
                 paragraphs={[
-                  "A streamlined approach delivered quality at speed while staying focused on outcomes for industrial buyers.",
+                  "A straightforward five-step flow tailored to the Homeowners sales page—from clarifying questions to launching a mobile-first page with clear CTAs and proof.",
                 ]}
                 graphicProcess={[
-                  { number: "01", title: "User Journey Mapping", body: "Mapped how homeowners research and decide." },
-                  { number: "02", title: "Information Architecture", body: "Restructured content around what matters." },
-                  { number: "03", title: "Wireframes & Prototypes", body: "Validated layout and messaging quickly." },
-                  { number: "04", title: "Visual Design", body: "Refined, trustworthy look and feel." },
-                  { number: "05", title: "Rapid Implementation", body: "Built efficiently to meet timelines." },
+                  {
+                    number: "01",
+                    title: "Clarify the Questions",
+                    body: "Identified the top questions owners ask: earnings, fees, what is included, onboarding, guarantees.",
+                  },
+                  {
+                    number: "02",
+                    title: "Structure the Content",
+                    body: "Organized the page around outcomes, services and pricing context, proof, and a persistent CTA.",
+                  },
+                  {
+                    number: "03",
+                    title: "Wireframes and Messaging",
+                    body: "Created low-fi wireframes and benefit-led copy to validate flow and tone.",
+                  },
+                  {
+                    number: "04",
+                    title: "Visual Design and Trust",
+                    body: "Applied the system, added testimonials and stats, and optimized for mobile scanning.",
+                  },
+                  {
+                    number: "05",
+                    title: "Implementation and Launch",
+                    body: "Built and deployed the page and enabled easy edits going forward.",
+                  },
                 ]}
               />
             </div>
@@ -292,8 +372,95 @@ export default function BNBBreezeCaseStudy() {
               <ContentBlock
                 as="div"
                 title="Results"
-                paragraphs={["Clearer story, stronger CTAs, and a more confident path to getting started."]}
+                paragraphs={[
+                  "A clear story that connects with homeowners and reduces friction. Stronger calls to action and a simple flow guide visitors from first glance to request a consult with confidence.",
+                ]}
               />
+              <div ref={castRef<HTMLDivElement>(resultsRef)} className="mt-16 space-y-12">
+                {[ 
+                  { src: "/bnbHero.png", title: "Hero", desc: "A welcoming hero that explains the value fast and points homeowners to the next step." },
+                  { src: "/bnbAbout.png", title: "About", desc: "A short intro to who BNB Breeze is and how the team supports owners throughout the journey." },
+                  { src: "/bnbSTR.png", title: "Short Term Rentals", desc: "A simple breakdown of what BNB Breeze handles for STRs so owners can relax and stay informed." },
+                  { src: "/bnbReviews.png", title: "Reviews", desc: "Real homeowner feedback placed where it matters to build confidence before reaching out." },
+                  { src: "/bnbStats.png", title: "Stats", desc: "Performance highlights that back up the story with numbers owners care about." },
+                  { src: "/bnbServices.png", title: "Services", desc: "Clear list of what is included and how each service helps owners see results sooner." },
+                  { src: "/bnbProcess.png", title: "Process", desc: "Three easy steps that show exactly what happens from hello to handoff." },
+                  { src: "/bnbExpectations.png", title: "Expectations", desc: "A straightforward view of what owners can expect at each step so there are no surprises." },
+                  { src: "/bnbAllstar.png", title: "Allstar Club", desc: "Exclusive club for owners with three or more properties. Members get added benefits and better rates." },
+                  { src: "/bnbContact.png", title: "Contact", desc: "Multiple ways to reach the team and an easy path to request a consult." },
+                ].map((item, i) => (
+                  <div key={i} className={`space-y-6 stagger-item ${resultItems[i] ? "visible" : ""}`}>
+                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
+                      <img
+                        src={item.src}
+                        alt={`${item.title} section preview`}
+                        className="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
+                        onClick={() => setLightboxIndex(i)}
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-xl font-semibold mb-2">{item.title}</h4>
+                      <p className="font-sans text-slate-600 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* Lightbox */}
+              <Dialog open={lightboxIndex !== null} onOpenChange={(open) => { if (!open) setLightboxIndex(null) }}>
+                <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-none sm:max-w-none md:max-w-none lg:max-w-none xl:max-w-none 2xl:max-w-none w-screen" showCloseButton>
+                  {lightboxIndex !== null && (
+                    <div className="relative">
+                      <button
+                        aria-label="Close lightbox"
+                        onClick={() => setLightboxIndex(null)}
+                        className="absolute inset-0 cursor-zoom-out"
+                      />
+                      <img
+                        src={gallery[lightboxIndex].src}
+                        alt={gallery[lightboxIndex].alt}
+                        className="relative z-10 mx-auto max-h-[85vh] w-[min(95vw,1400px)] object-contain rounded-md"
+                      />
+                      <div className="relative z-10 mt-2 text-center text-white/90 text-sm">
+                        {lightboxIndex + 1} of {gallery.length}
+                      </div>
+                      <button
+                        aria-label="Previous image"
+                        onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i - 1 + gallery.length) % gallery.length))}
+                        className="fixed left-6 top-1/2 -translate-y-1/2 rounded-full bg-black/50 text-white p-3 hover:bg-black/70"
+                      >
+                        <ChevronLeft className="h-6 w-6" />
+                      </button>
+                      <button
+                        aria-label="Next image"
+                        onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i + 1) % gallery.length))}
+                        className="fixed right-6 top-1/2 -translate-y-1/2 rounded-full bg-black/50 text-white p-3 hover:bg-black/70"
+                      >
+                        <ChevronRight className="h-6 w-6" />
+                      </button>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Visit live site */}
+            <div className="mt-16 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+                <div>
+                  <h3 className="font-serif text-xl font-semibold mb-2">See it live</h3>
+                  <p className="font-sans text-slate-600">Explore the production site in the wild.</p>
+                </div>
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-4 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all"
+                >
+                  Visit bnbbreeze.com
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 shrink-0">
+                    <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
+                    <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2-2v-6h-2v6z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -304,7 +471,7 @@ export default function BNBBreezeCaseStudy() {
               <nav className="space-y-3 text-sm">
                 {[
                   ["the-challenge", "The Challenge"],
-                  ["design-approach", "Design Approach"],
+                  ["brand-system", "Brand & System"],
                   ["process", "Process"],
                   ["ui-ux-highlights", "UI/UX Highlights"],
                   ["results", "Results"],
@@ -347,11 +514,11 @@ export default function BNBBreezeCaseStudy() {
               <p className="font-sans text-slate-600 mb-3 leading-relaxed md:text-lg">
                 Launching the first digital presence for a rural water utility with an accessible, clear experience.
               </p>
-              <a href="/case-studies/west-prairie-water" className="inline-block rounded-xl border border-slate-300 px-6 py-3 font-semibold hover:bg-slate-50/10 transition-colors bg-[rgba(212,175,55,1)]">
+              <a href="/case-studies/west-prairie-water" className="inline-block rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-3 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all">
                 View case study
               </a>
             </div>
-            <img src="/prairie-river-background.jpeg" alt="WPW mockup" className="w-full h-auto max-h-72 max-w-lg object-contain mx-auto" />
+            <img src="/wpLaptop.png" alt="West Prairie Water mockup" className="w-full h-auto max-h-72 max-w-lg object-contain mx-auto" />
           </div>
         </div>
       </section>
@@ -381,7 +548,7 @@ export default function BNBBreezeCaseStudy() {
               variant="outline"
               size="lg"
               className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] bg-transparent font-bold text-lg px-12 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
-              onClick={() => (window.location.href = "/portfolio")}
+              onClick={() => (window.location.href = "/#work")}
             >
               See more work
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -466,7 +633,7 @@ export default function BNBBreezeCaseStudy() {
                 <Button size="sm" className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold" onClick={goToFunnel}>
                   Get My Quote
                 </Button>
-                <Button variant="outline" size="sm" className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] bg-transparent" onClick={() => (window.location.href = "/")}>
+                <Button variant="outline" size="sm" className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] bg-transparent" onClick={() => (window.location.href = "/#work")}>
                   View Our Work
                 </Button>
               </div>

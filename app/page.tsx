@@ -64,6 +64,10 @@ export default function HomePage() {
     }
   }
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   const goToFunnel = () => {
     window.location.href = "/funnel"
   }
@@ -77,22 +81,17 @@ export default function HomePage() {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-4">
           <div
+            onClick={scrollToTop}
+            role="button"
+            aria-label="Scroll to top"
             className={`font-serif text-2xl font-bold transition-colors duration-300 ${
               isScrolled ? "text-[#0B132B]" : "text-white"
-            }`}
+            } cursor-pointer`}
           >
             West Wave <span className={isScrolled ? "text-[#D4AF37]" : "text-[#D4AF37]"}>Creative</span>
           </div>
           {/* Desktop nav (xl and up) */}
           <div className="hidden xl:flex items-center space-x-8">
-            <button
-              onClick={() => scrollToSection("options")}
-              className={`font-sans hover:text-[#D4AF37] transition-colors cursor-pointer ${
-                isScrolled ? "text-[#0B132B]" : "text-white"
-              }`}
-            >
-              Options
-            </button>
             <button
               onClick={() => scrollToSection("about")}
               className={`font-sans hover:text-[#D4AF37] transition-colors cursor-pointer ${
@@ -100,6 +99,14 @@ export default function HomePage() {
               }`}
             >
               About
+            </button>
+            <button
+              onClick={() => scrollToSection("options")}
+              className={`font-sans hover:text-[#D4AF37] transition-colors cursor-pointer ${
+                isScrolled ? "text-[#0B132B]" : "text-white"
+              }`}
+            >
+              Options
             </button>
             <button
               onClick={() => scrollToSection("services")}
@@ -159,8 +166,8 @@ export default function HomePage() {
         <div className="xl:hidden fixed top-16 left-4 right-4 z-50 rounded-xl border border-black/10 bg-white/95 backdrop-blur-md shadow-xl">
           <div className="p-3 divide-y divide-black/5">
             <div className="flex flex-col py-1">
-              <button onClick={() => { setMobileOpen(false); scrollToSection("options") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Options</button>
               <button onClick={() => { setMobileOpen(false); scrollToSection("about") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">About</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("options") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Options</button>
               <button onClick={() => { setMobileOpen(false); scrollToSection("services") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Process</button>
               <button onClick={() => { setMobileOpen(false); scrollToSection("work") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Work</button>
               <button onClick={() => { setMobileOpen(false); scrollToSection("reviews") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Reviews</button>
@@ -179,7 +186,7 @@ export default function HomePage() {
       <section className="relative text-white px-4 overflow-hidden min-h-screen">
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src="/AdobeStock_91825109.mov"
+          src="/WestWaveHero.mp4"
           autoPlay
           muted
           loop
@@ -197,28 +204,19 @@ export default function HomePage() {
             {/* Headline + CTAs (right-aligned text) */}
             <div className="text-center xl:text-right">
               <div ref={castRef<HTMLDivElement>(heroAnimation.ref)} className={`animate-fade-in ${heroAnimation.isVisible ? "visible" : ""}`}>
-                <h1 className="font-serif font-extrabold leading-tight mb-3 text-[clamp(26px,3.6vw,52px)] 2xl:text-[60px]">You work hard.</h1>
-                <p className="font-serif font-extrabold text-[#D4AF37] leading-tight mb-5 text-[clamp(20px,3vw,44px)] 2xl:text-[52px] whitespace-normal md:whitespace-nowrap">
-                  Your website should, too.
+                <h1 className="font-serif font-extrabold leading-tight mb-5 text-[clamp(26px,3.6vw,52px)] 2xl:text-[60px]">
+                  Pro Websites, Built Fast.<br />
+                  <span className="text-[#D4AF37]">for Your Budget</span>
+                </h1>
+                <p className="font-sans text-white/90 text-[clamp(14px,2.2vw,20px)] 2xl:text-[22px] leading-relaxed mb-6 max-w-2xl mx-auto xl:ml-auto">
+                  Get a professional, mobile‑friendly website in 2–4 weeks—optimized for SEO, speed, and conversions. Clear pricing, personal service, and results tailored to your budget.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center xl:justify-end">
                   <a
                     href="/funnel"
                     className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
                   >
-                    Get My Quote
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="ml-2 h-4 w-6"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75-3.75 3.75a.75.75 0 11-1.06-1.06L19.19 12H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    Get Your Free Quote
                   </a>
                   <button
                     onClick={() => scrollToSection("work")}
@@ -233,17 +231,96 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="py-20 px-4 bg-[#F5F3F4]">
+        <div
+          ref={castRef<HTMLDivElement>(aboutAnimation.ref)}
+          className={`max-w-6xl mx-auto text-center animate-fade-in ${aboutAnimation.isVisible ? "visible" : ""}`}
+        >
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-[#0B132B]">
+              Professional websites with a <span className="text-[#D4AF37]">personal touch</span>
+            </h2>
+            <p className="font-sans text-xl text-[#3A506B] max-w-4xl mx-auto leading-relaxed">
+              At West Wave Creative, we believe every small business deserves a website they can be proud of. We're a
+              boutique studio — which means you'll never get lost in the shuffle or treated like "just another client."
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
+            <div>
+              <h3 className="font-serif text-3xl font-bold mb-6 text-[#0B132B]">
+                Small enough to care, <span className="text-[#D4AF37]">positioned for growth</span>
+              </h3>
+              <p className="font-sans text-lg text-[#3A506B] mb-6 leading-relaxed">
+                We're small enough to care about every detail, but positioned for growth with the skills, tools, and
+                vision to scale alongside your business. Whether you need a simple site to get started or a full digital
+                strategy, we're here to make the process smooth, personal, and effective.
+              </p>
+              <p className="font-sans text-lg text-[#3A506B] mb-8 leading-relaxed">
+                Our team brings together strategy, design, and hospitality in a way that's rare in the digital world.
+                It's this combination of professionalism and personal care that defines West Wave Creative.
+              </p>
+            </div>
+            <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-[#D4AF37] shadow-xl shadow-black/20">
+              <div className="grid grid-cols-1 gap-6">
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <img
+                      src="/dave-profile.jpg"
+                      alt="Dave - Business Development"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                    />
+                    <div className="flex-1">
+                      <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Dave</h4>
+                      <p className="font-sans text-[#3A506B] text-sm mb-2">Business Development & Sales</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <img
+                      src="/jordan-profile.jpg"
+                      alt="Jordan - Product Development"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                    />
+                    <div className="flex-1">
+                      <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Jordan</h4>
+                      <p className="font-sans text-[#3A506B] text-sm mb-2">Product Development & Website Builds</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <img
+                      src="/barb-profile.jpg"
+                      alt="Barb - Chief Hospitality Officer"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                    />
+                    <div className="flex-1">
+                      <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Barb</h4>
+                      <p className="font-sans text-[#3A506B] text-sm mb-2">Chief Hospitality Officer</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Web Options Section */}
-      <section id="options" className="px-4 bg-[#F5F3F4] pt-[calc(5rem+50px)] pb-[calc(5rem+50px)]">
+      <section id="options" className="relative px-4 pt-[calc(5rem+50px)] pb-[calc(5rem+50px)] bg-[url('/nature%20shot.jpeg')] bg-cover bg-center">
+        <div className="absolute inset-0 bg-black/40"></div>
         <div
           ref={castRef<HTMLDivElement>(optionsAnimation.ref)}
-          className={`max-w-7xl mx-auto animate-slide-up ${optionsAnimation.isVisible ? "visible" : ""}`}
+          className={`relative z-10 max-w-7xl mx-auto animate-slide-up ${optionsAnimation.isVisible ? "visible" : ""}`}
         >
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-[#0B132B]">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-white">
               Your Website Options, <span className="text-[#D4AF37]">Simplified</span>
             </h2>
-            <p className="font-sans text-xl text-[#3A506B] max-w-3xl mx-auto leading-relaxed">
+            <p className="font-sans text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
               When it comes to getting a professional website, you have three main paths. We've laid out the honest
               comparison so you can make the best choice for your business.
             </p>
@@ -303,16 +380,16 @@ export default function HomePage() {
 
             {/* Context column (de‑emphasized alternatives) */}
             <aside className="col-span-12 lg:col-span-4">
-              <div className="mb-3 font-sans text-xs font-medium uppercase tracking-widest text-[#3A506B]">
+              <div className="mb-3 font-sans text-xs font-medium uppercase tracking-widest text-white/80">
                 Other paths
               </div>
               <div className="flex flex-col gap-6">
                 {/* Agencies card */}
-                <div className="rounded-2xl border border-[#F5F3F4] bg-white p-5 shadow-sm">
+                <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 shadow-xl shadow-black/20">
                   <div className="mb-2 flex items-center justify-between">
-                    <h4 className="font-serif text-lg font-semibold text-[#0B132B]">Marketing Agencies</h4>
+                    <h4 className="font-serif text-lg font-semibold text-white">Marketing Agencies</h4>
                   </div>
-                  <ul className="space-y-2 text-sm text-[#3A506B]">
+                  <ul className="space-y-2 text-sm text-white/90">
                     <li className="flex gap-2">
                       <span className="opacity-60">•</span> High‑end, full service
                     </li>
@@ -323,17 +400,17 @@ export default function HomePage() {
                       <span className="opacity-60">•</span> Premium price tag & retainers
                     </li>
                   </ul>
-                  <div className="mt-3 font-sans text-sm text-[#3A506B]">
-                    Typically <span className="font-medium text-[#0B132B]">$5,000+</span>
+                  <div className="mt-3 font-sans text-sm text-white/80">
+                    Typically <span className="font-medium text-[#D4AF37]">$5,000+</span>
                   </div>
                 </div>
 
                 {/* DIY card */}
-                <div className="rounded-2xl border border-[#F5F3F4] bg-white p-5 shadow-sm">
+                <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 shadow-xl shadow-black/20">
                   <div className="mb-2 flex items-center justify-between">
-                    <h4 className="font-serif text-lg font-semibold text-[#0B132B]">DIY Builders</h4>
+                    <h4 className="font-serif text-lg font-semibold text-white">DIY Builders</h4>
                   </div>
-                  <ul className="space-y-2 text-sm text-[#3A506B]">
+                  <ul className="space-y-2 text-sm text-white/90">
                     <li className="flex gap-2">
                       <span className="opacity-60">•</span> Low upfront cost
                     </li>
@@ -344,103 +421,13 @@ export default function HomePage() {
                       <span className="opacity-60">•</span> Time‑consuming & often frustrating
                     </li>
                   </ul>
-                  <div className="mt-3 font-sans text-sm text-[#3A506B]">$20–50/mo + your time</div>
+                  <div className="mt-3 font-sans text-sm text-white/80">$20–50/mo + your time</div>
                 </div>
               </div>
             </aside>
           </div>
 
-          {/* At a glance comparison summary */}
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="relative py-20 px-4 bg-[url('/nature%20shot.jpeg')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div
-          ref={castRef<HTMLDivElement>(aboutAnimation.ref)}
-          className={`relative z-10 max-w-6xl mx-auto text-center animate-fade-in ${aboutAnimation.isVisible ? "visible" : ""}`}
-        >
-          <div className="text-center mb-12">
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-white">
-              Professional websites with a <span className="text-[#D4AF37]">personal touch</span>
-            </h2>
-            <p className="font-sans text-xl text-white max-w-4xl mx-auto leading-relaxed">
-              At West Wave Creative, we believe every small business deserves a website they can be proud of. We're a
-              boutique studio — which means you'll never get lost in the shuffle or treated like "just another client."
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
-            <div>
-              <h3 className="font-serif text-3xl font-bold mb-6 text-white">
-                Small enough to care, <span className="text-[#D4AF37]">positioned for growth</span>
-              </h3>
-              <p className="font-sans text-lg text-white mb-6 leading-relaxed">
-                We're small enough to care about every detail, but positioned for growth with the skills, tools, and
-                vision to scale alongside your business. Whether you need a simple site to get started or a full digital
-                strategy, we're here to make the process smooth, personal, and effective.
-              </p>
-              <p className="font-sans text-lg text-white mb-8 leading-relaxed">
-                Our team brings together strategy, design, and hospitality in a way that's rare in the digital world.
-                It's this combination of professionalism and personal care that defines West Wave Creative.
-              </p>
-            </div>
-            <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-xl shadow-black/20">
-              <div className="grid grid-cols-1 gap-6">
-                <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="flex items-start gap-4">
-                    <img
-                      src="/dave-profile.jpg"
-                      alt="Dave - Business Development"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
-                    />
-                    <div className="flex-1">
-                      <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Dave</h4>
-                      <p className="font-sans text-[#3A506B] text-sm mb-2">Business Development & Sales</p>
-                      <p className="font-sans text-[#1C2541] text-sm">
-                        Oversees client relationships and project strategy
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="flex items-start gap-4">
-                    <img
-                      src="/jordan-profile.jpg"
-                      alt="Jordan - Product Development"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
-                    />
-                    <div className="flex-1">
-                      <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Jordan</h4>
-                      <p className="font-sans text-[#3A506B] text-sm mb-2">Product Development & Website Builds</p>
-                      <p className="font-sans text-[#1C2541] text-sm">
-                        Leads technical development and design implementation
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="flex items-start gap-4">
-                    <img
-                      src="/barb-profile.jpg"
-                      alt="Barb - Chief Hospitality Officer"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
-                    />
-                    <div className="flex-1">
-                      <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Barb</h4>
-                      <p className="font-sans text-[#3A506B] text-sm mb-2">Chief Hospitality Officer</p>
-                      <p className="font-sans text-[#1C2541] text-sm">
-                        Personally reaches out to ensure every client feels valued
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-[#0B132B] via-[#1C2541] to-[#3A506B] rounded-2xl p-12 text-center text-white">
+          <div className="mt-16 bg-gradient-to-r from-[#0B132B] via-[#1C2541] to-[#3A506B] rounded-2xl p-12 text-center text-white">
             <h3 className="font-serif text-3xl md:text-4xl font-bold mb-6">
               We don't just build websites — we build <span className="text-[#D4AF37]">relationships</span>
             </h3>
@@ -588,8 +575,7 @@ export default function HomePage() {
       {/* Case Study 1: BNB Breeze */}
       <section
         id="work"
-        className="relative w-full overflow-hidden bg-[#0B132B]"
-        style={{ height: "calc(100vh - 40px)" }}
+        className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40"
       >
         <div className="absolute inset-0">
           <img
@@ -599,24 +585,21 @@ export default function HomePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
-
-        <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-16">
-          <div
-            ref={castRef<HTMLDivElement>(cs1LabelAnimation.ref)}
-            className={`transition-all duration-700 ${
-              cs1LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-            }`}
-          >
-            <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-8">
-              portfolio
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12 items-end">
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-end">
             <div>
+              <div
+                ref={castRef<HTMLDivElement>(cs1LabelAnimation.ref)}
+                className={`transition-all duration-700 ${
+                  cs1LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+                }`}
+              >
+                <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-6">portfolio</p>
+              </div>
               <h2
                 ref={castRef<HTMLHeadingElement>(cs1TitleAnimation.ref)}
-                className={`font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-none transition-all duration-700 delay-100 ${
+                className={`font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
                   cs1TitleAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
               >
@@ -642,16 +625,15 @@ export default function HomePage() {
                   className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
                   onClick={() => (window.location.href = "/case-studies/bnb-breeze")}
                 >
-                  View Case Study
+                  View Project
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
             </div>
-
             <div className="hidden md:block">
               <div
                 ref={castRef<HTMLDivElement>(cs1InfoAnimation.ref)}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-400 ${
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-300 ${
                   cs1InfoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
                 }`}
               >
@@ -671,12 +653,13 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Case Study 2: Innovations MFG */}
-      <section className="relative w-full overflow-hidden bg-[#0B132B]" style={{ height: "calc(100vh - 40px)" }}>
+      <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
         <div className="absolute inset-0">
           <img
             src="/plasma-cutter.webp"
@@ -685,24 +668,21 @@ export default function HomePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
-
-        <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-16">
-          <div
-            ref={castRef<HTMLDivElement>(cs2LabelAnimation.ref)}
-            className={`transition-all duration-700 ${
-              cs2LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-            }`}
-          >
-            <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-8">
-              portfolio
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12 items-end">
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-end">
             <div>
+              <div
+                ref={castRef<HTMLDivElement>(cs2LabelAnimation.ref)}
+                className={`transition-all duration-700 ${
+                  cs2LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+                }`}
+              >
+                <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-6">portfolio</p>
+              </div>
               <h2
                 ref={castRef<HTMLHeadingElement>(cs2TitleAnimation.ref)}
-                className={`font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-none transition-all duration-700 delay-100 ${
+                className={`font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
                   cs2TitleAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
               >
@@ -730,16 +710,15 @@ export default function HomePage() {
                     window.location.href = "/case-studies/innovations-mfg"
                   }}
                 >
-                  View Case Study
+                  View Project
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
             </div>
-
             <div className="hidden md:block">
               <div
                 ref={castRef<HTMLDivElement>(cs2InfoAnimation.ref)}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-400 ${
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-300 ${
                   cs2InfoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
                 }`}
               >
@@ -759,12 +738,13 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Case Study 3: West Prairie Water Co */}
-      <section className="relative w-full overflow-hidden bg-[#0B132B]" style={{ height: "calc(100vh - 40px)" }}>
+      <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
         <div className="absolute inset-0">
           <img
             src="/prairie-river-background.jpeg"
@@ -773,24 +753,21 @@ export default function HomePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
-
-        <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-16">
-          <div
-            ref={castRef<HTMLDivElement>(cs3LabelAnimation.ref)}
-            className={`transition-all duration-700 ${
-              cs3LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-            }`}
-          >
-            <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-8">
-              portfolio
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12 items-end">
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-end">
             <div>
+              <div
+                ref={castRef<HTMLDivElement>(cs3LabelAnimation.ref)}
+                className={`transition-all duration-700 ${
+                  cs3LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+                }`}
+              >
+                <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-6">portfolio</p>
+              </div>
               <h2
                 ref={castRef<HTMLHeadingElement>(cs3TitleAnimation.ref)}
-                className={`font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-none transition-all duration-700 delay-100 ${
+                className={`font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
                   cs3TitleAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
               >
@@ -816,16 +793,15 @@ export default function HomePage() {
                   className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
                   onClick={() => (window.location.href = "/case-studies/west-prairie-water")}
                 >
-                  View Case Study
+                  View Project
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
             </div>
-
             <div className="hidden md:block">
               <div
                 ref={castRef<HTMLDivElement>(cs3InfoAnimation.ref)}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-400 ${
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-300 ${
                   cs3InfoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
                 }`}
               >
@@ -844,6 +820,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -1076,18 +1053,18 @@ export default function HomePage() {
               <ul className="space-y-3 font-sans text-[#F5F3F4]/70">
                 <li>
                   <button
-                    onClick={() => scrollToSection("options")}
-                    className="hover:text-[#D4AF37] transition-colors cursor-pointer"
-                  >
-                    Options
-                  </button>
-                </li>
-                <li>
-                  <button
                     onClick={() => scrollToSection("about")}
                     className="hover:text-[#D4AF37] transition-colors cursor-pointer"
                   >
                     About
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection("options")}
+                    className="hover:text-[#D4AF37] transition-colors cursor-pointer"
+                  >
+                    Options
                   </button>
                 </li>
                 <li>
