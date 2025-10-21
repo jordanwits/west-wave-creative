@@ -186,7 +186,7 @@ export default function HomePage() {
       <section className="relative text-white px-4 overflow-hidden min-h-screen">
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src="/WestWaveHero.mp4.mp4"
+          src="/WestWaveHero.mp4"
           autoPlay
           muted
           loop
