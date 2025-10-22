@@ -58,6 +58,18 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [mobileOpen])
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
@@ -162,26 +174,65 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Mobile menu panel */}
-      {mobileOpen && (
-        <div className="xl:hidden fixed top-16 left-4 right-4 z-50 rounded-xl border border-black/10 bg-white/95 backdrop-blur-md shadow-xl">
-          <div className="p-3 divide-y divide-black/5">
-            <div className="flex flex-col py-1">
-              <button onClick={() => { setMobileOpen(false); scrollToSection("about") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">About</button>
-              <button onClick={() => { setMobileOpen(false); scrollToSection("options") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Options</button>
-              <button onClick={() => { setMobileOpen(false); scrollToSection("services") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Process</button>
-              <button onClick={() => { setMobileOpen(false); scrollToSection("work") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Work</button>
-              <button onClick={() => { setMobileOpen(false); scrollToSection("reviews") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Reviews</button>
-              <button onClick={() => { setMobileOpen(false); scrollToSection("contact") }} className="text-left px-3 py-3 rounded-md hover:bg-black/5">Contact</button>
+      {/* Mobile full-screen slide-in menu */}
+      <div
+        className={`xl:hidden fixed inset-0 z-[60] transition-opacity duration-300 ${
+          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!mobileOpen}
+      >
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+            mobileOpen ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setMobileOpen(false)}
+        />
+        {/* Panel */}
+        <div
+          className={`absolute inset-0 bg-white text-[#0B132B] transition-transform duration-300 transform ${
+            mobileOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between p-4 border-b border-black/10">
+            <div
+              onClick={() => {
+                setMobileOpen(false)
+                scrollToTop()
+              }}
+              role="button"
+              aria-label="Go to top"
+              className="font-serif text-2xl font-bold cursor-pointer"
+            >
+              West Wave <span className="text-[#D4AF37]">Creative</span>
             </div>
-            <div className="p-3">
-              <Button className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold" onClick={() => { setMobileOpen(false); goToFunnel() }}>
+            <button
+              aria-label="Close menu"
+              className="inline-flex items-center justify-center rounded-md p-2 text-[#0B132B] hover:bg-black/5"
+              onClick={() => setMobileOpen(false)}
+            >
+              <X className="h-7 w-7" />
+            </button>
+          </div>
+          <div className="p-6">
+            <div className="flex flex-col">
+              <button onClick={() => { setMobileOpen(false); scrollToSection("about") }} className="text-left px-1 py-4 text-xl font-sans hover:text-[#D4AF37]">About</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("options") }} className="text-left px-1 py-4 text-xl font-sans hover:text-[#D4AF37]">Options</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("services") }} className="text-left px-1 py-4 text-xl font-sans hover:text-[#D4AF37]">Process</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("work") }} className="text-left px-1 py-4 text-xl font-sans hover:text-[#D4AF37]">Work</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("reviews") }} className="text-left px-1 py-4 text-xl font-sans hover:text-[#D4AF37]">Reviews</button>
+              <button onClick={() => { setMobileOpen(false); scrollToSection("contact") }} className="text-left px-1 py-4 text-xl font-sans hover:text-[#D4AF37]">Contact</button>
+            </div>
+            <div className="mt-8">
+              <Button className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold py-4 text-lg" onClick={() => { setMobileOpen(false); goToFunnel() }}>
                 Get My Quote
               </Button>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Hero Section */}
       <section className="relative text-white px-4 overflow-hidden min-h-screen">

@@ -19,7 +19,7 @@ interface Question {
 const questions: Question[] = [
   {
     id: 1,
-    question: "Hey, let's plan your new website together! Ready to get started?",
+    question: "Hey, let's plan your new website together! Start with this 2 minute quiz.",
     type: "intro",
     required: false,
     icon: <User className="h-5 w-5" />,
@@ -218,7 +218,7 @@ export default function SalesFunnel() {
       setCurrentQuestion((prev) => prev - 1)
       const prevQuestion = questions[currentQuestion - 1]
       const prevAnswer = userAnswers[prevQuestion.id]
-      if (prevAnswer && prevQuestion.type === "text") {
+      if (prevQuestion.type === "text" && typeof prevAnswer === "string") {
         setUserInput(prevAnswer)
       }
       setShowContent(true)
@@ -279,8 +279,8 @@ export default function SalesFunnel() {
   const currentQ = questions[currentQuestion]
 
   const getPersonalizedQuestion = (question: string) => {
-    const firstName = userAnswers[2]
-    const firstNameOnly = firstName ? firstName.split(" ")[0] : ""
+    const rawFirstName = userAnswers[2]
+    const firstNameOnly = typeof rawFirstName === "string" ? rawFirstName.split(" ")[0] : ""
     return question.replace("{firstName}", firstNameOnly)
   }
 
@@ -290,7 +290,7 @@ export default function SalesFunnel() {
         <div className="max-w-2xl mx-auto text-center">
           <CheckCircle className="h-12 w-12 sm:h-16 sm:w-16 text-[#D4AF37] mx-auto mb-4 sm:mb-6" />
           <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0B132B] mb-3 sm:mb-4 px-4">
-            Perfect! I'll be in touch soon.
+            Perfect! We'll be in touch soon.
           </h1>
           <p className="font-sans text-base sm:text-lg text-[#3A506B] mb-6 sm:mb-8 px-4">
             I'll review your information and get back to you with a personalized proposal within 24 hours.

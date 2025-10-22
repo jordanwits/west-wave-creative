@@ -115,7 +115,8 @@ export default function BNBBreezeCaseStudy() {
                 isScrolled ? "" : "shadow-lg"
               }`}
             >
-              Get My Quote
+              <span className="sm:hidden">Free Quote</span>
+              <span className="hidden sm:inline">Get My Quote</span>
             </a>
           </div>
         </div>
