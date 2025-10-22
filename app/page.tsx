@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, type RefObject } from "react"
+import { useState, useEffect, useRef, type RefObject } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -185,14 +185,49 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative text-white px-4 overflow-hidden min-h-screen">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/WestWaveHero.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        {/* Video with mobile-safe settings and fallback */}
+        {(() => {
+          const videoRef = useRef<HTMLVideoElement | null>(null)
+          const [videoFailed, setVideoFailed] = useState(false)
+
+          useEffect(() => {
+            const v = videoRef.current
+            if (!v) return
+            const tryPlay = async () => {
+              try {
+                await v.play()
+              } catch {
+                setVideoFailed(true)
+              }
+            }
+            // If already can play, attempt autoplay
+            if (v.readyState >= 2) tryPlay()
+            else v.addEventListener("canplay", tryPlay, { once: true })
+            return () => v.removeEventListener("canplay", tryPlay)
+          }, [])
+
+          return !videoFailed ? (
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster="/hero-graphic-mockup.png"
+              onError={() => setVideoFailed(true)}
+            >
+              <source src="/WestWaveHero.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              src="/hero-graphic-mockup.png"
+              alt="Background"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )
+        })()}
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="max-w-7xl xl:max-w-screen-2xl mx-auto relative z-10 min-h-screen flex items-center px-4 md:px-6">
           {/* Centered hero content group */}
@@ -330,7 +365,7 @@ export default function HomePage() {
           <div className="grid grid-cols-12 gap-6 items-start">
             {/* Primary card (West Wave Creative) */}
             <div className="col-span-12 lg:col-span-8">
-              <div className="relative rounded-2xl border-2 border-[#D4AF37] bg-white p-6 shadow-xl md:p-8 mt-6 min-w-96">
+              <div className="relative rounded-2xl border-2 border-[#D4AF37] bg-white p-6 shadow-xl md:p-8 mt-6 min-w-0 sm:min-w-96">
                 <div className="absolute -top-3 left-6 select-none rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 shadow-sm">
                   BEST CHOICE
                 </div>

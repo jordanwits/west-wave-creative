@@ -203,10 +203,19 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Prevent horizontal scrollbars on mobile due to wide children */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
   /* Override body background to use gradient instead of CSS variable */
   body {
     @apply text-foreground font-sans;
     background: linear-gradient(to bottom right, #0b132b, #1c2541, #3a506b) !important;
+  }
+  /* Ensure media never exceed the viewport width */
+  img, video, svg, canvas {
+    max-width: 100%;
   }
   h1,
   h2,
