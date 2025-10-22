@@ -195,6 +195,13 @@ export default function HomePage() {
             if (!v) return
             const tryPlay = async () => {
               try {
+                // Ensure iOS Safari sees these flags before attempting playback
+                v.muted = true
+                v.defaultMuted = true
+                ;(v as any).playsInline = true
+                v.setAttribute("playsinline", "")
+                v.setAttribute("webkit-playsinline", "")
+                v.autoplay = true
                 await v.play()
               } catch {
                 // On iOS Safari, programmatic play() may reject even when
@@ -205,7 +212,18 @@ export default function HomePage() {
             // If already can play, attempt autoplay
             if (v.readyState >= 2) tryPlay()
             else v.addEventListener("canplay", tryPlay, { once: true })
-            return () => v.removeEventListener("canplay", tryPlay)
+            const interactionPlay = () => v.play().catch(() => {})
+            document.addEventListener("touchstart", interactionPlay, { once: true, passive: true })
+            document.addEventListener("click", interactionPlay, { once: true })
+            document.addEventListener("visibilitychange", () => {
+              if (!document.hidden) interactionPlay()
+            })
+            return () => {
+              v.removeEventListener("canplay", tryPlay)
+              document.removeEventListener("touchstart", interactionPlay)
+              document.removeEventListener("click", interactionPlay)
+              document.removeEventListener("visibilitychange", interactionPlay as any)
+            }
           }, [])
 
           return !videoFailed ? (
@@ -216,8 +234,24 @@ export default function HomePage() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
               onError={() => setVideoFailed(true)}
+              onLoadedMetadata={() => {
+                const v = videoRef.current
+                if (!v) return
+                v.muted = true
+                v.defaultMuted = true
+                ;(v as any).playsInline = true
+                v.setAttribute("playsinline", "")
+                v.setAttribute("webkit-playsinline", "")
+                v.autoplay = true
+                v.play().catch(() => {})
+              }}
+              onTouchStart={() => {
+                const v = videoRef.current
+                if (!v) return
+                v.play().catch(() => {})
+              }}
             >
               <source src="/WestWaveHero.mp4" type="video/mp4" />
             </video>
