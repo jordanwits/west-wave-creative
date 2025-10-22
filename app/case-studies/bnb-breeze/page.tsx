@@ -61,7 +61,7 @@ export default function BNBBreezeCaseStudy() {
   }
 
   const goToFunnel = () => {
-    window.location.href = "/funnel"
+    window.location.href = "/discovery"
   }
 
   useEffect(() => {
@@ -110,8 +110,8 @@ export default function BNBBreezeCaseStudy() {
               Back to Homepage
             </a>
             <a
-              href="/funnel"
-              className={`inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 hover:shadow-xl text-[#0B132B] font-semibold px-6 py-2 rounded-md transition-all ${
+              href="/discovery"
+              className={`inline-flex items-center justify-center whitespace-nowrap bg-[#D4AF37] hover:bg-[#D4AF37]/90 hover:shadow-xl text-[#0B132B] font-semibold px-6 py-2 rounded-md transition-all ${
                 isScrolled ? "" : "shadow-lg"
               }`}
             >
@@ -147,7 +147,7 @@ export default function BNBBreezeCaseStudy() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
               <a
-                href="/funnel"
+                href="/discovery"
                 className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
                 Get Your Free Quote

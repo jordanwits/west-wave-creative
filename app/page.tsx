@@ -82,7 +82,7 @@ export default function HomePage() {
   }
 
   const goToFunnel = () => {
-    window.location.href = "/funnel"
+    window.location.href = "/discovery"
   }
 
   return (
@@ -337,7 +337,7 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center xl:justify-end">
                   <a
-                    href="/funnel"
+                    href="/discovery"
                     className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
                   >
                     Get Your Free Quote
@@ -374,7 +374,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
             <div>
               <h3 className="font-serif text-3xl font-bold mb-6 text-[#0B132B]">
-                Small enough to care, <span className="text-[#D4AF37]">positioned for growth</span>
+                Rooted in Care, <span className="text-[#D4AF37]">Driven to Deliver</span>
               </h3>
               <p className="font-sans text-lg text-[#3A506B] mb-6 leading-relaxed">
                 We're small enough to care about every detail, but positioned for growth with the skills, tools, and
@@ -386,44 +386,47 @@ export default function HomePage() {
                 It's this combination of professionalism and personal care that defines West Wave Creative.
               </p>
             </div>
-            <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-[#D4AF37] shadow-xl shadow-black/20">
+            <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-[#D4AF37] shadow-xl shadow-black/20 w-full max-w-md mx-auto">
               <div className="grid grid-cols-1 gap-6">
-                <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="bg-white rounded-lg p-5 shadow-sm w-full">
                   <div className="flex items-start gap-4">
                     <img
                       src="/dave-profile.jpg"
                       alt="Dave - Business Development"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Dave</h4>
-                      <p className="font-sans text-[#3A506B] text-sm mb-2">Business Development & Sales</p>
+                      <p className="font-sans text-[#3A506B] text-sm mb-2">Sales & Strategy</p>
+                      <p className="font-sans text-[#3A506B] text-sm">dave@westwavecreative.com</p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="bg-white rounded-lg p-5 shadow-sm w-full">
                   <div className="flex items-start gap-4">
                     <img
                       src="/jordan-profile.jpg"
                       alt="Jordan - Product Development"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Jordan</h4>
-                      <p className="font-sans text-[#3A506B] text-sm mb-2">Product Development & Website Builds</p>
+                      <p className="font-sans text-[#3A506B] text-sm mb-2">Clicks & Code</p>
+                      <p className="font-sans text-[#3A506B] text-sm">jordan@westwavecreative.com</p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="bg-white rounded-lg p-5 shadow-sm w-full">
                   <div className="flex items-start gap-4">
                     <img
                       src="/barb-profile.jpg"
                       alt="Barb - Chief Hospitality Officer"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Barb</h4>
-                      <p className="font-sans text-[#3A506B] text-sm mb-2">Chief Hospitality Officer</p>
+                      <p className="font-sans text-[#3A506B] text-sm mb-2">Client Success</p>
+                      <p className="font-sans text-[#3A506B] text-sm">barb@westwavecreative.com</p>
                     </div>
                   </div>
                 </div>
