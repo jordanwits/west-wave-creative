@@ -197,7 +197,9 @@ export default function HomePage() {
               try {
                 await v.play()
               } catch {
-                setVideoFailed(true)
+                // On iOS Safari, programmatic play() may reject even when
+                // muted+autoplay would still work. Ignore this error and
+                // only fall back when the video truly errors (onError).
               }
             }
             // If already can play, attempt autoplay
@@ -215,14 +217,13 @@ export default function HomePage() {
               loop
               playsInline
               preload="metadata"
-              poster="/hero-graphic-mockup.png"
               onError={() => setVideoFailed(true)}
             >
               <source src="/WestWaveHero.mp4" type="video/mp4" />
             </video>
           ) : (
             <img
-              src="/hero-graphic-mockup.png"
+              src="/AdobeStock_1106750259.jpeg"
               alt="Background"
               className="absolute inset-0 w-full h-full object-cover"
             />
