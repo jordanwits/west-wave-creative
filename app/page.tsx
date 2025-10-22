@@ -388,45 +388,45 @@ export default function HomePage() {
             </div>
             <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-[#D4AF37] shadow-xl shadow-black/20 w-full max-w-md mx-auto">
               <div className="grid grid-cols-1 gap-6">
-                <div className="bg-white rounded-lg p-5 shadow-sm w-full">
-                  <div className="flex items-start gap-4">
+                <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
+                  <div className="flex items-center gap-4">
                     <img
                       src="/dave-profile.jpg"
                       alt="Dave - Business Development"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0 break-words">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Dave</h4>
                       <p className="font-sans text-[#3A506B] text-sm mb-2">Sales & Strategy</p>
-                      <p className="font-sans text-[#3A506B] text-sm">dave@westwavecreative.com</p>
+                      <p className="font-sans text-[#3A506B] text-xs sm:text-sm break-all sm:break-words">dave@westwavecreative.com</p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white rounded-lg p-5 shadow-sm w-full">
-                  <div className="flex items-start gap-4">
+                <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
+                  <div className="flex items-center gap-4">
                     <img
                       src="/jordan-profile.jpg"
                       alt="Jordan - Product Development"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0 break-words">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Jordan</h4>
                       <p className="font-sans text-[#3A506B] text-sm mb-2">Clicks & Code</p>
-                      <p className="font-sans text-[#3A506B] text-sm">jordan@westwavecreative.com</p>
+                      <p className="font-sans text-[#3A506B] text-xs sm:text-sm break-all sm:break-words">jordan@westwavecreative.com</p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white rounded-lg p-5 shadow-sm w-full">
-                  <div className="flex items-start gap-4">
+                <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
+                  <div className="flex items-center gap-4">
                     <img
                       src="/barb-profile.jpg"
                       alt="Barb - Chief Hospitality Officer"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0 break-words">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Barb</h4>
                       <p className="font-sans text-[#3A506B] text-sm mb-2">Client Success</p>
-                      <p className="font-sans text-[#3A506B] text-sm">barb@westwavecreative.com</p>
+                      <p className="font-sans text-[#3A506B] text-xs sm:text-sm break-all sm:break-words">barb@westwavecreative.com</p>
                     </div>
                   </div>
                 </div>

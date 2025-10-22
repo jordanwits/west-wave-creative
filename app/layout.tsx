@@ -17,7 +17,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Premium Websites for Growing Businesses | WebCraft Studio",
+  title: "Pro Websites, Built Fast | West Wave Creative",
   description: "Get a professional website designed to attract customers — at a price that works for small businesses.",
   generator: "v0.app",
 }
