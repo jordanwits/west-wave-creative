@@ -255,7 +255,7 @@ export default function HomePage() {
                 v.play().catch(() => {})
               }}
             >
-              <source src="/WestWaveHero.mp4" type="video/mp4" />
+              <source src="/WestWaveHero_silent.mp4" type="video/mp4" />
             </video>
           ) : (
             <img
