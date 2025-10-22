@@ -197,11 +197,13 @@ export default function HomePage() {
               try {
                 // Ensure iOS Safari sees these flags before attempting playback
                 v.muted = true
-                v.defaultMuted = true
-                ;(v as any).playsInline = true
+                v.setAttribute("muted", "")
+                v.playsInline = true
                 v.setAttribute("playsinline", "")
                 v.setAttribute("webkit-playsinline", "")
                 v.autoplay = true
+                // Reload after setting attributes to make Safari re-evaluate autoplay
+                v.load()
                 await v.play()
               } catch {
                 // On iOS Safari, programmatic play() may reject even when
@@ -240,8 +242,8 @@ export default function HomePage() {
                 const v = videoRef.current
                 if (!v) return
                 v.muted = true
-                v.defaultMuted = true
-                ;(v as any).playsInline = true
+                v.setAttribute("muted", "")
+                v.playsInline = true
                 v.setAttribute("playsinline", "")
                 v.setAttribute("webkit-playsinline", "")
                 v.autoplay = true
