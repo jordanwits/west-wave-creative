@@ -80,17 +80,18 @@ export default function InnovationsMFGCaseStudy() {
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-4">
-          <div
+          <a
+            href="/"
             className={`font-serif text-2xl font-bold transition-colors duration-300 ${
               isScrolled ? "text-[#0B132B]" : "text-white"
-            }`}
+            } cursor-pointer`}
           >
             West Wave <span className="text-[#D4AF37]">Creative</span>
-          </div>
+          </a>
           <div className="flex items-center gap-6">
             <a
               href="/"
-              className={`inline-flex items-center gap-2 font-sans hover:text-[#D4AF37] transition-colors cursor-pointer ${
+              className={`hidden md:inline-flex items-center gap-2 font-sans hover:text-[#D4AF37] transition-colors cursor-pointer ${
                 isScrolled ? "text-[#3A506B]" : "text-white/90"
               }`}
             >
