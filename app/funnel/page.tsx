@@ -486,19 +486,60 @@ export default function SalesFunnel() {
 
               {currentQ.type === "contact" && (
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault()
-                    setIsComplete(true)
+                    const form = e.currentTarget as HTMLFormElement
+                    const fd = new FormData(form)
+                    const name = (fd.get("name") as string) || ""
+                    const email = (fd.get("email") as string) || ""
+                    const phone = (fd.get("phone") as string) || ""
+                    const business = (fd.get("business") as string) || ""
+                    const notes = (fd.get("notes") as string) || ""
+
+                    // Flatten answers
+                    const flat: Record<string, string> = {}
+                    Object.entries(userAnswers).forEach(([qid, ans]) => {
+                      const q = questions.find((x) => x.id.toString() === qid)
+                      const key = `Q${qid}_${q?.question?.slice(0, 40) || ""}`
+                      if (Array.isArray(ans)) flat[key] = ans.join(", ")
+                      else if (typeof ans === "object" && ans) flat[key] = JSON.stringify(ans)
+                      else flat[key] = String(ans ?? "")
+                    })
+
+                    try {
+                      const { submitWeb3Form } = await import("@/lib/web3forms")
+                      const res = await submitWeb3Form({
+                        form_name: "funnel",
+                        subject: "New Funnel Submission",
+                        page: "/funnel",
+                        name,
+                        email,
+                        reply_to: email,
+                        phone,
+                        business,
+                        notes,
+                        ...flat,
+                      })
+                      if (res.success) {
+                        ;(await import("@/hooks/use-toast")).toast({ title: "Thanks!", description: "We’ll send your quote within 24 hours." })
+                        setIsComplete(true)
+                        form.reset()
+                      } else {
+                        ;(await import("@/hooks/use-toast")).toast({ title: "Failed to submit", description: "Please try again.", variant: "destructive" as any })
+                      }
+                    } catch (err) {
+                      ;(await import("@/hooks/use-toast")).toast({ title: "Error", description: "Please try again.", variant: "destructive" as any })
+                    }
                   }}
                   className="space-y-4"
                 >
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Input placeholder="Your name *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
-                    <Input type="email" placeholder="Email *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
-                    <Input type="tel" placeholder="Phone (optional)" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
-                    <Input placeholder="Business name *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input name="name" placeholder="Your name *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input name="email" type="email" placeholder="Email *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input name="phone" type="tel" placeholder="Phone (optional)" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                    <Input name="business" placeholder="Business name *" required className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
                   </div>
-                  <Input placeholder="Any additional notes?" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
+                  <Input name="notes" placeholder="Any additional notes?" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" />
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <p className="text-xs sm:text-sm text-[#3A506B]">Your info stays private - we only use it for your quote.</p>
                     <Button type="submit" className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold">Get My Quote Now</Button>

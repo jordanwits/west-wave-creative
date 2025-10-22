@@ -11,6 +11,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 export default function BNBBreezeCaseStudy() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [contactSubmitted, setContactSubmitted] = useState(false)
 
   const heroAnimation = useScrollAnimation({ threshold: 0.2 })
   const overviewAnimation = useScrollAnimation({ threshold: 0.1 })
@@ -490,7 +491,7 @@ export default function BNBBreezeCaseStudy() {
                 <p className="font-serif font-semibold text-[#0B132B] mb-2">Have a similar project?</p>
                 <p className="font-sans text-[#3A506B] mb-4">Let's chat about timelines, scope, and budget.</p>
                 <a
-                  href="/contact"
+                  href="/#contact"
                   className="inline-block rounded-lg bg-[#D4AF37] px-6 py-3 font-semibold hover:bg-[#D4AF37]/90 transition-colors"
                 >
                   Get a quote
@@ -573,33 +574,80 @@ export default function BNBBreezeCaseStudy() {
 
           <div className="rounded-2xl border-2 border-[#D4AF37] bg-white/10 backdrop-blur-xl shadow-2xl">
             <div className="p-8 md:p-12">
-              <form className="space-y-8">
+              {contactSubmitted ? (
+                <div className="text-center space-y-3">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#D4AF37]/15 text-[#D4AF37]">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.29a.75.75 0 1 0-1.22-.92l-3.487 4.626-1.69-1.69a.75.75 0 1 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.132-.094l4.135-5.232Z" clipRule="evenodd" /></svg>
+                  </div>
+                  <h3 className="font-serif text-2xl font-bold text-[#0B132B]">Thanks—message received!</h3>
+                  <p className="font-sans text-[#3A506B]">We’ll get back to you shortly (usually within a few hours).</p>
+                </div>
+              ) : (
+              <form
+                className="space-y-8"
+                onSubmit={async (e) => {
+                  e.preventDefault()
+                  const form = e.currentTarget as HTMLFormElement
+                  const formData = new FormData(form)
+                  const name = (formData.get("name") as string) || ""
+                  const email = (formData.get("email") as string) || ""
+                  const phone = (formData.get("phone") as string) || ""
+                  const business = (formData.get("business") as string) || ""
+                  const message = (formData.get("message") as string) || ""
+
+                  try {
+                    const { submitWeb3Form } = await import("@/lib/web3forms")
+                    const res = await submitWeb3Form({
+                      form_name: "contact",
+                      subject: "New Contact",
+                      page: "/case-studies/bnb-breeze",
+                      name,
+                      email,
+                      reply_to: email,
+                      phone,
+                      business,
+                      message,
+                    })
+                    if (res.success) {
+                      ;(await import("@/hooks/use-toast")).toast({ title: "Message sent!", description: "We’ll be in touch soon." })
+                      setContactSubmitted(true)
+                      form.reset()
+                    } else {
+                      ;(await import("@/hooks/use-toast")).toast({ title: "Failed to send", description: "Please try again.", variant: "destructive" as any })
+                    }
+                  } catch (err) {
+                    ;(await import("@/hooks/use-toast")).toast({ title: "Error", description: "Please try again.", variant: "destructive" as any })
+                  }
+                }}
+              >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">Your Name *</label>
                     <Input
+                      name="name"
                       placeholder="Your name"
                       className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
                     />
                   </div>
                   <div>
                     <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">Best email to reach you *</label>
-                    <Input type="email" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
+                    <Input name="email" type="email" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
                   </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">Phone (if you prefer calls)</label>
-                    <Input type="tel" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
+                    <Input name="phone" type="tel" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
                   </div>
                   <div>
                     <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">Your business name</label>
-                    <Input className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
+                    <Input name="business" className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm" />
                   </div>
                 </div>
                 <div>
                   <label className="font-sans text-sm font-semibold text-[#0B132B] mb-3 block">Tell us about your project</label>
                   <Textarea
+                    name="message"
                     placeholder="What kind of business do you have? What are you hoping to achieve with a new website? Any specific ideas or concerns? We'd love to hear it all!"
                     className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 min-h-[140px] rounded-lg bg-white/80 backdrop-blur-sm"
                   />
@@ -611,6 +659,7 @@ export default function BNBBreezeCaseStudy() {
                   </Button>
                 </div>
               </form>
+              )}
             </div>
           </div>
         </div>
