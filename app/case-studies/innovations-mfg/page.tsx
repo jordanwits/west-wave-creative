@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { useStickyWithinParent } from "@/hooks/use-sticky-within-parent"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 
 export default function InnovationsMFGCaseStudy() {
@@ -35,6 +36,7 @@ export default function InnovationsMFGCaseStudy() {
   const { containerRef: metaRef, visibleItems: metaItems } = useStaggeredAnimation(4, 120)
   const { containerRef: processRef, visibleItems: processItems } = useStaggeredAnimation(5, 150)
   const { containerRef: brandRef, visibleItems: brandItems } = useStaggeredAnimation(2, 150)
+  const sticky = useStickyWithinParent({ topOffset: 96 })
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -535,8 +537,8 @@ export default function InnovationsMFGCaseStudy() {
           </div>
 
           {/* Sticky TOC */}
-          <aside className="hidden lg:block lg:col-span-4">
-            <div className="sticky top-24 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-4 relative">
+            <div ref={sticky.containerRef} style={sticky.style} className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
               <p className="font-sans text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
                 On this page
               </p>

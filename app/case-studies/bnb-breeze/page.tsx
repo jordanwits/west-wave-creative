@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { useStickyWithinParent } from "@/hooks/use-sticky-within-parent"
 
 export default function BNBBreezeCaseStudy() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -27,6 +28,7 @@ export default function BNBBreezeCaseStudy() {
   const { containerRef: resultsRef, visibleItems: resultItems } = useStaggeredAnimation(10, 200)
   const { containerRef: metaRef, visibleItems: metaItems } = useStaggeredAnimation(4, 120)
   const { containerRef: brandRef, visibleItems: brandItems } = useStaggeredAnimation(2, 150)
+  const sticky = useStickyWithinParent({ topOffset: 96 })
 
   const gallery = [
     { src: "/bnbHero.png", alt: "BNB Breeze hero section" },
@@ -468,8 +470,8 @@ export default function BNBBreezeCaseStudy() {
           </div>
 
           {/* Sticky TOC */}
-          <aside className="hidden lg:block lg:col-span-4">
-            <div className="sticky top-24 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-4 relative">
+            <div ref={sticky.containerRef} style={sticky.style} className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
               <p className="font-sans text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">On this page</p>
               <nav className="space-y-3 text-sm">
                 {[
