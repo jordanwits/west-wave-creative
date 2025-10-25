@@ -149,23 +149,7 @@ export default function InnovationsMFGCaseStudy() {
               >
                 Get Your Free Quote
               </a>
-                <a
-                  href="https://www.innovationsmfg.net"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 whitespace-nowrap justify-center border-2 border-[#F5F3F4] text-[#F5F3F4] hover:bg-[#F5F3F4] hover:text-[#0B132B] font-semibold px-8 py-3 rounded-lg transition-all bg-transparent"
-                >
-                View Live Site
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5 shrink-0"
-                  >
-                  <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
-                  <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2-2v-6h-2v6z" />
-                </svg>
-              </a>
+
             </div>
           </div>
         </div>
@@ -520,18 +504,18 @@ export default function InnovationsMFGCaseStudy() {
                   <h3 className="font-serif text-xl font-semibold mb-2">See it live</h3>
                   <p className="font-sans text-slate-600">Explore the production site in the wild.</p>
                 </div>
-                <a
-                  href="https://www.innovationsmfg.net"
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
                   className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-4 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all"
                 >
-                  Visit innovationsmfg.net
+                  Under maintinence
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 shrink-0">
                     <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
                     <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2-2v-6h-2v6z" />
                   </svg>
-                </a>
+                </button>
               </div>
             </div>
           </div>
