@@ -199,14 +199,7 @@ export default function WestPrairieWaterCaseStudy() {
               <p className="font-sans text-slate-800 text-lg font-medium">4 weeks</p>
             </div>
 
-            <div className={`stagger-item ${metaItems[2] ? "visible" : ""}`}>
-              <h3 className="font-sans text-xs font-semibold uppercase tracking-widest text-[#D4AF37] mb-2">MY ROLE</h3>
-              <p className="font-sans text-slate-800 text-lg font-medium">
-                UI/UX Designer
-                <br />
-                Full Stack Developer
-              </p>
-            </div>
+            
 
             <div className={`stagger-item ${metaItems[3] ? "visible" : ""}`}>
               <h3 className="font-sans text-xs font-semibold uppercase tracking-widest text-[#D4AF37] mb-2">TOOLS USED</h3>
