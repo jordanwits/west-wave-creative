@@ -393,7 +393,7 @@ export default function HomePage() {
                     <img
                       src="/dave.png"
                       alt="Dave - Business Development"
-                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0 break-words">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Dave</h4>
@@ -407,7 +407,7 @@ export default function HomePage() {
                     <img
                       src="/jordan.png"
                       alt="Jordan - Product Development"
-                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0 break-words">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Jordan</h4>
@@ -421,7 +421,7 @@ export default function HomePage() {
                     <img
                       src="/barb.png"
                       alt="Barb - Chief Hospitality Officer"
-                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0 break-words">
                       <h4 className="font-serif text-xl font-bold text-[#0B132B] mb-1">Barb</h4>
