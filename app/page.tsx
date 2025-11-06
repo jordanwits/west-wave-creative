@@ -391,7 +391,7 @@ export default function HomePage() {
                 <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
                   <div className="flex items-center gap-4">
                     <img
-                      src="/dave.jpg"
+                      src="/Dave.jpg"
                       alt="Dave - Business Development"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />

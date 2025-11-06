@@ -385,7 +385,7 @@ export default function DiscoveryPage() {
             <div className="flex items-start gap-3 sm:gap-4 mb-6 sm:mb-8">
               <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
                 <img
-                  src="/dave.jpg"
+                  src="/Dave.jpg"
                   alt="Dave from West Wave Creative"
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover"
                 />
