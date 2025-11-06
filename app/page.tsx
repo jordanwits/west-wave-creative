@@ -322,7 +322,7 @@ export default function HomePage() {
           <div className="w-full flex flex-col xl:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24">
             {/* Logo image */}
             <div className="flex-shrink-0">
-              <img src="/WWC.com (3).png" alt="West Wave Creative logo" className="w-full h-auto max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-none 2xl:max-w-none mx-auto" />
+              <img src="/WWC.com (3).png" alt="West Wave Creative logo" className="w-full h-auto max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-lg 2xl:max-w-lg mx-auto" />
             </div>
 
             {/* Headline + CTAs (right-aligned text) */}
