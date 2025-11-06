@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: "Pro Websites, Built Fast | West Wave Creative",
   description: "Get a professional website designed to attract customers — at a price that works for small businesses.",
   generator: "v0.app",
+  icons: {
+    icon: "/WWC%20Icon%20Color.png",
+    shortcut: "/WWC%20Icon%20Color.png",
+    apple: "/WWC%20Icon%20Color.png",
+  },
 }
 
 export default function RootLayout({

@@ -383,11 +383,11 @@ export default function DiscoveryPage() {
             className={`transition-all duration-300 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             <div className="flex items-start gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
                 <img
-                  src="/dave.png"
+                  src="/dave.jpg"
                   alt="Dave from West Wave Creative"
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">

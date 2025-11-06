@@ -391,7 +391,7 @@ export default function HomePage() {
                 <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
                   <div className="flex items-center gap-4">
                     <img
-                      src="/dave.png"
+                      src="/dave.jpg"
                       alt="Dave - Business Development"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
@@ -405,7 +405,7 @@ export default function HomePage() {
                 <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
                   <div className="flex items-center gap-4">
                     <img
-                      src="/jordan.png"
+                      src="/Jordan.jpg"
                       alt="Jordan - Product Development"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
@@ -419,7 +419,7 @@ export default function HomePage() {
                 <div className="bg-white rounded-lg p-5 shadow-sm w-full overflow-hidden">
                   <div className="flex items-center gap-4">
                     <img
-                      src="/barb.png"
+                      src="/Barb.jpg"
                       alt="Barb - Chief Hospitality Officer"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
