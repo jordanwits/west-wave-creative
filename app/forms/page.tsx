@@ -2185,12 +2185,17 @@ export default function FormsPage() {
                     headers: {
                       'Content-Type': 'application/json',
                     },
+                    credentials: 'include',
                     body: JSON.stringify(formData),
                   })
                   
+                  if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`)
+                  }
+                  
                   const result = await response.json()
                   
-                  if (result.success) {
+                  if (result.success && result.url) {
                     const shareUrl = `${window.location.origin}${result.url}`
                     
                     // Copy to clipboard
@@ -2198,8 +2203,8 @@ export default function FormsPage() {
                       ;(async () => {
                         const { toast } = await import("@/hooks/use-toast")
                         toast({ 
-                          title: "Link copied!", 
-                          description: "Share this short link with your client to fill out the form." 
+                          title: "Short link copied!", 
+                          description: "Share this link with your client to fill out the form." 
                         })
                       })()
                     })
@@ -2207,14 +2212,22 @@ export default function FormsPage() {
                     throw new Error(result.error || 'Failed to create short link')
                   }
                 } catch (error) {
-                  ;(async () => {
-                    const { toast } = await import("@/hooks/use-toast")
-                    toast({ 
-                      title: "Failed to create link", 
-                      description: "Please try again.", 
-                      variant: "destructive" as any 
-                    })
-                  })()
+                  console.error("Failed to create short link:", error)
+                  // Fallback to old method if API fails (for backwards compatibility)
+                  const encoded = btoa(JSON.stringify(formData))
+                  const urlEncoded = encodeURIComponent(encoded)
+                  const fallbackUrl = `${window.location.origin}/forms/client?data=${urlEncoded}`
+                  
+                  navigator.clipboard.writeText(fallbackUrl).then(() => {
+                    ;(async () => {
+                      const { toast } = await import("@/hooks/use-toast")
+                      toast({ 
+                        title: "Link copied (fallback)", 
+                        description: "Using full URL - short links will be available after deployment.", 
+                        variant: "destructive" as any 
+                      })
+                    })()
+                  })
                 }
               }}
               className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] font-bold text-lg px-12 py-6 rounded-lg"
