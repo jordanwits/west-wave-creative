@@ -4,6 +4,19 @@ import { NextRequest, NextResponse } from 'next/server'
 // This will reset on server restart, but works for now
 const formStorage = new Map<string, any>()
 
+// Form expiration time: 10 days (in milliseconds)
+const FORM_EXPIRATION_MS = 10 * 24 * 60 * 60 * 1000
+
+// Cleanup expired forms (called on each request to avoid needing background jobs)
+function cleanupExpiredForms() {
+  const now = Date.now()
+  for (const [id, data] of formStorage.entries()) {
+    if (data.expiresAt && now > data.expiresAt) {
+      formStorage.delete(id)
+    }
+  }
+}
+
 // Generate a short random ID
 function generateShortId(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -26,10 +39,12 @@ export async function POST(request: NextRequest) {
       shortId = generateShortId()
     }
     
-    // Store the form data
+    // Store the form data with expiration
+    const expiresAt = Date.now() + FORM_EXPIRATION_MS
     formStorage.set(shortId, {
       ...formData,
       createdAt: new Date().toISOString(),
+      expiresAt: expiresAt,
     })
     
     return NextResponse.json({ 
@@ -46,6 +61,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  // Cleanup expired forms on each request
+  cleanupExpiredForms()
+  
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
   
@@ -60,8 +78,17 @@ export async function GET(request: NextRequest) {
   
   if (!formData) {
     return NextResponse.json(
-      { success: false, error: 'Form not found' },
+      { success: false, error: 'Form not found or has expired' },
       { status: 404 }
+    )
+  }
+  
+  // Check if form has expired
+  if (formData.expiresAt && Date.now() > formData.expiresAt) {
+    formStorage.delete(id)
+    return NextResponse.json(
+      { success: false, error: 'Form has expired' },
+      { status: 410 } // 410 Gone
     )
   }
   

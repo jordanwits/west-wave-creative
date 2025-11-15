@@ -42,8 +42,14 @@ export default function ClientFormPageWrapper() {
 
     // Fetch form data from API using the short ID
     fetch(`/api/forms/store?id=${formId}`)
-      .then(res => res.json())
-      .then(result => {
+      .then(async res => {
+        const result = await res.json()
+        if (res.status === 410) {
+          // Form expired
+          setFormData(null)
+          setIsLoading(false)
+          return
+        }
         if (result.success && result.data) {
           setFormData(result.data)
           
@@ -214,9 +220,12 @@ export default function ClientFormPageWrapper() {
     return (
       <div className="min-h-screen bg-[#F5F3F4] flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <h1 className="font-serif text-2xl font-bold text-[#0B132B] mb-4">Form Not Found</h1>
-          <p className="font-sans text-[#3A506B]">
-            This form link is invalid or has expired. Please contact the person who sent you this link.
+          <h1 className="font-serif text-2xl font-bold text-[#0B132B] mb-4">Form Not Available</h1>
+          <p className="font-sans text-[#3A506B] mb-4">
+            This form link is invalid or has expired. Form links expire after 10 days.
+          </p>
+          <p className="font-sans text-sm text-[#3A506B]">
+            Please contact the person who sent you this link to request a new one.
           </p>
         </div>
       </div>
