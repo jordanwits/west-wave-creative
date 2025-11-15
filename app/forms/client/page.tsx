@@ -32,8 +32,24 @@ export default function ClientFormPage() {
     
     if (encodedData) {
       try {
-        const decoded = JSON.parse(atob(encodedData))
+        // Decode URL encoding first, then base64
+        const urlDecoded = decodeURIComponent(encodedData)
+        const decoded = JSON.parse(atob(urlDecoded))
         setFormData(decoded)
+        
+        // Update page title and meta tags for link previews
+        if (decoded.title) {
+          document.title = `${decoded.title} | West Wave Creative`
+          
+          // Update Open Graph tags
+          const ogTitle = document.querySelector('meta[property="og:title"]')
+          const ogDescription = document.querySelector('meta[property="og:description"]')
+          const metaDescription = document.querySelector('meta[name="description"]')
+          
+          if (ogTitle) ogTitle.setAttribute('content', `${decoded.title} | West Wave Creative`)
+          if (ogDescription) ogDescription.setAttribute('content', decoded.description || 'Please fill out this form to help us understand your needs and get started on your project.')
+          if (metaDescription) metaDescription.setAttribute('content', decoded.description || 'Please fill out this form to help us understand your needs and get started on your project.')
+        }
       } catch (err) {
         console.error("Failed to decode form data:", err)
       }

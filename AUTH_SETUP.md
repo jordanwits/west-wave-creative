@@ -43,19 +43,40 @@ ADMIN_PASSWORD=your-secure-password-here
 - ✅ Server-side password validation
 - ✅ Automatic session expiration
 
-### 5. Changing the Password
+### 5. Production Setup (Vercel)
 
-Update the `ADMIN_PASSWORD` environment variable and restart your Next.js server:
+**IMPORTANT:** You must set the `ADMIN_PASSWORD` environment variable in your hosting platform!
 
+#### For Vercel:
+
+1. Go to your project dashboard on [vercel.com](https://vercel.com)
+2. Navigate to **Settings** → **Environment Variables**
+3. Click **Add New**
+4. Set:
+   - **Name:** `ADMIN_PASSWORD`
+   - **Value:** Your secure password (e.g., `WWC`)
+   - **Environment:** Select all (Production, Preview, Development)
+5. Click **Save**
+6. **Redeploy your application** (go to Deployments → click the three dots → Redeploy)
+
+After redeploying, your custom password will work on the live site.
+
+#### For Other Hosting Platforms:
+
+Set the `ADMIN_PASSWORD` environment variable in your platform's settings and restart/redeploy your application.
+
+### 6. Changing the Password
+
+**Development:**
+Update `.env.local` and restart your dev server:
 ```bash
-# Development
 pnpm dev
-
-# Production
-pnpm build && pnpm start
 ```
 
-### 6. Multiple Admins
+**Production:**
+Update the environment variable in your hosting platform and redeploy.
+
+### 7. Multiple Admins
 
 Currently supports a single password. For multiple admins, consider:
 - Using a password manager to share the password securely

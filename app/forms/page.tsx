@@ -2179,7 +2179,9 @@ export default function FormsPage() {
                   }))
                 }
                 const encoded = btoa(JSON.stringify(formData))
-                const shareUrl = `${window.location.origin}/forms/client?data=${encoded}`
+                // URL encode the base64 string to handle special characters properly
+                const urlEncoded = encodeURIComponent(encoded)
+                const shareUrl = `${window.location.origin}/forms/client?data=${urlEncoded}`
                 
                 // Copy to clipboard
                 navigator.clipboard.writeText(shareUrl).then(() => {
