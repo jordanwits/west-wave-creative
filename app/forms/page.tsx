@@ -2164,8 +2164,8 @@ export default function FormsPage() {
             <Button
               size="lg"
               variant="outline"
-              onClick={() => {
-                // Generate shareable URL with form data encoded
+              onClick={async () => {
+                // Store form data and get short ID
                 const formData = {
                   title: formTitle,
                   description: formDescription,
@@ -2178,21 +2178,44 @@ export default function FormsPage() {
                     options: q.options
                   }))
                 }
-                const encoded = btoa(JSON.stringify(formData))
-                // URL encode the base64 string to handle special characters properly
-                const urlEncoded = encodeURIComponent(encoded)
-                const shareUrl = `${window.location.origin}/forms/client?data=${urlEncoded}`
                 
-                // Copy to clipboard
-                navigator.clipboard.writeText(shareUrl).then(() => {
+                try {
+                  const response = await fetch('/api/forms/store', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                  })
+                  
+                  const result = await response.json()
+                  
+                  if (result.success) {
+                    const shareUrl = `${window.location.origin}${result.url}`
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                      ;(async () => {
+                        const { toast } = await import("@/hooks/use-toast")
+                        toast({ 
+                          title: "Link copied!", 
+                          description: "Share this short link with your client to fill out the form." 
+                        })
+                      })()
+                    })
+                  } else {
+                    throw new Error(result.error || 'Failed to create short link')
+                  }
+                } catch (error) {
                   ;(async () => {
                     const { toast } = await import("@/hooks/use-toast")
                     toast({ 
-                      title: "Link copied!", 
-                      description: "Share this link with your client to fill out the form." 
+                      title: "Failed to create link", 
+                      description: "Please try again.", 
+                      variant: "destructive" as any 
                     })
                   })()
-                })
+                }
               }}
               className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] font-bold text-lg px-12 py-6 rounded-lg"
             >
