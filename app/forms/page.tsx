@@ -2280,46 +2280,47 @@ export default function FormsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F3F4] py-12 px-4">
+    <div className="min-h-screen bg-[#F5F3F4] py-6 sm:py-8 md:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#0B132B] mb-4">
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6">
+          <div className="flex-1 min-w-0 text-center sm:text-left">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0B132B] mb-3 sm:mb-4 break-words">
               Form <span className="text-[#D4AF37]">Builder</span>
             </h1>
-            <p className="font-sans text-xl text-[#3A506B] max-w-3xl">
+            <p className="font-sans text-base sm:text-lg md:text-xl text-[#3A506B] max-w-3xl break-words mx-auto sm:mx-0">
               Select questions from the categories below to build your custom client onboarding form. 
               Once you're done, preview and generate the form.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:flex-shrink-0 justify-center sm:justify-start">
             <Button
               onClick={() => setViewMode("my-forms")}
               variant="outline"
               size="sm"
-              className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B]"
+              className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] flex-1 sm:flex-none"
             >
               <List className="h-4 w-4 mr-2" />
-              My Forms
+              <span className="hidden sm:inline">My Forms</span>
+              <span className="sm:hidden">Forms</span>
             </Button>
             <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10"
+              className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10 flex-1 sm:flex-none"
             >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
+              <LogOut className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </div>
 
         {/* Form Title & Description Editor */}
-        <Card className="mb-8 bg-white/10 backdrop-blur-xl border-2 border-[#D4AF37]/30 shadow-lg">
+        <Card className="mb-6 sm:mb-8 bg-white/10 backdrop-blur-xl border-2 border-[#D4AF37]/30 shadow-lg">
           <CardHeader>
-            <CardTitle className="font-serif text-2xl text-[#0B132B]">Form Settings</CardTitle>
-            <CardDescription className="font-sans text-[#3A506B]">
+            <CardTitle className="font-serif text-xl sm:text-2xl text-[#0B132B] break-words">Form Settings</CardTitle>
+            <CardDescription className="font-sans text-sm sm:text-base text-[#3A506B] break-words">
               Customize the title and description that will appear on the client form
             </CardDescription>
           </CardHeader>
@@ -2393,14 +2394,14 @@ export default function FormsPage() {
         </div>
 
         {/* Stats */}
-        <div className="mb-8 flex flex-wrap gap-4">
-          <div className="bg-white/10 backdrop-blur-xl rounded-lg border border-[#D4AF37]/30 px-6 py-3">
-            <div className="font-sans text-sm text-[#3A506B]">Selected Questions</div>
-            <div className="font-serif text-2xl font-bold text-[#0B132B]">{selectedQuestions.size}</div>
+        <div className="mb-6 sm:mb-8 flex flex-wrap gap-3 sm:gap-4">
+          <div className="bg-white/10 backdrop-blur-xl rounded-lg border border-[#D4AF37]/30 px-4 sm:px-6 py-3 flex-1 min-w-[140px]">
+            <div className="font-sans text-xs sm:text-sm text-[#3A506B]">Selected Questions</div>
+            <div className="font-serif text-xl sm:text-2xl font-bold text-[#0B132B]">{selectedQuestions.size}</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-xl rounded-lg border border-[#D4AF37]/30 px-6 py-3">
-            <div className="font-sans text-sm text-[#3A506B]">Total Questions</div>
-            <div className="font-serif text-2xl font-bold text-[#0B132B]">{allQuestions.length}</div>
+          <div className="bg-white/10 backdrop-blur-xl rounded-lg border border-[#D4AF37]/30 px-4 sm:px-6 py-3 flex-1 min-w-[140px]">
+            <div className="font-sans text-xs sm:text-sm text-[#3A506B]">Total Questions</div>
+            <div className="font-serif text-xl sm:text-2xl font-bold text-[#0B132B]">{allQuestions.length}</div>
           </div>
         </div>
 
@@ -2416,12 +2417,12 @@ export default function FormsPage() {
             return (
               <Card key={category.id} className="bg-white/10 backdrop-blur-xl border-2 border-[#D4AF37]/30 shadow-lg">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="font-serif text-2xl text-[#0B132B] mb-2">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="font-serif text-xl sm:text-2xl text-[#0B132B] mb-2 break-words">
                         {category.name}
                       </CardTitle>
-                      <CardDescription className="font-sans text-[#3A506B]">
+                      <CardDescription className="font-sans text-sm sm:text-base text-[#3A506B] break-words">
                         {category.description}
                       </CardDescription>
                     </div>
@@ -2429,7 +2430,7 @@ export default function FormsPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => toggleCategory(category.id)}
-                      className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B]"
+                      className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] flex-shrink-0 w-full sm:w-auto"
                     >
                       {categorySelected ? "Deselect All" : "Select All"}
                     </Button>
@@ -2443,47 +2444,53 @@ export default function FormsPage() {
                         <div
                           key={question.id}
                           onClick={() => toggleQuestion(question.id)}
-                          className={`flex items-start gap-4 p-4 rounded-lg border-2 transition-all cursor-pointer ${
+                          className={`flex items-start gap-4 p-4 rounded-lg border-2 transition-all cursor-pointer touch-manipulation active:scale-[0.98] ${
                             isSelected
                               ? "bg-[#D4AF37]/10 border-[#D4AF37]"
                               : "bg-white/50 border-[#3A506B]/10 hover:border-[#D4AF37]/30"
                           }`}
                         >
                           <div
-                            onClick={(e) => e.stopPropagation()}
-                            className="mt-1 pointer-events-none"
+                            className="mt-1 flex-shrink-0"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                            }}
                           >
                             <Checkbox
                               checked={isSelected}
+                              onCheckedChange={() => toggleQuestion(question.id)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                              }}
+                              className="cursor-pointer"
                             />
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2 mb-1">
                               <Label
                                 htmlFor={`checkbox-${question.id}`}
-                                className="font-sans font-semibold text-[#0B132B] cursor-pointer"
-                                onClick={(e) => e.stopPropagation()}
+                                className="font-sans font-semibold text-[#0B132B] cursor-pointer select-none pointer-events-none break-words"
                               >
                                 {question.text}
                               </Label>
                               {question.required && (
-                                <span className="text-xs bg-[#D4AF37]/20 text-[#D4AF37] px-2 py-0.5 rounded-full font-semibold">
+                                <span className="text-xs bg-[#D4AF37]/20 text-[#D4AF37] px-2 py-0.5 rounded-full font-semibold pointer-events-none flex-shrink-0">
                                   Required
                                 </span>
                               )}
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-[#3A506B]">
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-[#3A506B] pointer-events-none">
                               <span className="capitalize">{question.type}</span>
                               {question.placeholder && (
                                 <>
                                   <span>•</span>
-                                  <span className="italic">{question.placeholder}</span>
+                                  <span className="italic break-words">{question.placeholder}</span>
                                 </>
                               )}
                             </div>
                           </div>
                           {isSelected && (
-                            <CheckCircle className="h-5 w-5 text-[#D4AF37] flex-shrink-0 mt-1" />
+                            <CheckCircle className="h-5 w-5 text-[#D4AF37] flex-shrink-0 mt-1 pointer-events-none" />
                           )}
                         </div>
                       )
@@ -2497,15 +2504,15 @@ export default function FormsPage() {
 
         {/* Saved Form Info */}
         {savedFormId && (
-          <Card className="mt-8 mb-8 bg-[#D4AF37]/10 backdrop-blur-xl border-2 border-[#D4AF37] shadow-lg">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex-1">
+          <Card className="mt-6 sm:mt-8 mb-6 sm:mb-8 bg-[#D4AF37]/10 backdrop-blur-xl border-2 border-[#D4AF37] shadow-lg">
+            <CardContent className="pt-4 sm:pt-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="h-5 w-5 text-[#D4AF37]" />
-                    <h3 className="font-serif text-xl font-bold text-[#0B132B]">Form Saved Successfully</h3>
+                    <CheckCircle className="h-5 w-5 text-[#D4AF37] flex-shrink-0" />
+                    <h3 className="font-serif text-lg sm:text-xl font-bold text-[#0B132B] break-words">Form Saved Successfully</h3>
                   </div>
-                  <p className="font-sans text-sm text-[#3A506B] mb-2">
+                  <p className="font-sans text-sm text-[#3A506B] mb-2 break-words">
                     Your form has been saved. Copy the link below to share it with your client.
                   </p>
                   {savedFormUrl && (
@@ -2514,10 +2521,10 @@ export default function FormsPage() {
                     </p>
                   )}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <Button
                     onClick={() => copyFormLink()}
-                    className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
+                    className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold w-full sm:w-auto"
                   >
                     <Copy className="mr-2 h-4 w-4" />
                     Copy Link
@@ -2525,7 +2532,7 @@ export default function FormsPage() {
                   <Button
                     onClick={() => window.open(savedFormUrl || '', '_blank')}
                     variant="outline"
-                    className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10"
+                    className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10 w-full sm:w-auto"
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Open
@@ -2538,7 +2545,7 @@ export default function FormsPage() {
 
         {/* Action Buttons */}
         {selectedQuestions.size > 0 && (
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Button
               size="lg"
               onClick={() => {
@@ -2548,17 +2555,17 @@ export default function FormsPage() {
                 setFormSubmitted(false)
                 setViewMode("preview")
               }}
-              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-12 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-base sm:text-lg px-6 sm:px-12 py-5 sm:py-6 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
             >
               <Eye className="mr-2 h-5 w-5" />
-              Preview & Test Form
+              <span className="whitespace-nowrap">Preview & Test Form</span>
             </Button>
             <Button
               size="lg"
               variant="outline"
               onClick={saveForm}
               disabled={savingForm || savedFormId !== null}
-              className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] font-bold text-lg px-12 py-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] font-bold text-base sm:text-lg px-6 sm:px-12 py-5 sm:py-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
             >
               {savingForm ? (
                 <>
@@ -2727,7 +2734,7 @@ export default function FormsPage() {
                 a.click()
                 URL.revokeObjectURL(url)
               }}
-              className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] font-bold text-lg px-12 py-6 rounded-lg"
+              className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] font-bold text-base sm:text-lg px-6 sm:px-12 py-5 sm:py-6 rounded-lg w-full sm:w-auto"
             >
               <FileText className="mr-2 h-5 w-5" />
               Export Form
