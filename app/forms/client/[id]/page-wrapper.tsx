@@ -157,7 +157,7 @@ export default function ClientFormPageWrapper() {
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData) return
+    if (!formData || !formId) return
     
     const form = e.currentTarget as HTMLFormElement
     const formDataObj = new FormData(form)
@@ -172,8 +172,9 @@ export default function ClientFormPageWrapper() {
     }
 
     try {
+      // Submit to Web3Forms (for email notifications)
       const { submitWeb3Form } = await import("@/lib/web3forms")
-      const res = await submitWeb3Form({
+      const web3FormRes = await submitWeb3Form({
         form_name: "client_onboarding",
         subject: `New Client Onboarding: ${formData.title}`,
         page: window.location.href,
@@ -194,7 +195,33 @@ export default function ClientFormPageWrapper() {
         _form_description: formData.description,
       })
       
-      if (res.success) {
+      // Also save to Firebase
+      try {
+        const submissionResponse = await fetch('/api/forms/submissions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            formId: formId,
+            formTitle: formData.title,
+            formDescription: formData.description,
+            name,
+            email,
+            answers: submissionData,
+            pageUrl: window.location.href,
+          }),
+        })
+        
+        if (!submissionResponse.ok) {
+          console.error('Failed to save submission to Firebase')
+        }
+      } catch (firebaseErr) {
+        console.error('Error saving to Firebase:', firebaseErr)
+        // Don't fail the form submission if Firebase save fails
+      }
+      
+      if (web3FormRes.success) {
         setFormSubmitted(true)
         form.reset()
       } else {

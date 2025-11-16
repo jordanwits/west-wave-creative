@@ -153,9 +153,14 @@ export default function ClientFormPage() {
       ...userAnswers
     }
 
+    // Extract formId from URL if available (for forms accessed via /forms/client/[id])
+    const pathParts = window.location.pathname.split('/')
+    const formId = pathParts[pathParts.length - 1] !== 'client' ? pathParts[pathParts.length - 1] : null
+
     try {
+      // Submit to Web3Forms (for email notifications)
       const { submitWeb3Form } = await import("@/lib/web3forms")
-      const res = await submitWeb3Form({
+      const web3FormRes = await submitWeb3Form({
         form_name: "client_onboarding",
         subject: `New Client Onboarding: ${formData.title}`,
         page: window.location.href,
@@ -176,7 +181,35 @@ export default function ClientFormPage() {
         _form_description: formData.description,
       })
       
-      if (res.success) {
+      // Also save to Firebase if formId is available
+      if (formId) {
+        try {
+          const submissionResponse = await fetch('/api/forms/submissions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              formId: formId,
+              formTitle: formData.title,
+              formDescription: formData.description,
+              name,
+              email,
+              answers: submissionData,
+              pageUrl: window.location.href,
+            }),
+          })
+          
+          if (!submissionResponse.ok) {
+            console.error('Failed to save submission to Firebase')
+          }
+        } catch (firebaseErr) {
+          console.error('Error saving to Firebase:', firebaseErr)
+          // Don't fail the form submission if Firebase save fails
+        }
+      }
+      
+      if (web3FormRes.success) {
         setFormSubmitted(true)
         form.reset()
       } else {
