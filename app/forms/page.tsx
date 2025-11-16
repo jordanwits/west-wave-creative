@@ -8,18 +8,20 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { CheckCircle, Eye, FileText, Search, X, ArrowLeft, LogOut, List, Copy, ExternalLink, Trash2 } from "lucide-react"
+import { CheckCircle, Eye, FileText, Search, X, ArrowLeft, LogOut, List, Copy, ExternalLink, Trash2, Edit, Plus, Minus } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { checkAuth, logout } from "@/lib/auth"
 
 // Question data structure
 interface Question {
   id: string
   text: string
-  type: "text" | "textarea" | "email" | "tel" | "url" | "number" | "select"
+  type: "long-answer" | "short-answer" | "multiple-choice" | "other"
   category: string
   placeholder?: string
   required?: boolean
-  options?: string[] // For select type
+  options?: string[] // For multiple-choice type
 }
 
 // Helper function to create category ID from name
@@ -79,13 +81,13 @@ const questionCategories = [
 ]
 
 // Question options mapping - comprehensive options for each question
-const getQuestionOptions = (questionText: string): { type: "text" | "textarea" | "email" | "tel" | "url" | "number" | "select", options?: string[] } => {
+const getQuestionOptions = (questionText: string): { type: "long-answer" | "short-answer" | "multiple-choice" | "other", options?: string[] } => {
   const lowerText = questionText.toLowerCase()
   
   // Project Overview & Goals
   if (questionText.includes("main goals or outcomes")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Increase online visibility and brand awareness",
         "Generate more leads or inquiries",
@@ -101,7 +103,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("prompted you to start")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Current website is outdated or not working well",
         "Starting a new business or organization",
@@ -117,7 +119,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("specific problem")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Website looks outdated or unprofessional",
         "Not generating enough leads or sales",
@@ -134,7 +136,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("target audience")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Local consumers/customers",
         "Businesses/B2B clients",
@@ -150,7 +152,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("want users to do")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Contact us / Request a quote",
         "Make a purchase",
@@ -167,7 +169,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("currently working or not working")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Design looks outdated",
         "Not mobile-friendly",
@@ -183,12 +185,12 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("makes your organization unique")) {
-    return { type: "textarea" } // Keep as textarea for unique value props
+    return { type: "long-answer" } // Keep as textarea for unique value props
   }
   
   if (questionText.includes("key message")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Quality and professionalism",
         "Affordability and value",
@@ -204,7 +206,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("measure success")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Number of leads or inquiries",
         "Online sales or revenue",
@@ -220,13 +222,13 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("competitors or peers")) {
-    return { type: "textarea" } // Keep as textarea for specific names
+    return { type: "long-answer" } // Keep as textarea for specific names
   }
   
   // Brand & Creative Direction
   if (questionText.includes("brand's tone or personality")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Professional and corporate",
         "Friendly and approachable",
@@ -242,7 +244,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("existing logo or brand guide")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have a complete brand guide",
         "Yes, we have a logo but no guide",
@@ -254,20 +256,20 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("colors, styles, or design elements you want to avoid")) {
-    return { type: "textarea" } // Keep as textarea for specific preferences
+    return { type: "long-answer" } // Keep as textarea for specific preferences
   }
   
   if (questionText.includes("brands or websites you admire")) {
-    return { type: "textarea" } // Keep as textarea for URLs and descriptions
+    return { type: "long-answer" } // Keep as textarea for URLs and descriptions
   }
   
   if (questionText.includes("school or church websites")) {
-    return { type: "textarea" } // Keep as textarea for specific examples
+    return { type: "long-answer" } // Keep as textarea for specific examples
   }
   
   if (questionText.includes("professional photography")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have professional photos",
         "Some photos, may need more",
@@ -280,7 +282,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("emotions or impressions")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Trust and reliability",
         "Excitement and energy",
@@ -296,7 +298,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("maintain or change your brand look")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Maintain current brand look",
         "Update/refresh current brand",
@@ -307,12 +309,12 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("taglines or mission statements")) {
-    return { type: "textarea" } // Keep as textarea for specific text
+    return { type: "long-answer" } // Keep as textarea for specific text
   }
   
   if (questionText.includes("tone best fits your audience")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Friendly and casual",
         "Professional and formal",
@@ -327,7 +329,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   // Content & Deliverables
   if (questionText.includes("Who will provide written content")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "We'll provide all content",
         "We'll provide some, need help with rest",
@@ -339,7 +341,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("existing content we should reuse")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have content to reuse",
         "Some content, but needs updating",
@@ -351,7 +353,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("help with copywriting")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we need copywriting help",
         "Some pages need help",
@@ -363,7 +365,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("photography or stock imagery")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "We have our own photos",
         "We'll use stock imagery",
@@ -376,7 +378,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("blog/news functionality")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, definitely",
         "Maybe, in the future",
@@ -388,7 +390,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("downloadable forms, brochures")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we need downloadable forms",
         "Yes, we need brochures/PDFs",
@@ -401,7 +403,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("highlight past projects")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, portfolio is important",
         "Yes, but not a priority",
@@ -413,7 +415,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("video embedded")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have videos to embed",
         "Yes, we'll create videos",
@@ -425,7 +427,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("multiple team members contributing")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, multiple people will contribute",
         "Maybe, 2-3 people",
@@ -437,7 +439,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("testimonials or reviews")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have testimonials ready",
         "Some, but could use more",
@@ -450,7 +452,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   // Functionality & Technical Requirements
   if (questionText.includes("online forms or quote requests")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, contact forms",
         "Yes, quote request forms",
@@ -463,7 +465,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("appointment booking")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, definitely",
         "Maybe, in the future",
@@ -475,7 +477,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("users need to log in")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, member accounts",
         "Yes, student/parent portals",
@@ -488,7 +490,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("sell products or take payments")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, e-commerce store",
         "Yes, accept donations",
@@ -501,7 +503,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("integration with a CRM")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, Salesforce",
         "Yes, HubSpot",
@@ -515,7 +517,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("Google Maps, galleries, or calendars")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, Google Maps",
         "Yes, photo galleries",
@@ -529,7 +531,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("analytics or traffic tracking")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, Google Analytics",
         "Yes, other analytics",
@@ -541,7 +543,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("multi-language support")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, 2 languages",
         "Yes, 3+ languages",
@@ -553,7 +555,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("mobile-optimized")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, critical - most visitors use mobile",
         "Yes, very important",
@@ -565,7 +567,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("accessibility standards")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, WCAG 2.1 AA required",
         "Yes, ADA compliance",
@@ -587,7 +589,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("How often would you like updates")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Daily",
         "Weekly",
@@ -601,7 +603,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("preferred communication method")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Email",
         "Phone calls",
@@ -616,7 +618,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("other decision-makers")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, board/committee",
         "Yes, multiple stakeholders",
@@ -628,7 +630,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("manage content updates post-launch")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "We'll manage it ourselves",
         "We'll need training first",
@@ -641,7 +643,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("internal IT or web person")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have IT staff",
         "Yes, we have a web person",
@@ -653,7 +655,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("other vendors")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, marketing agency",
         "Yes, other designers/developers",
@@ -666,7 +668,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("record training videos")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, that would be helpful",
         "Maybe",
@@ -678,7 +680,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("time zone and hours")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Pacific (PST/PDT) - Business hours",
         "Mountain (MST/MDT) - Business hours",
@@ -693,7 +695,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   // Timeline & Milestones
   if (questionText.includes("When do you want to launch")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "ASAP / Within 2 weeks",
         "Within 1 month",
@@ -707,7 +709,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("events or campaigns tied")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, specific event date",
         "Yes, campaign launch",
@@ -720,7 +722,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("phased launch")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, phased approach works",
         "Maybe, if needed",
@@ -732,7 +734,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("deadlines for content submission")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, we have deadlines",
         "We'll work around your timeline",
@@ -744,7 +746,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("earliest you'd like to begin")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Immediately",
         "Within 1-2 weeks",
@@ -758,7 +760,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("dependencies or approvals")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, board approval needed",
         "Yes, budget approval needed",
@@ -770,12 +772,12 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("timeline expectations")) {
-    return { type: "textarea" } // Keep as textarea for specific expectations
+    return { type: "long-answer" } // Keep as textarea for specific expectations
   }
   
   if (questionText.includes("hard deadline")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, school term start",
         "Yes, trade show/event",
@@ -788,7 +790,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("detailed milestone plan")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, definitely",
         "Yes, would be helpful",
@@ -800,7 +802,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("How soon can you provide initial materials")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Immediately / Within 1 week",
         "Within 2-3 weeks",
@@ -814,7 +816,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   // Budget & Priorities
   if (questionText.includes("budget range")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Under $1,000",
         "$1,000 - $2,500",
@@ -830,7 +832,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("Which is more important")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Timeline - need it done fast",
         "Quality - want the best result",
@@ -843,7 +845,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("make this investment worthwhile")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "More leads and customers",
         "Increased sales/revenue",
@@ -858,7 +860,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("budget is tight")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Reduce number of pages",
         "Simplify design",
@@ -872,7 +874,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("hosting and domain setup")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, include hosting",
         "Yes, include domain",
@@ -885,7 +887,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("retainer or support plan")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, monthly retainer",
         "Yes, pay-as-needed support",
@@ -898,7 +900,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("multiple pricing options")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, basic and premium",
         "Yes, multiple tiers",
@@ -910,7 +912,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("apply for grants")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, planning to apply",
         "Maybe, considering it",
@@ -922,7 +924,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("suggest cost-saving measures")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, please suggest options",
         "Maybe, if needed",
@@ -934,7 +936,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("payments be handled")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Business/Organization",
         "Individual",
@@ -946,12 +948,12 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   // Scope Boundaries & Change Management
   if (questionText.includes("must-have vs nice-to-have")) {
-    return { type: "textarea" } // Keep as textarea for specific features
+    return { type: "long-answer" } // Keep as textarea for specific features
   }
   
   if (questionText.includes("areas you want to handle internally")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Content writing",
         "Photography",
@@ -965,12 +967,12 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("considered out of scope")) {
-    return { type: "textarea" } // Keep as textarea for specific items
+    return { type: "long-answer" } // Keep as textarea for specific items
   }
   
   if (questionText.includes("handle new requests")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Add to current scope if possible",
         "Create change orders",
@@ -983,7 +985,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("anticipate future phases")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, definitely",
         "Maybe, possibly",
@@ -995,7 +997,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("version control or documentation")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, version control",
         "Yes, documentation",
@@ -1008,7 +1010,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("approval layers")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, multiple approvals needed",
         "Yes, board approval",
@@ -1020,12 +1022,12 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   }
   
   if (questionText.includes("known risks or challenges")) {
-    return { type: "textarea" } // Keep as textarea for specific risks
+    return { type: "long-answer" } // Keep as textarea for specific risks
   }
   
   if (questionText.includes("include time for training")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, training is important",
         "Maybe, if needed",
@@ -1037,7 +1039,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("change-order process")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, please define process",
         "Maybe, if needed",
@@ -1050,7 +1052,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   // Post-Launch & Long-Term Support
   if (questionText.includes("ongoing maintenance or support")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, monthly support",
         "Yes, quarterly support",
@@ -1063,7 +1065,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("training on how to manage")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, comprehensive training",
         "Yes, basic training",
@@ -1076,7 +1078,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("staff who will update")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, dedicated staff",
         "Yes, multiple staff members",
@@ -1088,7 +1090,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("monthly analytics reports")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, monthly reports",
         "Yes, quarterly reports",
@@ -1101,7 +1103,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("help with marketing")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, SEO help",
         "Yes, social media",
@@ -1115,7 +1117,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("SEO or Google Business")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, SEO setup",
         "Yes, Google Business setup",
@@ -1128,7 +1130,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("backup and security monitoring")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, automated backups",
         "Yes, security monitoring",
@@ -1141,7 +1143,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("post-launch review meeting")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, definitely",
         "Yes, would be helpful",
@@ -1153,7 +1155,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("add new features after launch")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, definitely",
         "Maybe, possibly",
@@ -1165,7 +1167,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
   
   if (questionText.includes("recommendations for hosting")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: [
         "Yes, hosting recommendations",
         "Yes, email service recommendations",
@@ -1185,7 +1187,7 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
       lowerText.startsWith("can you") ||
       lowerText.startsWith("have you")) {
     return {
-      type: "select",
+      type: "multiple-choice",
       options: ["Yes", "No", "Maybe", "Not sure"]
     }
   }
@@ -1196,10 +1198,10 @@ const getQuestionOptions = (questionText: string): { type: "text" | "textarea" |
       lowerText.includes("explain") ||
       lowerText.includes("what are") ||
       questionText.length > 60) {
-    return { type: "textarea" }
+    return { type: "long-answer" }
   }
   
-  return { type: "text" }
+  return { type: "short-answer" }
 }
 
 // Parse CSV data into questions
@@ -1340,7 +1342,7 @@ const parseCSVQuestions = (): Question[] => {
     }
     
     // Add options for select type questions
-    if (questionConfig.type === "select" && questionConfig.options) {
+    if (questionConfig.type === "multiple-choice" && questionConfig.options) {
       question.options = questionConfig.options
     }
     
@@ -1374,6 +1376,9 @@ export default function FormsPage() {
   const [savedFormId, setSavedFormId] = useState<string | null>(null)
   const [savingForm, setSavingForm] = useState(false)
   const [savedFormUrl, setSavedFormUrl] = useState<string | null>(null)
+  const [editedQuestions, setEditedQuestions] = useState<Record<string, Question>>({})
+  const [editingQuestionId, setEditingQuestionId] = useState<string | null>(null)
+  const [editFormData, setEditFormData] = useState<Partial<Question>>({})
 
   // Check authentication on mount
   useEffect(() => {
@@ -1525,7 +1530,89 @@ export default function FormsPage() {
     router.push("/forms/login")
   }
 
-  const filteredQuestions = allQuestions.filter(q => 
+  // Get question (edited version if exists, otherwise original)
+  const getQuestion = (questionId: string): Question => {
+    if (editedQuestions[questionId]) {
+      return editedQuestions[questionId]
+    }
+    const original = allQuestions.find(q => q.id === questionId)
+    if (!original) {
+      throw new Error(`Question ${questionId} not found`)
+    }
+    return original
+  }
+
+  // Open edit dialog
+  const openEditDialog = (question: Question) => {
+    setEditingQuestionId(question.id)
+    setEditFormData({
+      text: question.text,
+      type: question.type,
+      placeholder: question.placeholder || "",
+      required: question.required || false,
+      options: question.options ? [...question.options] : []
+    })
+  }
+
+  // Save edited question
+  const saveEditedQuestion = () => {
+    if (!editingQuestionId) return
+    
+    const originalQuestion = allQuestions.find(q => q.id === editingQuestionId)
+    if (!originalQuestion) return
+
+    const newType = editFormData.type || originalQuestion.type
+    const editedQuestion: Question = {
+      ...originalQuestion,
+      text: editFormData.text || originalQuestion.text,
+      type: newType,
+      placeholder: editFormData.placeholder || undefined,
+      required: editFormData.required || false,
+      options: newType === "multiple-choice" && editFormData.options && editFormData.options.length > 0 
+        ? editFormData.options.filter(opt => opt.trim() !== "")
+        : undefined
+    }
+
+    setEditedQuestions(prev => ({
+      ...prev,
+      [editingQuestionId]: editedQuestion
+    }))
+
+    // Reset saved state when form changes
+    if (savedFormId) {
+      setSavedFormId(null)
+      setSavedFormUrl(null)
+    }
+
+    setEditingQuestionId(null)
+    setEditFormData({})
+  }
+
+  // Add option to select question
+  const addOption = () => {
+    setEditFormData(prev => ({
+      ...prev,
+      options: [...(prev.options || []), ""]
+    }))
+  }
+
+  // Remove option from select question
+  const removeOption = (index: number) => {
+    setEditFormData(prev => ({
+      ...prev,
+      options: prev.options?.filter((_, i) => i !== index)
+    }))
+  }
+
+  // Update option value
+  const updateOption = (index: number, value: string) => {
+    setEditFormData(prev => ({
+      ...prev,
+      options: prev.options?.map((opt, i) => i === index ? value : opt)
+    }))
+  }
+
+  const filteredQuestions = allQuestions.map(q => getQuestion(q.id)).filter(q => 
     q.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
     q.category.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -1566,13 +1653,15 @@ export default function FormsPage() {
     }
   }
 
-  const selectedQuestionsList = allQuestions.filter(q => selectedQuestions.has(q.id))
+  const selectedQuestionsList = allQuestions
+    .filter(q => selectedQuestions.has(q.id))
+    .map(q => getQuestion(q.id))
 
   const renderFormField = (question: Question) => {
     const fieldId = `field-${question.id}`
     
     switch (question.type) {
-      case "textarea":
+      case "long-answer":
         return (
           <div key={question.id} className="space-y-2">
             <Label htmlFor={fieldId} className="font-sans text-sm font-semibold text-[#0B132B]">
@@ -1589,7 +1678,7 @@ export default function FormsPage() {
           </div>
         )
       
-      case "select":
+      case "multiple-choice":
         return (
           <div key={question.id} className="space-y-2">
             <Label htmlFor={fieldId} className="font-sans text-sm font-semibold text-[#0B132B]">
@@ -1610,6 +1699,8 @@ export default function FormsPage() {
           </div>
         )
       
+      case "short-answer":
+      case "other":
       default:
         return (
           <div key={question.id} className="space-y-2">
@@ -1620,7 +1711,7 @@ export default function FormsPage() {
             <Input
               id={fieldId}
               name={question.id}
-              type={question.type}
+              type="text"
               placeholder={question.placeholder}
               required={question.required}
               className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
@@ -1658,13 +1749,13 @@ export default function FormsPage() {
         // Going back from contact form
         const lastQuestion = selectedQuestionsList[selectedQuestionsList.length - 1]
         const lastAnswer = previewAnswers[lastQuestion.id]
-        if (lastAnswer && lastQuestion.type !== "select") {
+        if (lastAnswer && lastQuestion.type !== "multiple-choice") {
           setPreviewTextInput(lastAnswer)
         }
       } else {
         const prevQuestion = selectedQuestionsList[previewCurrentQuestion - 1]
         const prevAnswer = previewAnswers[prevQuestion.id]
-        if (prevAnswer && prevQuestion.type !== "select") {
+        if (prevAnswer && prevQuestion.type !== "multiple-choice") {
           setPreviewTextInput(prevAnswer)
         }
       }
@@ -2027,7 +2118,7 @@ export default function FormsPage() {
 
                   {/* Question Input */}
                   <div className="space-y-3 sm:space-y-4">
-                    {currentQ.type === "select" && currentQ.options ? (
+                    {currentQ.type === "multiple-choice" && currentQ.options ? (
                       <div className="space-y-3">
                         {currentQ.options.map((option, index) => (
                           <Button
@@ -2040,7 +2131,7 @@ export default function FormsPage() {
                           </Button>
                         ))}
                       </div>
-                    ) : currentQ.type === "textarea" ? (
+                    ) : currentQ.type === "long-answer" ? (
                       <form onSubmit={previewHandleTextSubmit} className="space-y-4">
                         <Textarea
                           value={previewTextInput}
@@ -2062,7 +2153,7 @@ export default function FormsPage() {
                     ) : (
                       <form onSubmit={previewHandleTextSubmit} className="space-y-4">
                         <Input
-                          type={currentQ.type === "email" ? "email" : currentQ.type === "tel" ? "tel" : currentQ.type === "url" ? "url" : currentQ.type === "number" ? "number" : "text"}
+                          type="text"
                           value={previewTextInput}
                           onChange={(e) => setPreviewTextInput(e.target.value)}
                           placeholder={currentQ.placeholder || "Type your answer here..."}
@@ -2489,9 +2580,121 @@ export default function FormsPage() {
                               )}
                             </div>
                           </div>
-                          {isSelected && (
-                            <CheckCircle className="h-5 w-5 text-[#D4AF37] flex-shrink-0 mt-1 pointer-events-none" />
-                          )}
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {isSelected && (
+                              <CheckCircle className="h-5 w-5 text-[#D4AF37] pointer-events-none" />
+                            )}
+                            <Dialog open={editingQuestionId === question.id} onOpenChange={(open) => {
+                              if (!open) {
+                                setEditingQuestionId(null)
+                                setEditFormData({})
+                              }
+                            }}>
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    openEditDialog(question)
+                                  }}
+                                  className="h-8 w-8 p-0 text-[#3A506B] hover:text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-lg">
+                                <DialogHeader>
+                                  <DialogTitle>Edit Question</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-3 py-2">
+                                  <div>
+                                    <Textarea
+                                      value={editFormData.text || ""}
+                                      onChange={(e) => setEditFormData(prev => ({ ...prev, text: e.target.value }))}
+                                      className="min-h-[60px]"
+                                      placeholder="Question text"
+                                    />
+                                  </div>
+                                  <div className="flex gap-3">
+                                    <Select
+                                      value={editFormData.type || "short-answer"}
+                                      onValueChange={(value: Question["type"]) => setEditFormData(prev => ({ ...prev, type: value }))}
+                                    >
+                                      <SelectTrigger className="flex-1">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="short-answer">Short Answer</SelectItem>
+                                        <SelectItem value="long-answer">Long Answer</SelectItem>
+                                        <SelectItem value="multiple-choice">Multiple Choice</SelectItem>
+                                        <SelectItem value="other">Other</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                    <div className="flex items-center gap-2 px-3 border rounded-md">
+                                      <Checkbox
+                                        checked={editFormData.required || false}
+                                        onCheckedChange={(checked) => setEditFormData(prev => ({ ...prev, required: !!checked }))}
+                                      />
+                                      <Label className="text-sm cursor-pointer">Required</Label>
+                                    </div>
+                                  </div>
+                                  <Input
+                                    value={editFormData.placeholder || ""}
+                                    onChange={(e) => setEditFormData(prev => ({ ...prev, placeholder: e.target.value }))}
+                                    placeholder="Placeholder (optional)"
+                                  />
+                                  {editFormData.type === "multiple-choice" && (
+                                    <div className="space-y-2 pt-1">
+                                      {editFormData.options?.map((option, index) => (
+                                        <div key={index} className="flex gap-2">
+                                          <Input
+                                            value={option}
+                                            onChange={(e) => updateOption(index, e.target.value)}
+                                            placeholder={`Option ${index + 1}`}
+                                            className="flex-1"
+                                          />
+                                          <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => removeOption(index)}
+                                            className="h-9 w-9 p-0 text-red-500 hover:text-red-700"
+                                          >
+                                            <Minus className="h-4 w-4" />
+                                          </Button>
+                                        </div>
+                                      ))}
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={addOption}
+                                        className="w-full"
+                                      >
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        Add Option
+                                      </Button>
+                                    </div>
+                                  )}
+                                </div>
+                                <DialogFooter>
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                      setEditingQuestionId(null)
+                                      setEditFormData({})
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button onClick={saveEditedQuestion}>
+                                    Save
+                                  </Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                         </div>
                       )
                     })}
@@ -2593,7 +2796,7 @@ export default function FormsPage() {
                   const fieldId = `field-${question.id}`
                   const label = `${question.text}${question.required ? ' <span style="color: #D4AF37;">*</span>' : ''}`
                   
-                  if (question.type === "textarea") {
+                  if (question.type === "long-answer") {
                     return `
                       <div style="margin-bottom: 1.5rem;">
                         <label for="${fieldId}" style="display: block; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600; color: #0B132B; margin-bottom: 0.5rem;">
@@ -2608,7 +2811,7 @@ export default function FormsPage() {
                         ></textarea>
                       </div>
                     `
-                  } else if (question.type === "select") {
+                  } else if (question.type === "multiple-choice") {
                     const optionsHTML = question.options?.map(opt => `<option value="${opt}">${opt}</option>`).join('') || ''
                     return `
                       <div style="margin-bottom: 1.5rem;">
@@ -2627,6 +2830,7 @@ export default function FormsPage() {
                       </div>
                     `
                   } else {
+                    // short-answer or other - both render as text input
                     return `
                       <div style="margin-bottom: 1.5rem;">
                         <label for="${fieldId}" style="display: block; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600; color: #0B132B; margin-bottom: 0.5rem;">
@@ -2635,7 +2839,7 @@ export default function FormsPage() {
                         <input
                           id="${fieldId}"
                           name="${question.id}"
-                          type="${question.type}"
+                          type="text"
                           placeholder="${question.placeholder || ''}"
                           ${question.required ? 'required' : ''}
                           style="width: 100%; height: 3rem; padding: 0.75rem; border: 2px solid rgba(58, 80, 107, 0.2); border-radius: 0.5rem; background: rgba(255, 255, 255, 0.8); font-family: 'Inter', sans-serif; font-size: 0.875rem;"

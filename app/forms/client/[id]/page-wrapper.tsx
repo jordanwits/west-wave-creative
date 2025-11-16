@@ -9,7 +9,7 @@ import { CheckCircle, ArrowLeft } from "lucide-react"
 interface Question {
   id: string
   text: string
-  type: "text" | "textarea" | "email" | "tel" | "url" | "number" | "select"
+  type: "long-answer" | "short-answer" | "multiple-choice" | "other"
   placeholder?: string
   required?: boolean
   options?: string[]
@@ -118,13 +118,13 @@ export default function ClientFormPageWrapper() {
         if (currentQuestion === formData.questions.length) {
           const lastQuestion = formData.questions[formData.questions.length - 1]
           const lastAnswer = userAnswers[lastQuestion.id]
-          if (lastAnswer && lastQuestion.type !== "select") {
+          if (lastAnswer && lastQuestion.type !== "multiple-choice") {
             setTextInput(lastAnswer)
           }
         } else {
           const prevQuestion = formData.questions[currentQuestion - 1]
           const prevAnswer = userAnswers[prevQuestion.id]
-          if (prevAnswer && prevQuestion.type !== "select") {
+          if (prevAnswer && prevQuestion.type !== "multiple-choice") {
             setTextInput(prevAnswer)
           }
         }
@@ -463,7 +463,7 @@ export default function ClientFormPageWrapper() {
 
                 {/* Question Input */}
                 <div className="space-y-3 sm:space-y-4">
-                  {currentQ.type === "select" && currentQ.options ? (
+                  {currentQ.type === "multiple-choice" && currentQ.options ? (
                     <div className="space-y-3">
                       {currentQ.options.map((option, index) => (
                         <Button
@@ -476,7 +476,7 @@ export default function ClientFormPageWrapper() {
                         </Button>
                       ))}
                     </div>
-                  ) : currentQ.type === "textarea" ? (
+                  ) : currentQ.type === "long-answer" ? (
                     <form onSubmit={handleTextSubmit} className="space-y-4">
                       <Textarea
                         value={textInput}
@@ -496,9 +496,10 @@ export default function ClientFormPageWrapper() {
                       </div>
                     </form>
                   ) : (
+                    // short-answer or other - both render as text input
                     <form onSubmit={handleTextSubmit} className="space-y-4">
                       <Input
-                        type={currentQ.type === "email" ? "email" : currentQ.type === "tel" ? "tel" : currentQ.type === "url" ? "url" : currentQ.type === "number" ? "number" : "text"}
+                        type="text"
                         value={textInput}
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
