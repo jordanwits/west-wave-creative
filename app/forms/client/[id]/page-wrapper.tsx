@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import { CheckCircle, ArrowLeft } from "lucide-react"
 
 interface Question {
@@ -11,8 +12,10 @@ interface Question {
   text: string
   type: "long-answer" | "short-answer" | "multiple-choice" | "other"
   placeholder?: string
-  required?: boolean
   options?: string[]
+  allowMultiple?: boolean
+  minSelections?: number
+  maxSelections?: number
 }
 
 export default function ClientFormPageWrapper() {
@@ -22,7 +25,7 @@ export default function ClientFormPageWrapper() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formId, setFormId] = useState<string | null>(null)
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [userAnswers, setUserAnswers] = useState<Record<string, string>>({})
+  const [userAnswers, setUserAnswers] = useState<Record<string, string | string[]>>({})
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [showContent, setShowContent] = useState(true)
   const [textInput, setTextInput] = useState("")
@@ -142,7 +145,42 @@ export default function ClientFormPageWrapper() {
     if (!formData) return
     
     const currentQ = formData.questions[currentQuestion]
-    setUserAnswers((prev) => ({ ...prev, [currentQ.id]: option }))
+    
+    // If multiple selections are allowed, toggle the option
+    if (currentQ.allowMultiple) {
+      const currentAnswers = (userAnswers[currentQ.id] as string[]) || []
+      const isSelected = currentAnswers.includes(option)
+      
+      let newAnswers: string[]
+      if (isSelected) {
+        newAnswers = currentAnswers.filter(a => a !== option)
+      } else {
+        // Check max selections limit
+        if (currentQ.maxSelections && currentAnswers.length >= currentQ.maxSelections) {
+          return // Don't add if max reached
+        }
+        newAnswers = [...currentAnswers, option]
+      }
+      
+      setUserAnswers((prev) => ({ ...prev, [currentQ.id]: newAnswers }))
+    } else {
+      // Single selection - move to next question
+      setUserAnswers((prev) => ({ ...prev, [currentQ.id]: option }))
+      transitionToNext()
+    }
+  }
+
+  const handleMultipleChoiceSubmit = () => {
+    if (!formData) return
+    
+    const currentQ = formData.questions[currentQuestion]
+    const currentAnswers = (userAnswers[currentQ.id] as string[]) || []
+    
+    // Validate min selections
+    if (currentQ.minSelections && currentAnswers.length < currentQ.minSelections) {
+      return
+    }
+    
     transitionToNext()
   }
 
@@ -151,7 +189,6 @@ export default function ClientFormPageWrapper() {
     if (!formData) return
     
     const currentQ = formData.questions[currentQuestion]
-    if (currentQ.required && !textInput.trim()) return
     
     if (textInput.trim()) {
       setUserAnswers((prev) => ({ ...prev, [currentQ.id]: textInput }))
@@ -171,7 +208,7 @@ export default function ClientFormPageWrapper() {
     const email = (formDataObj.get("email") as string) || ""
     
     // Combine all answers
-    const submissionData: Record<string, string> = {
+    const submissionData: Record<string, string | string[]> = {
       name,
       email,
       ...userAnswers
@@ -190,10 +227,11 @@ export default function ClientFormPageWrapper() {
         ...Object.entries(submissionData).reduce((acc, [key, value]) => {
           // Format question answers nicely
           const question = formData.questions.find(q => q.id === key)
+          const displayValue = Array.isArray(value) ? value.join(", ") : String(value)
           if (question) {
-            acc[question.text] = value
+            acc[question.text] = displayValue
           } else {
-            acc[key] = value
+            acc[key] = displayValue
           }
           return acc
         }, {} as Record<string, string>),
@@ -410,15 +448,13 @@ export default function ClientFormPageWrapper() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Input 
                       name="name" 
-                      placeholder="Your name *" 
-                      required 
+                      placeholder="Your name" 
                       className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] text-base" 
                     />
                     <Input 
                       name="email" 
                       type="email" 
-                      placeholder="Email *" 
-                      required 
+                      placeholder="Email" 
                       className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] text-base" 
                     />
                   </div>
@@ -465,7 +501,6 @@ export default function ClientFormPageWrapper() {
                     </div>
                     <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#0B132B] leading-tight">
                       {currentQ.text}
-                      {currentQ.required && <span className="text-[#D4AF37] ml-1">*</span>}
                     </h2>
                   </div>
                 </div>
@@ -474,16 +509,65 @@ export default function ClientFormPageWrapper() {
                 <div className="space-y-3 sm:space-y-4">
                   {currentQ.type === "multiple-choice" && currentQ.options ? (
                     <div className="space-y-3">
-                      {currentQ.options.map((option, index) => (
-                        <Button
-                          key={index}
-                          variant="outline"
-                          className="w-full justify-start text-left h-auto py-3 sm:py-4 px-4 sm:px-6 border-2 border-[#3A506B]/20 hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 hover:text-[#0B132B] transition-all duration-200 bg-white text-[#0B132B] font-sans hover:scale-[1.02] hover:shadow-md text-sm sm:text-base"
-                          onClick={() => handleOptionSelect(option)}
-                        >
-                          {option}
-                        </Button>
-                      ))}
+                      {currentQ.allowMultiple ? (
+                        <>
+                          {currentQ.options.map((option, index) => {
+                            const currentAnswers = (userAnswers[currentQ.id] as string[]) || []
+                            const isSelected = currentAnswers.includes(option)
+                            return (
+                              <div
+                                key={index}
+                                onClick={() => handleOptionSelect(option)}
+                                className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all cursor-pointer touch-manipulation active:scale-[0.98] ${
+                                  isSelected
+                                    ? "bg-[#D4AF37]/10 border-[#D4AF37]"
+                                    : "bg-white border-[#3A506B]/20 hover:border-[#D4AF37]/30"
+                                }`}
+                              >
+                                <Checkbox
+                                  checked={isSelected}
+                                  onCheckedChange={() => handleOptionSelect(option)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="cursor-pointer"
+                                />
+                                <span className="flex-1 text-base font-sans text-[#0B132B]">{option}</span>
+                              </div>
+                            )
+                          })}
+                          {(currentQ.minSelections || currentQ.maxSelections) && (
+                            <p className="text-xs text-[#3A506B] mt-2">
+                              {currentQ.minSelections && `Select at least ${currentQ.minSelections}`}
+                              {currentQ.minSelections && currentQ.maxSelections && " and "}
+                              {currentQ.maxSelections && `up to ${currentQ.maxSelections}`}
+                              {(currentQ.minSelections || currentQ.maxSelections) && " options"}
+                            </p>
+                          )}
+                          <div className="flex justify-end pt-2">
+                            <Button
+                              onClick={handleMultipleChoiceSubmit}
+                              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
+                              disabled={
+                                currentQ.minSelections && ((userAnswers[currentQ.id] as string[]) || []).length < currentQ.minSelections
+                              }
+                            >
+                              Continue →
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="space-y-3">
+                          {currentQ.options.map((option, index) => (
+                            <Button
+                              key={index}
+                              variant="outline"
+                              className="w-full justify-start text-left h-auto py-3 sm:py-4 px-4 sm:px-6 border-2 border-[#3A506B]/20 hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 hover:text-[#0B132B] transition-all duration-200 bg-white text-[#0B132B] font-sans hover:scale-[1.02] hover:shadow-md text-base"
+                              onClick={() => handleOptionSelect(option)}
+                            >
+                              {option}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ) : currentQ.type === "long-answer" ? (
                     <form onSubmit={handleTextSubmit} className="space-y-4">
@@ -491,14 +575,12 @@ export default function ClientFormPageWrapper() {
                         value={textInput}
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
-                        required={currentQ.required}
                         className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] min-h-[120px] text-base"
                       />
                       <div className="flex justify-end">
                         <Button
                           type="submit"
                           className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
-                          disabled={currentQ.required && !textInput.trim()}
                         >
                           Continue →
                         </Button>
@@ -512,14 +594,12 @@ export default function ClientFormPageWrapper() {
                         value={textInput}
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
-                        required={currentQ.required}
                         className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] h-12 text-base"
                       />
                       <div className="flex justify-end">
                         <Button
                           type="submit"
                           className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
-                          disabled={currentQ.required && !textInput.trim()}
                         >
                           Continue →
                         </Button>

@@ -21,8 +21,10 @@ interface Question {
   type: "long-answer" | "short-answer" | "multiple-choice" | "other"
   category: string
   placeholder?: string
-  required?: boolean
   options?: string[] // For multiple-choice type
+  allowMultiple?: boolean // Allow multiple selections for multiple-choice
+  minSelections?: number // Minimum number of selections required
+  maxSelections?: number // Maximum number of selections allowed
 }
 
 // Helper function to create category ID from name
@@ -1501,7 +1503,6 @@ export default function FormsPage() {
         text: q.text,
         type: q.type,
         placeholder: q.placeholder,
-        required: q.required,
         options: q.options
       }))
     }
@@ -1580,8 +1581,10 @@ export default function FormsPage() {
       text: question.text,
       type: question.type,
       placeholder: question.placeholder || "",
-      required: question.required || false,
-      options: question.options ? [...question.options] : []
+      options: question.options ? [...question.options] : [],
+      allowMultiple: question.allowMultiple || false,
+      minSelections: question.minSelections,
+      maxSelections: question.maxSelections
     })
   }
 
@@ -1598,10 +1601,12 @@ export default function FormsPage() {
       text: editFormData.text || originalQuestion.text,
       type: newType,
       placeholder: editFormData.placeholder || undefined,
-      required: editFormData.required || false,
       options: newType === "multiple-choice" && editFormData.options && editFormData.options.length > 0 
         ? editFormData.options.filter(opt => opt.trim() !== "")
-        : undefined
+        : undefined,
+      allowMultiple: newType === "multiple-choice" ? (editFormData.allowMultiple || false) : undefined,
+      minSelections: newType === "multiple-choice" && editFormData.allowMultiple ? editFormData.minSelections : undefined,
+      maxSelections: newType === "multiple-choice" && editFormData.allowMultiple ? editFormData.maxSelections : undefined
     }
 
     setEditedQuestions(prev => ({
@@ -1706,13 +1711,11 @@ export default function FormsPage() {
           <div key={question.id} className="space-y-2">
             <Label htmlFor={fieldId} className="font-sans text-sm font-semibold text-[#0B132B]">
               {question.text}
-              {question.required && <span className="text-[#D4AF37] ml-1">*</span>}
             </Label>
             <Textarea
               id={fieldId}
               name={question.id}
               placeholder={question.placeholder}
-              required={question.required}
               className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 min-h-[120px] rounded-lg bg-white/80 backdrop-blur-sm"
             />
           </div>
@@ -1723,12 +1726,10 @@ export default function FormsPage() {
           <div key={question.id} className="space-y-2">
             <Label htmlFor={fieldId} className="font-sans text-sm font-semibold text-[#0B132B]">
               {question.text}
-              {question.required && <span className="text-[#D4AF37] ml-1">*</span>}
             </Label>
             <select
               id={fieldId}
               name={question.id}
-              required={question.required}
               className="flex h-12 w-full rounded-lg border-2 border-[#3A506B]/20 bg-white/80 backdrop-blur-sm px-3 py-2 text-sm focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
               <option value="">Select an option...</option>
@@ -1746,14 +1747,12 @@ export default function FormsPage() {
           <div key={question.id} className="space-y-2">
             <Label htmlFor={fieldId} className="font-sans text-sm font-semibold text-[#0B132B]">
               {question.text}
-              {question.required && <span className="text-[#D4AF37] ml-1">*</span>}
             </Label>
             <Input
               id={fieldId}
               name={question.id}
               type="text"
               placeholder={question.placeholder}
-              required={question.required}
               className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
             />
           </div>
@@ -1813,8 +1812,6 @@ export default function FormsPage() {
   const previewHandleTextSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const currentQ = selectedQuestionsList[previewCurrentQuestion]
-    if (currentQ.required && !previewTextInput.trim()) return
-    
     if (previewTextInput.trim()) {
       setPreviewAnswers((prev) => ({ ...prev, [currentQ.id]: previewTextInput }))
     }
@@ -2097,15 +2094,13 @@ export default function FormsPage() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <Input 
                         name="name" 
-                        placeholder="Your name *" 
-                        required 
+                        placeholder="Your name" 
                         className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" 
                       />
                       <Input 
                         name="email" 
                         type="email" 
-                        placeholder="Email *" 
-                        required 
+                        placeholder="Email" 
                         className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" 
                       />
                     </div>
@@ -2149,10 +2144,9 @@ export default function FormsPage() {
                       <div className="flex items-center gap-2 mb-2">
                         <span className="font-sans text-xs sm:text-sm text-[#3A506B]/60">West Wave Creative</span>
                       </div>
-                      <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#0B132B] leading-tight">
-                        {currentQ.text}
-                        {currentQ.required && <span className="text-[#D4AF37] ml-1">*</span>}
-                      </h2>
+                    <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#0B132B] leading-tight">
+                      {currentQ.text}
+                    </h2>
                     </div>
                   </div>
 
@@ -2177,14 +2171,12 @@ export default function FormsPage() {
                           value={previewTextInput}
                           onChange={(e) => setPreviewTextInput(e.target.value)}
                           placeholder={currentQ.placeholder || "Type your answer here..."}
-                          required={currentQ.required}
                           className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] min-h-[120px] text-sm sm:text-base"
                         />
                         <div className="flex justify-end">
                           <Button
                             type="submit"
                             className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
-                            disabled={currentQ.required && !previewTextInput.trim()}
                           >
                             Continue →
                           </Button>
@@ -2197,14 +2189,12 @@ export default function FormsPage() {
                           value={previewTextInput}
                           onChange={(e) => setPreviewTextInput(e.target.value)}
                           placeholder={currentQ.placeholder || "Type your answer here..."}
-                          required={currentQ.required}
                           className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] h-12 text-sm sm:text-base"
                         />
                         <div className="flex justify-end">
                           <Button
                             type="submit"
                             className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
-                            disabled={currentQ.required && !previewTextInput.trim()}
                           >
                             Continue →
                           </Button>
@@ -2642,11 +2632,6 @@ export default function FormsPage() {
                               >
                                 {question.text}
                               </Label>
-                              {question.required && (
-                                <span className="text-xs bg-[#D4AF37]/20 text-[#D4AF37] px-2 py-0.5 rounded-full font-semibold pointer-events-none flex-shrink-0">
-                                  Required
-                                </span>
-                              )}
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs text-[#3A506B] pointer-events-none">
                               <span className="capitalize">{question.type}</span>
@@ -2709,13 +2694,6 @@ export default function FormsPage() {
                                         <SelectItem value="other">Other</SelectItem>
                                       </SelectContent>
                                     </Select>
-                                    <div className="flex items-center gap-2 px-3 border rounded-md">
-                                      <Checkbox
-                                        checked={editFormData.required || false}
-                                        onCheckedChange={(checked) => setEditFormData(prev => ({ ...prev, required: !!checked }))}
-                                      />
-                                      <Label className="text-sm cursor-pointer">Required</Label>
-                                    </div>
                                   </div>
                                   <Input
                                     value={editFormData.placeholder || ""}
@@ -2723,36 +2701,77 @@ export default function FormsPage() {
                                     placeholder="Placeholder (optional)"
                                   />
                                   {editFormData.type === "multiple-choice" && (
-                                    <div className="space-y-2 pt-1">
-                                      {editFormData.options?.map((option, index) => (
-                                        <div key={index} className="flex gap-2">
-                                          <Input
-                                            value={option}
-                                            onChange={(e) => updateOption(index, e.target.value)}
-                                            placeholder={`Option ${index + 1}`}
-                                            className="flex-1"
-                                          />
-                                          <Button
-                                            type="button"
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => removeOption(index)}
-                                            className="h-9 w-9 p-0 text-red-500 hover:text-red-700"
-                                          >
-                                            <Minus className="h-4 w-4" />
-                                          </Button>
+                                    <div className="space-y-3 pt-1">
+                                      <div className="flex items-center gap-2 px-3 py-2 border rounded-md bg-gray-50">
+                                        <Checkbox
+                                          checked={editFormData.allowMultiple || false}
+                                          onCheckedChange={(checked) => setEditFormData(prev => ({ ...prev, allowMultiple: !!checked }))}
+                                        />
+                                        <Label className="text-sm cursor-pointer">Allow multiple selections</Label>
+                                      </div>
+                                      {editFormData.allowMultiple && (
+                                        <div className="grid grid-cols-2 gap-2">
+                                          <div className="space-y-1">
+                                            <Label className="text-xs text-[#3A506B]">Min selections</Label>
+                                            <Input
+                                              type="number"
+                                              min="0"
+                                              value={editFormData.minSelections || ""}
+                                              onChange={(e) => setEditFormData(prev => ({ 
+                                                ...prev, 
+                                                minSelections: e.target.value ? parseInt(e.target.value) : undefined 
+                                              }))}
+                                              placeholder="0"
+                                              className="h-9"
+                                            />
+                                          </div>
+                                          <div className="space-y-1">
+                                            <Label className="text-xs text-[#3A506B]">Max selections</Label>
+                                            <Input
+                                              type="number"
+                                              min="1"
+                                              value={editFormData.maxSelections || ""}
+                                              onChange={(e) => setEditFormData(prev => ({ 
+                                                ...prev, 
+                                                maxSelections: e.target.value ? parseInt(e.target.value) : undefined 
+                                              }))}
+                                              placeholder="Unlimited"
+                                              className="h-9"
+                                            />
+                                          </div>
                                         </div>
-                                      ))}
-                                      <Button
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={addOption}
-                                        className="w-full"
-                                      >
-                                        <Plus className="h-4 w-4 mr-2" />
-                                        Add Option
-                                      </Button>
+                                      )}
+                                      <div className="space-y-2">
+                                        {editFormData.options?.map((option, index) => (
+                                          <div key={index} className="flex gap-2">
+                                            <Input
+                                              value={option}
+                                              onChange={(e) => updateOption(index, e.target.value)}
+                                              placeholder={`Option ${index + 1}`}
+                                              className="flex-1"
+                                            />
+                                            <Button
+                                              type="button"
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => removeOption(index)}
+                                              className="h-9 w-9 p-0 text-red-500 hover:text-red-700"
+                                            >
+                                              <Minus className="h-4 w-4" />
+                                            </Button>
+                                          </div>
+                                        ))}
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={addOption}
+                                          className="w-full"
+                                        >
+                                          <Plus className="h-4 w-4 mr-2" />
+                                          Add Option
+                                        </Button>
+                                      </div>
                                     </div>
                                   )}
                                 </div>
@@ -2885,7 +2904,7 @@ export default function FormsPage() {
                 // Generate standalone HTML
                 const formFieldsHTML = selectedQuestionsList.map(question => {
                   const fieldId = `field-${question.id}`
-                  const label = `${question.text}${question.required ? ' <span style="color: #D4AF37;">*</span>' : ''}`
+                  const label = question.text
                   
                   if (question.type === "long-answer") {
                     return `
@@ -2897,7 +2916,6 @@ export default function FormsPage() {
                           id="${fieldId}"
                           name="${question.id}"
                           placeholder="${question.placeholder || ''}"
-                          ${question.required ? 'required' : ''}
                           style="width: 100%; min-height: 120px; padding: 0.75rem; border: 2px solid rgba(58, 80, 107, 0.2); border-radius: 0.5rem; background: rgba(255, 255, 255, 0.8); font-family: 'Inter', sans-serif; font-size: 0.875rem;"
                         ></textarea>
                       </div>
@@ -2912,7 +2930,6 @@ export default function FormsPage() {
                         <select
                           id="${fieldId}"
                           name="${question.id}"
-                          ${question.required ? 'required' : ''}
                           style="width: 100%; height: 3rem; padding: 0.75rem; border: 2px solid rgba(58, 80, 107, 0.2); border-radius: 0.5rem; background: rgba(255, 255, 255, 0.8); font-family: 'Inter', sans-serif; font-size: 0.875rem;"
                         >
                           <option value="">Select an option...</option>
@@ -2932,7 +2949,6 @@ export default function FormsPage() {
                           name="${question.id}"
                           type="text"
                           placeholder="${question.placeholder || ''}"
-                          ${question.required ? 'required' : ''}
                           style="width: 100%; height: 3rem; padding: 0.75rem; border: 2px solid rgba(58, 80, 107, 0.2); border-radius: 0.5rem; background: rgba(255, 255, 255, 0.8); font-family: 'Inter', sans-serif; font-size: 0.875rem;"
                         />
                       </div>
