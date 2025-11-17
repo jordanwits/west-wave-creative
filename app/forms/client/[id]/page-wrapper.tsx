@@ -19,6 +19,7 @@ export default function ClientFormPageWrapper() {
   const [formData, setFormData] = useState<{ title: string; description: string; questions: Question[] } | null>(null)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formId, setFormId] = useState<string | null>(null)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({})
@@ -26,22 +27,21 @@ export default function ClientFormPageWrapper() {
   const [showContent, setShowContent] = useState(true)
   const [textInput, setTextInput] = useState("")
 
-  // Get formId from URL only on client
+  // Get formId from URL and fetch form data
   useEffect(() => {
     // Extract ID from URL path (e.g., /forms/client/AbC123Xy)
     const pathParts = window.location.pathname.split('/')
     const id = pathParts[pathParts.length - 1]
-    setFormId(id || null)
-  }, [])
-
-  useEffect(() => {
-    if (!formId) {
+    
+    if (!id) {
       setIsLoading(false)
       return
     }
+    
+    setFormId(id)
 
     // Fetch form data from API using the short ID
-    fetch(`/api/forms/store?id=${formId}`)
+    fetch(`/api/forms/store?id=${id}`)
       .then(async res => {
         const result = await res.json()
         if (res.status === 410) {
@@ -66,14 +66,18 @@ export default function ClientFormPageWrapper() {
             if (ogDescription) ogDescription.setAttribute('content', result.data.description || 'Please fill out this form to help us understand your needs and get started on your project.')
             if (metaDescription) metaDescription.setAttribute('content', result.data.description || 'Please fill out this form to help us understand your needs and get started on your project.')
           }
+        } else {
+          // Form not found
+          setFormData(null)
         }
         setIsLoading(false)
       })
       .catch(err => {
         console.error("Failed to load form:", err)
+        setFormData(null)
         setIsLoading(false)
       })
-  }, [formId])
+  }, [])
 
   // Pre-fill text input when question changes
   useEffect(() => {
@@ -157,7 +161,9 @@ export default function ClientFormPageWrapper() {
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData || !formId) return
+    if (!formData || !formId || isSubmitting) return
+    
+    setIsSubmitting(true)
     
     const form = e.currentTarget as HTMLFormElement
     const formDataObj = new FormData(form)
@@ -225,9 +231,11 @@ export default function ClientFormPageWrapper() {
         setFormSubmitted(true)
         form.reset()
       } else {
+        setIsSubmitting(false)
         alert("Failed to submit form. Please try again.")
       }
     } catch (err) {
+      setIsSubmitting(false)
       alert("An error occurred. Please try again.")
     }
   }
@@ -404,23 +412,24 @@ export default function ClientFormPageWrapper() {
                       name="name" 
                       placeholder="Your name *" 
                       required 
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" 
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] text-base" 
                     />
                     <Input 
                       name="email" 
                       type="email" 
                       placeholder="Email *" 
                       required 
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" 
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] text-base" 
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <p className="text-xs sm:text-sm text-[#3A506B]">Your info stays private - we only use it for your project.</p>
                     <Button 
                       type="submit" 
-                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
+                      disabled={isSubmitting}
+                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit Form
+                      {isSubmitting ? "Submitting..." : "Submit Form"}
                     </Button>
                   </div>
                 </form>
@@ -483,7 +492,7 @@ export default function ClientFormPageWrapper() {
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
                         required={currentQ.required}
-                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] min-h-[120px] text-sm sm:text-base"
+                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] min-h-[120px] text-base"
                       />
                       <div className="flex justify-end">
                         <Button
@@ -504,7 +513,7 @@ export default function ClientFormPageWrapper() {
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
                         required={currentQ.required}
-                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] h-12 text-sm sm:text-base"
+                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] h-12 text-base"
                       />
                       <div className="flex justify-end">
                         <Button

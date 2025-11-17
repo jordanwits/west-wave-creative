@@ -128,3 +128,55 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const db = getFirestoreAdmin()
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+    
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'ID required' },
+        { status: 400 }
+      )
+    }
+    
+    const formRef = db.collection('forms').doc(id)
+    const doc = await formRef.get()
+    
+    if (!doc.exists) {
+      return NextResponse.json(
+        { success: false, error: 'Form not found' },
+        { status: 404 }
+      )
+    }
+    
+    // Delete associated submissions
+    const submissionsRef = db.collection('formSubmissions')
+    const submissionsSnapshot = await submissionsRef
+      .where('formId', '==', id)
+      .get()
+    
+    const deletePromises = submissionsSnapshot.docs.map(submissionDoc => 
+      submissionDoc.ref.delete()
+    )
+    
+    // Delete the form
+    await formRef.delete()
+    
+    // Wait for all submissions to be deleted
+    await Promise.all(deletePromises)
+    
+    return NextResponse.json({ 
+      success: true,
+      message: 'Form and associated submissions deleted successfully'
+    })
+  } catch (error) {
+    console.error('Failed to delete form:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete form' },
+      { status: 500 }
+    )
+  }
+}
+

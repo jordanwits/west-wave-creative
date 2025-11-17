@@ -19,6 +19,7 @@ export default function ClientFormPage() {
   const [formData, setFormData] = useState<{ title: string; description: string; questions: Question[] } | null>(null)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({})
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -139,7 +140,9 @@ export default function ClientFormPage() {
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData) return
+    if (!formData || isSubmitting) return
+    
+    setIsSubmitting(true)
     
     const form = e.currentTarget as HTMLFormElement
     const formDataObj = new FormData(form)
@@ -213,9 +216,11 @@ export default function ClientFormPage() {
         setFormSubmitted(true)
         form.reset()
       } else {
+        setIsSubmitting(false)
         alert("Failed to submit form. Please try again.")
       }
     } catch (err) {
+      setIsSubmitting(false)
       alert("An error occurred. Please try again.")
     }
   }
@@ -389,23 +394,24 @@ export default function ClientFormPage() {
                       name="name" 
                       placeholder="Your name *" 
                       required 
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" 
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] text-base" 
                     />
                     <Input 
                       name="email" 
                       type="email" 
                       placeholder="Email *" 
                       required 
-                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37]" 
+                      className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] text-base" 
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <p className="text-xs sm:text-sm text-[#3A506B]">Your info stays private - we only use it for your project.</p>
                     <Button 
                       type="submit" 
-                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
+                      disabled={isSubmitting}
+                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit Form
+                      {isSubmitting ? "Submitting..." : "Submit Form"}
                     </Button>
                   </div>
                 </form>
@@ -468,7 +474,7 @@ export default function ClientFormPage() {
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
                         required={currentQ.required}
-                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] min-h-[120px] text-sm sm:text-base"
+                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] min-h-[120px] text-base"
                       />
                       <div className="flex justify-end">
                         <Button
@@ -489,7 +495,7 @@ export default function ClientFormPage() {
                         onChange={(e) => setTextInput(e.target.value)}
                         placeholder={currentQ.placeholder || "Type your answer here..."}
                         required={currentQ.required}
-                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] h-12 text-sm sm:text-base"
+                        className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] h-12 text-base"
                       />
                       <div className="flex justify-end">
                         <Button

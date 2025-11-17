@@ -8,8 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { CheckCircle, Eye, FileText, Search, X, ArrowLeft, LogOut, List, Copy, ExternalLink, Trash2, Edit, Plus, Minus } from "lucide-react"
+import { CheckCircle, Eye, FileText, Search, X, ArrowLeft, LogOut, List, Copy, ExternalLink, Trash2, Edit, Plus, Minus, XSquare } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { checkAuth, logout } from "@/lib/auth"
 
@@ -1363,7 +1364,6 @@ export default function FormsPage() {
   const [formTitle, setFormTitle] = useState("Client Onboarding Form")
   const [formDescription, setFormDescription] = useState("Please fill out this form to help us understand your needs and get started on your project.")
   const [formSubmitted, setFormSubmitted] = useState(false)
-  const [notificationEmail, setNotificationEmail] = useState("")
   const [previewCurrentQuestion, setPreviewCurrentQuestion] = useState(0)
   const [previewAnswers, setPreviewAnswers] = useState<Record<string, string>>({})
   const [previewIsTransitioning, setPreviewIsTransitioning] = useState(false)
@@ -1379,6 +1379,7 @@ export default function FormsPage() {
   const [editedQuestions, setEditedQuestions] = useState<Record<string, Question>>({})
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(null)
   const [editFormData, setEditFormData] = useState<Partial<Question>>({})
+  const [copiedFormId, setCopiedFormId] = useState<string | null>(null)
 
   // Check authentication on mount
   useEffect(() => {
@@ -1432,19 +1433,49 @@ export default function FormsPage() {
     }
   }
 
+  const deleteForm = async (formId: string) => {
+    try {
+      const response = await fetch(`/api/forms/store?id=${formId}`, {
+        method: 'DELETE',
+      })
+      
+      if (response.ok) {
+        // Remove form from local state
+        setSavedForms(prev => prev.filter(form => form.id !== formId))
+        // Remove submissions from local state
+        setFormSubmissions(prev => {
+          const updated = { ...prev }
+          delete updated[formId]
+          return updated
+        })
+        // Close expanded form if it was the deleted one
+        if (expandedFormId === formId) {
+          setExpandedFormId(null)
+        }
+      } else {
+        const data = await response.json()
+        alert(data.error || 'Failed to delete form')
+      }
+    } catch (error) {
+      console.error('Failed to delete form:', error)
+      alert('An error occurred while deleting the form')
+    }
+  }
+
   const copyFormLink = (formId?: string) => {
     const formIdToUse = formId || savedFormId
     if (!formIdToUse) return
     
     const shareUrl = `${window.location.origin}/forms/client/${formIdToUse}`
     navigator.clipboard.writeText(shareUrl).then(() => {
-      ;(async () => {
-        const { toast } = await import("@/hooks/use-toast")
-        toast({ 
-          title: "Link copied!", 
-          description: "Form link copied to clipboard." 
-        })
-      })()
+      // Show copied state
+      setCopiedFormId(formIdToUse)
+      // Reset after 2 seconds
+      setTimeout(() => {
+        setCopiedFormId(null)
+      }, 2000)
+    }).catch(() => {
+      alert("Failed to copy link. Please try again.")
     })
   }
 
@@ -1646,6 +1677,15 @@ export default function FormsPage() {
       categoryQuestions.forEach(id => newSelected.add(id))
     }
     setSelectedQuestions(newSelected)
+    // Reset saved state when form changes
+    if (savedFormId) {
+      setSavedFormId(null)
+      setSavedFormUrl(null)
+    }
+  }
+
+  const unselectAllQuestions = () => {
+    setSelectedQuestions(new Set())
     // Reset saved state when form changes
     if (savedFormId) {
       setSavedFormId(null)
@@ -2198,36 +2238,37 @@ export default function FormsPage() {
   // My Forms View
   if (viewMode === "my-forms") {
     return (
-      <div className="min-h-screen bg-[#F5F3F4] py-12 px-4">
+      <div className="min-h-screen bg-[#F5F3F4] py-6 sm:py-8 md:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8 flex items-start justify-between">
-            <div>
-              <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#0B132B] mb-4">
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6">
+            <div className="flex-1 min-w-0 text-center sm:text-left">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0B132B] mb-3 sm:mb-4 break-words">
                 My <span className="text-[#D4AF37]">Forms</span>
               </h1>
-              <p className="font-sans text-xl text-[#3A506B] max-w-3xl">
+              <p className="font-sans text-base sm:text-lg md:text-xl text-[#3A506B] max-w-3xl break-words mx-auto sm:mx-0">
                 View and manage all your saved forms and their submissions.
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:flex-shrink-0 justify-center sm:justify-start">
               <Button
                 onClick={() => setViewMode("builder")}
                 variant="outline"
                 size="sm"
-                className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B]"
+                className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B] flex-1 sm:flex-none"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Builder
+                <span className="hidden sm:inline">Back to Builder</span>
+                <span className="sm:hidden">Back</span>
               </Button>
               <Button
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10"
+                className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10 flex-1 sm:flex-none"
               >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                <LogOut className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Logout</span>
               </Button>
             </div>
           </div>
@@ -2242,15 +2283,15 @@ export default function FormsPage() {
             </div>
           ) : savedForms.length === 0 ? (
             <Card className="bg-white/10 backdrop-blur-xl border-2 border-[#D4AF37]/30 shadow-lg">
-              <CardContent className="py-12 text-center">
-                <FileText className="h-16 w-16 text-[#3A506B]/30 mx-auto mb-4" />
-                <h2 className="font-serif text-2xl font-bold text-[#0B132B] mb-2">No Forms Yet</h2>
-                <p className="font-sans text-[#3A506B] mb-6">
+              <CardContent className="py-8 sm:py-12 text-center px-4 sm:px-6">
+                <FileText className="h-12 w-12 sm:h-16 sm:w-16 text-[#3A506B]/30 mx-auto mb-4" />
+                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#0B132B] mb-2 break-words">No Forms Yet</h2>
+                <p className="font-sans text-sm sm:text-base text-[#3A506B] mb-6 break-words">
                   Create your first form using the form builder.
                 </p>
                 <Button
                   onClick={() => setViewMode("builder")}
-                  className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold"
+                  className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold w-full sm:w-auto"
                 >
                   Go to Form Builder
                 </Button>
@@ -2265,41 +2306,83 @@ export default function FormsPage() {
                 return (
                   <Card key={form.id} className="bg-white/10 backdrop-blur-xl border-2 border-[#D4AF37]/30 shadow-lg">
                     <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="font-serif text-2xl text-[#0B132B] mb-2">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="font-serif text-xl sm:text-2xl text-[#0B132B] mb-2 break-words">
                             {form.title}
                           </CardTitle>
-                          <CardDescription className="font-sans text-[#3A506B] mb-2">
+                          <CardDescription className="font-sans text-sm sm:text-base text-[#3A506B] mb-2 break-words">
                             {form.description}
                           </CardDescription>
-                          <div className="flex items-center gap-4 text-sm text-[#3A506B] mt-2">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-[#3A506B] mt-2">
                             <span>{form.questionCount} questions</span>
-                            <span>•</span>
+                            <span className="hidden sm:inline">•</span>
                             <span>Created {new Date(form.createdAt).toLocaleDateString()}</span>
-                            <span>•</span>
+                            <span className="hidden sm:inline">•</span>
                             <span>Expires {new Date(form.expiresAt).toLocaleDateString()}</span>
                           </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                           <Button
                             onClick={() => copyFormLink(form.id)}
-                            variant="outline"
+                            variant={copiedFormId === form.id ? "default" : "outline"}
                             size="sm"
-                            className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B]"
+                            className={`w-full sm:w-auto ${
+                              copiedFormId === form.id
+                                ? "bg-green-600 hover:bg-green-700 text-white"
+                                : "border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B132B]"
+                            }`}
                           >
-                            <Copy className="h-4 w-4 mr-2" />
-                            Copy Link
+                            {copiedFormId === form.id ? (
+                              <>
+                                <CheckCircle className="h-4 w-4 mr-2" />
+                                Copied!
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="h-4 w-4 mr-2" />
+                                Copy Link
+                              </>
+                            )}
                           </Button>
                           <Button
                             onClick={() => window.open(form.url, '_blank')}
                             variant="outline"
                             size="sm"
-                            className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10"
+                            className="border-[#3A506B]/20 text-[#3A506B] hover:bg-[#3A506B]/10 w-full sm:w-auto"
                           >
                             <ExternalLink className="h-4 w-4 mr-2" />
                             Open
                           </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-red-500/50 text-red-600 hover:bg-red-50 hover:text-red-700 w-full sm:w-auto"
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Form</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete "{form.title}"? This action cannot be undone. All associated submissions will also be deleted.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => deleteForm(form.id)}
+                                  className="bg-red-600 hover:bg-red-700"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </div>
                     </CardHeader>
@@ -2332,14 +2415,14 @@ export default function FormsPage() {
                                 key={submission.id || index}
                                 className="bg-white/50 rounded-lg border border-[#3A506B]/10 p-4"
                               >
-                                <div className="flex items-start justify-between mb-2">
-                                  <div>
-                                    <p className="font-semibold text-[#0B132B]">
+                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-semibold text-[#0B132B] break-words">
                                       {submission.name || 'Anonymous'}
                                     </p>
-                                    <p className="text-sm text-[#3A506B]">{submission.email}</p>
+                                    <p className="text-sm text-[#3A506B] break-words">{submission.email}</p>
                                   </div>
-                                  <span className="text-xs text-[#3A506B]">
+                                  <span className="text-xs text-[#3A506B] flex-shrink-0">
                                     {new Date(submission.submittedAt).toLocaleString()}
                                   </span>
                                 </div>
@@ -2347,7 +2430,7 @@ export default function FormsPage() {
                                   {Object.entries(submission.answers || {}).map(([key, value]: [string, any]) => {
                                     if (key === 'name' || key === 'email') return null
                                     return (
-                                      <div key={key} className="text-sm">
+                                      <div key={key} className="text-sm break-words">
                                         <span className="font-medium text-[#0B132B]">{key}:</span>{' '}
                                         <span className="text-[#3A506B]">{String(value)}</span>
                                       </div>
@@ -2452,22 +2535,6 @@ export default function FormsPage() {
                 className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 min-h-[100px] rounded-lg bg-white/80 backdrop-blur-sm"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="notification-email" className="font-sans text-sm font-semibold text-[#0B132B]">
-                Notification Email (Optional)
-              </Label>
-              <Input
-                id="notification-email"
-                type="email"
-                value={notificationEmail}
-                onChange={(e) => setNotificationEmail(e.target.value)}
-                placeholder="email@example.com"
-                className="border-2 border-[#3A506B]/20 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12 rounded-lg bg-white/80 backdrop-blur-sm"
-              />
-              <p className="font-sans text-xs text-[#3A506B]">
-                Where to receive form submissions (defaults to your Web3Forms email)
-              </p>
-            </div>
           </CardContent>
         </Card>
 
@@ -2485,7 +2552,7 @@ export default function FormsPage() {
         </div>
 
         {/* Stats */}
-        <div className="mb-6 sm:mb-8 flex flex-wrap gap-3 sm:gap-4">
+        <div className="mb-6 sm:mb-8 flex flex-wrap gap-3 sm:gap-4 items-center">
           <div className="bg-white/10 backdrop-blur-xl rounded-lg border border-[#D4AF37]/30 px-4 sm:px-6 py-3 flex-1 min-w-[140px]">
             <div className="font-sans text-xs sm:text-sm text-[#3A506B]">Selected Questions</div>
             <div className="font-serif text-xl sm:text-2xl font-bold text-[#0B132B]">{selectedQuestions.size}</div>
@@ -2494,6 +2561,17 @@ export default function FormsPage() {
             <div className="font-sans text-xs sm:text-sm text-[#3A506B]">Total Questions</div>
             <div className="font-serif text-xl sm:text-2xl font-bold text-[#0B132B]">{allQuestions.length}</div>
           </div>
+          {selectedQuestions.size > 0 && (
+            <Button
+              onClick={unselectAllQuestions}
+              variant="outline"
+              size="sm"
+              className="border-red-500/50 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-600 flex-shrink-0"
+            >
+              <XSquare className="h-4 w-4 mr-2" />
+              Unselect All
+            </Button>
+          )}
         </div>
 
         {/* Questions by Category */}
@@ -2727,10 +2805,23 @@ export default function FormsPage() {
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <Button
                     onClick={() => copyFormLink()}
-                    className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold w-full sm:w-auto"
+                    className={`w-full sm:w-auto ${
+                      copiedFormId === savedFormId
+                        ? "bg-green-600 hover:bg-green-700 text-white"
+                        : "bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B]"
+                    } font-semibold`}
                   >
-                    <Copy className="mr-2 h-4 w-4" />
-                    Copy Link
+                    {copiedFormId === savedFormId ? (
+                      <>
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy Link
+                      </>
+                    )}
                   </Button>
                   <Button
                     onClick={() => window.open(savedFormUrl || '', '_blank')}
