@@ -30,9 +30,12 @@ export const metadata: Metadata = {
   creator: "West Wave Creative",
   publisher: "West Wave Creative",
   icons: {
-    icon: "/WWC%20Icon%20Color.png",
-    shortcut: "/WWC%20Icon%20Color.png",
-    apple: "/WWC%20Icon%20Color.png",
+    icon: [
+      { url: "/WWC Icon Color.png", sizes: "32x32", type: "image/png" },
+      { url: "/WWC Icon Color.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/WWC Icon Color.png",
+    apple: "/WWC Icon Color.png",
   },
   openGraph: {
     type: "website",
@@ -137,6 +140,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable} antialiased`}>
       <head>
+        <link rel="icon" href="/WWC Icon Color.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/WWC Icon Color.png" type="image/png" sizes="16x16" />
+        <link rel="shortcut icon" href="/WWC Icon Color.png" />
+        <link rel="apple-touch-icon" href="/WWC Icon Color.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
