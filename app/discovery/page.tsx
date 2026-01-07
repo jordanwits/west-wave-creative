@@ -386,7 +386,7 @@ export default function DiscoveryPage() {
               <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
                 <img
                   src="/Dave.jpg"
-                  alt="Dave from West Wave Creative"
+                  alt="Dave, Sales and Strategy at West Wave Creative"
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover"
                 />
               </div>

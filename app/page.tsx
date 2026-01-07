@@ -311,7 +311,7 @@ export default function HomePage() {
           ) : (
             <img
               src="/AdobeStock_1106750259.jpeg"
-              alt="Background"
+              alt="Professional office workspace with modern design"
               className="absolute inset-0 w-full h-full object-cover"
             />
           )
@@ -322,7 +322,7 @@ export default function HomePage() {
           <div className="w-full flex flex-col xl:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24">
             {/* Logo image */}
             <div className="flex-shrink-0">
-              <img src="/WWC.com (3).png?v=2" alt="West Wave Creative logo" className="w-full h-auto max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-lg 2xl:max-w-lg mx-auto" />
+              <img src="/WWC.com (3).png?v=2" alt="West Wave Creative logo" className="w-full h-auto max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-lg 2xl:max-w-lg mx-auto" fetchPriority="high" />
             </div>
 
             {/* Headline + CTAs (right-aligned text) */}
@@ -392,7 +392,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-4">
                     <img
                       src="/Dave.jpg"
-                      alt="Dave - Business Development"
+                      alt="Dave, Sales and Strategy at West Wave Creative"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0 break-words">
@@ -406,7 +406,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-4">
                     <img
                       src="/Jordan.jpg"
-                      alt="Jordan - Product Development"
+                      alt="Jordan, Developer at West Wave Creative"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0 break-words">
@@ -420,7 +420,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-4">
                     <img
                       src="/Barb.jpg"
-                      alt="Barb - Chief Hospitality Officer"
+                      alt="Barb, Client Success at West Wave Creative"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#D4AF37]/30 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0 break-words">
@@ -709,6 +709,7 @@ export default function HomePage() {
             src="/bnb-card-background.jpeg"
             alt="Luxury vacation rental property"
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
@@ -792,6 +793,7 @@ export default function HomePage() {
             src="/plasma-cutter.webp"
             alt="Industrial manufacturing equipment"
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
@@ -877,6 +879,7 @@ export default function HomePage() {
             src="/prairie-river-background.jpeg"
             alt="Prairie river natural landscape"
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
@@ -1033,7 +1036,7 @@ export default function HomePage() {
                   Throughout the process they were engaged and professional. "
                 </blockquote>
                 <div className="mt-8 flex items-center gap-4">
-                  <img src="/marc-profile.jpg" alt="Reviewer" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" />
+                  <img src="/marc-profile.jpg" alt="Marc Catalano, owner of Innovations Manufacturing" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" loading="lazy" />
                   <div>
                     <p className="font-sans text-white font-semibold">Marc Catalano</p>
                     <p className="font-sans text-white/70 text-sm">Innovations Manufacturing</p>
