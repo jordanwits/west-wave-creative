@@ -1,3 +1,5 @@
+"use client"
+
 import dynamic from 'next/dynamic'
 
 // Disable SSR completely to avoid hydration issues
