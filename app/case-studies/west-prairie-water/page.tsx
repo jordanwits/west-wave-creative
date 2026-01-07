@@ -151,13 +151,13 @@ export default function WestPrairieWaterCaseStudy() {
               <a
                 href="https://www.wpwaterco.com/"
                 target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 whitespace-nowrap justify-center border-2 border-[#F5F3F4] text-[#F5F3F4] hover:bg-[#F5F3F4] hover:text-[#0B132B] font-semibold px-8 py-3 rounded-lg transition-all bg-transparent"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 border-2 border-white/30 backdrop-blur-sm hover:bg-white/10 text-white font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
                 View Live Site
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                   <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
-                  <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2-2v-6h-2v6z" />
+                  <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-2v6z" />
                 </svg>
               </a>
             </div>

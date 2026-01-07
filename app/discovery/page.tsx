@@ -124,13 +124,13 @@ const questions: Question[] = [
   {
     id: 9,
     question:
-      "What's your budget range? (Our sites start at $1,500 and go up to $4,000 based on features.)",
+      "What's your budget range? (Our sites start at $1,500 and go up to $5,000 based on features.)",
     type: "single",
     options: [
       "$1,500 - $2,500",
-      "$2,500 - $4,000",
+      "$2,500 - $5,000",
       "Under $1,500 (we might not be the best fit)",
-      "Over $4,000 (we can refer you)",
+      "Over $5,000 (we can refer you)",
       "Not sure",
     ],
     required: true,

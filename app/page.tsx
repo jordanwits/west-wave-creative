@@ -491,7 +491,7 @@ export default function HomePage() {
                     <p className="font-sans text-xs uppercase tracking-wider text-[#3A506B] mb-1 text-center">
                       Typical Project
                     </p>
-                    <p className="font-serif text-2xl font-semibold text-[#0B132B] text-center mb-4">$1,500 – $3,000</p>
+                    <p className="font-serif text-2xl font-semibold text-[#0B132B] text-center mb-4">$1,500 – $5,000</p>
 
                     <Button
                       className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all"
@@ -771,7 +771,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Impact</p>
-                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">+85% Lead Quality</p>
+                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">+45% Lead Quality</p>
                   </div>
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Timeline</p>
