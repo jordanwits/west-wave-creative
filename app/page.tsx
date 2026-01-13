@@ -1131,9 +1131,9 @@ export default function HomePage() {
             useEffect(() => {
               const interval = setInterval(() => {
                 setCurrentReview((prev) => (prev + 1) % reviews.length)
-              }, 10000)
+              }, 15000)
               return () => clearInterval(interval)
-            }, [])
+            }, [currentReview])
 
             const nextReview = () => setCurrentReview((prev) => (prev + 1) % reviews.length)
             const prevReview = () => setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length)
@@ -1142,20 +1142,22 @@ export default function HomePage() {
               <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-stretch w-full">
                 {/* Left: Big review card */}
                 <div className="md:col-span-7">
-                  <div className="relative h-full rounded-2xl border border-white/15 bg-black/40 backdrop-blur-sm p-8 md:p-10 shadow-2xl min-h-[460px] md:min-h-[560px]">
-                    <div className="flex items-center gap-1 text-[#D4AF37] mb-6">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-6 w-6 fill-current" />
-                      ))}
-                    </div>
-                    <blockquote className="font-sans text-white/95 text-lg md:text-xl leading-relaxed italic">
-                      "{reviews[currentReview].quote}"
-                    </blockquote>
-                    <div className="mt-8 flex items-center gap-4">
-                      <img src={reviews[currentReview].image} alt={`${reviews[currentReview].name}, ${reviews[currentReview].company}`} className="w-14 h-14 rounded-full object-cover border-2 border-white/30" loading="lazy" />
-                      <div>
-                        <p className="font-sans text-white font-semibold">{reviews[currentReview].name}</p>
-                        <p className="font-sans text-white/70 text-sm">{reviews[currentReview].company}</p>
+                  <div className="relative h-full rounded-2xl border border-white/15 bg-black/40 backdrop-blur-sm p-8 md:p-10 shadow-2xl min-h-[460px] md:min-h-[560px] overflow-hidden">
+                    <div key={currentReview} className="carousel-fade-in">
+                      <div className="flex items-center gap-1 text-[#D4AF37] mb-6">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="h-6 w-6 fill-current" />
+                        ))}
+                      </div>
+                      <blockquote className="font-sans text-white/95 text-lg md:text-xl leading-relaxed italic">
+                        "{reviews[currentReview].quote}"
+                      </blockquote>
+                      <div className="mt-8 flex items-center gap-4">
+                        <img src={reviews[currentReview].image} alt={`${reviews[currentReview].name}, ${reviews[currentReview].company}`} className="w-14 h-14 rounded-full object-cover border-2 border-white/30" loading="lazy" />
+                        <div>
+                          <p className="font-sans text-white font-semibold">{reviews[currentReview].name}</p>
+                          <p className="font-sans text-white/70 text-sm">{reviews[currentReview].company}</p>
+                        </div>
                       </div>
                     </div>
                     
