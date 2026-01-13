@@ -44,6 +44,12 @@ export default function HomePage() {
   const cs3ButtonAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
   const cs3InfoAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
 
+  const cs4LabelAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
+  const cs4TitleAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
+  const cs4DescAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
+  const cs4ButtonAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
+  const cs4InfoAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
+
   const { containerRef: testimonialsRef, visibleItems: testimonialItems } = useStaggeredAnimation(3, 150)
   const { containerRef: servicesRef, visibleItems: serviceItems } = useStaggeredAnimation(5, 100)
 
@@ -939,6 +945,90 @@ export default function HomePage() {
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Category</p>
                     <p className="font-serif text-2xl text-white font-semibold">Utilities</p>
+                  </div>
+                  <div>
+                    <p className="font-sans text-sm text-white/60 mb-2">Impact</p>
+                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">First Digital Presence</p>
+                  </div>
+                  <div>
+                    <p className="font-sans text-sm text-white/60 mb-2">Timeline</p>
+                    <p className="font-serif text-2xl text-white font-semibold">4 Weeks</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Study 4: Aletheia Life */}
+      <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
+        <div className="absolute inset-0">
+          <img
+            src="/AletheiaCaseHero.jpg"
+            alt="Aletheia Life project background"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: 'center 25%' }}
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+        </div>
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-end">
+            <div>
+              <div
+                ref={castRef<HTMLDivElement>(cs4LabelAnimation.ref)}
+                className={`transition-all duration-700 ${
+                  cs4LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+                }`}
+              >
+                <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-6">portfolio</p>
+              </div>
+              <h2
+                ref={castRef<HTMLHeadingElement>(cs4TitleAnimation.ref)}
+                className={`font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
+                  cs4TitleAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+              >
+                Aletheia Life
+              </h2>
+              <p
+                ref={castRef<HTMLParagraphElement>(cs4DescAnimation.ref)}
+                className={`font-sans text-xl md:text-2xl text-white/90 mb-8 max-w-2xl leading-relaxed transition-all duration-700 delay-200 ${
+                  cs4DescAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+              >
+                A comprehensive website project showcasing modern design and user-focused functionality, built to deliver clear value and seamless user experience.
+              </p>
+              <div
+                ref={castRef<HTMLDivElement>(cs4ButtonAnimation.ref)}
+                className={`transition-all duration-700 delay-300 ${
+                  cs4ButtonAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+              >
+                <Button
+                  size="lg"
+                  className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  onClick={() => (window.location.href = "/case-studies/aletheia-life")}
+                >
+                  View Project
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div
+                ref={castRef<HTMLDivElement>(cs4InfoAnimation.ref)}
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-300 ${
+                  cs4InfoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                }`}
+              >
+                <div className="space-y-6">
+                  <div>
+                    <p className="font-sans text-sm text-white/60 mb-2">Category</p>
+                    <p className="font-serif text-2xl text-white font-semibold">Health & Wellness</p>
                   </div>
                   <div>
                     <p className="font-sans text-sm text-white/60 mb-2">Impact</p>

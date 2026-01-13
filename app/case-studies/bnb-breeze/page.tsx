@@ -5,7 +5,7 @@ import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-an
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { useStickyWithinParent } from "@/hooks/use-sticky-within-parent"
 
@@ -354,14 +354,24 @@ export default function BNBBreezeCaseStudy() {
               <ContentBlock
                 as="div"
                 title="UI/UX Highlights"
-                bullets={["Clear CTAs", "Readable sections", "Mobile‑first", "Faster path to conversion"]}
-                image={{
-                  src: "/bnb Laptop.png",
-                  alt: "BNB page on laptop",
-                  objectFit: "object-contain mr-auto max-w-lg",
-                  height: "h-auto",
-                }}
-                imageWrapperClassName="bg-transparent p-0 border-0 shadow-none"
+                customContent={
+                  <div className="mt-6 grid lg:grid-cols-2 gap-8 lg:items-start">
+                    <ul className="font-sans list-disc space-y-3 pl-6 text-slate-700">
+                      {["Clear CTAs", "Readable sections", "Mobile‑first", "Faster path to conversion"].map((b, i) => (
+                        <li key={i} className="leading-relaxed">
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="bg-transparent p-0 border-0 shadow-none lg:-mt-15">
+                      <img
+                        src="/bnb Laptop.png"
+                        alt="BNB page on laptop"
+                        className="w-full object-contain max-w-lg mx-auto lg:mx-0"
+                      />
+                    </div>
+                  </div>
+                }
               />
             </div>
 
@@ -390,6 +400,10 @@ export default function BNBBreezeCaseStudy() {
                   { src: "/bnbContact.png", title: "Contact", desc: "Multiple ways to reach the team and an easy path to request a consult." },
                 ].map((item, i) => (
                   <div key={i} className={`space-y-6 stagger-item ${resultItems[i] ? "visible" : ""}`}>
+                    <div>
+                      <h4 className="font-serif text-xl font-semibold mb-2">{item.title}</h4>
+                      <p className="font-sans text-slate-600 leading-relaxed">{item.desc}</p>
+                    </div>
                     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                       <img
                         src={item.src}
@@ -398,16 +412,15 @@ export default function BNBBreezeCaseStudy() {
                         onClick={() => setLightboxIndex(i)}
                       />
                     </div>
-                    <div>
-                      <h4 className="font-serif text-xl font-semibold mb-2">{item.title}</h4>
-                      <p className="font-sans text-slate-600 leading-relaxed">{item.desc}</p>
-                    </div>
                   </div>
                 ))}
               </div>
               {/* Lightbox */}
               <Dialog open={lightboxIndex !== null} onOpenChange={(open) => { if (!open) setLightboxIndex(null) }}>
                 <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-none sm:max-w-none md:max-w-none lg:max-w-none xl:max-w-none 2xl:max-w-none w-screen" showCloseButton>
+                  <DialogTitle className="sr-only">
+                    {lightboxIndex !== null ? gallery[lightboxIndex].alt : "Image gallery"}
+                  </DialogTitle>
                   {lightboxIndex !== null && (
                     <div className="relative">
                       <button
@@ -512,15 +525,15 @@ export default function BNBBreezeCaseStudy() {
           <div className="grid items-center justify-center place-items-center gap-4 md:gap-6 md:grid-cols-2">
             <div>
               <p className="font-sans text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Next Case Study</p>
-              <h3 className="font-serif text-3xl font-bold mb-4">West Prairie Water – Website Launch</h3>
+              <h3 className="font-serif text-3xl font-bold mb-4">Aletheia Life – Website</h3>
               <p className="font-sans text-slate-600 mb-3 leading-relaxed md:text-lg">
-                Launching the first digital presence for a rural water utility with an accessible, clear experience.
+                A comprehensive website project showcasing modern design and user-focused functionality.
               </p>
-              <a href="/case-studies/west-prairie-water" className="inline-block rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-3 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all">
+              <a href="/case-studies/aletheia-life" className="inline-block rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-3 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all">
                 View case study
               </a>
             </div>
-            <img src="/wpLaptop.png" alt="West Prairie Water mockup" className="w-full h-auto max-h-72 max-w-lg object-contain mx-auto" />
+            <img src="/AletheiaLaptop.png" alt="Aletheia Life mockup" className="w-full h-auto max-h-72 max-w-lg object-contain mx-auto" />
           </div>
         </div>
       </section>

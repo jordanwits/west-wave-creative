@@ -3,7 +3,7 @@
 import { useState, useEffect, type ReactNode, type RefObject } from "react"
 import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
@@ -349,19 +349,29 @@ export default function WestPrairieWaterCaseStudy() {
               <ContentBlock
                 as="div"
                 title="UI/UX Highlights"
-                bullets={[
-                  "Resident-first navigation",
-                  "Accessible color and type system",
-                  "Concise, plain-language content",
-                  "Fast paths to contact and billing",
-                ]}
-                image={{
-                  src: "/wpLaptop.png",
-                  alt: "West Prairie Water site on a laptop",
-                  objectFit: "object-contain mr-auto max-w-lg",
-                  height: "h-auto",
-                }}
-                imageWrapperClassName="bg-transparent p-0 border-0 shadow-none"
+                customContent={
+                  <div className="mt-6 grid lg:grid-cols-2 gap-8 lg:items-start">
+                    <ul className="font-sans list-disc space-y-3 pl-6 text-slate-700">
+                      {[
+                        "Resident-first navigation",
+                        "Accessible color and type system",
+                        "Concise, plain-language content",
+                        "Fast paths to contact and billing",
+                      ].map((b, i) => (
+                        <li key={i} className="leading-relaxed">
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="bg-transparent p-0 border-0 shadow-none lg:-mt-15">
+                      <img
+                        src="/wpLaptop.png"
+                        alt="West Prairie Water site on a laptop"
+                        className="w-full object-contain max-w-lg mx-auto lg:mx-0"
+                      />
+                    </div>
+                  </div>
+                }
               />
             </div>
 
@@ -378,6 +388,12 @@ export default function WestPrairieWaterCaseStudy() {
               />
               <div ref={castRef<HTMLDivElement>(resultsRef)} className="mt-16 space-y-12">
                 <div className={`space-y-6 stagger-item ${resultItems[0] ? "visible" : ""}`}>
+                  <div>
+                    <h4 className="font-serif text-xl font-semibold mb-4">A Hero That Builds Trust</h4>
+                    <p className="font-sans text-slate-600 leading-relaxed">
+                      A familiar photo of the local river sets the tone. Clear calls to action make it obvious where to begin.
+                    </p>
+                  </div>
                   <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/wpHero.png"
@@ -386,15 +402,15 @@ export default function WestPrairieWaterCaseStudy() {
                       onClick={() => setLightboxIndex(0)}
                     />
                   </div>
-                  <div>
-                    <h4 className="font-serif text-xl font-semibold mb-4">A Hero That Builds Trust</h4>
-                    <p className="font-sans text-slate-600 leading-relaxed">
-                      A familiar photo of the local river sets the tone. Clear calls to action make it obvious where to begin.
-                    </p>
-                  </div>
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[1] ? "visible" : ""}`}>
+                  <div>
+                    <h4 className="font-serif text-xl font-semibold mb-4">Paying a Bill Is Straightforward</h4>
+                    <p className="font-sans text-slate-600 leading-relaxed">
+                      The Pay Bill action is easy to spot. Clear steps guide residents through payment without any second guessing.
+                    </p>
+                  </div>
                   <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/wpBill.png"
@@ -403,15 +419,15 @@ export default function WestPrairieWaterCaseStudy() {
                       onClick={() => setLightboxIndex(1)}
                     />
                   </div>
-                  <div>
-                    <h4 className="font-serif text-xl font-semibold mb-4">Paying a Bill Is Straightforward</h4>
-                    <p className="font-sans text-slate-600 leading-relaxed">
-                      The Pay Bill action is easy to spot. Clear steps guide residents through payment without any second guessing.
-                    </p>
-                  </div>
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[2] ? "visible" : ""}`}>
+                  <div>
+                    <h4 className="font-serif text-xl font-semibold mb-4">Alerts You Can't Miss</h4>
+                    <p className="font-sans text-slate-600 leading-relaxed">
+                      Outages and boil orders are clearly called out. A banner and notice cards keep everyone informed right away.
+                    </p>
+                  </div>
                   <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/wpAlert.png"
@@ -420,15 +436,15 @@ export default function WestPrairieWaterCaseStudy() {
                       onClick={() => setLightboxIndex(2)}
                     />
                   </div>
-                  <div>
-                    <h4 className="font-serif text-xl font-semibold mb-4">Alerts You Can’t Miss</h4>
-                    <p className="font-sans text-slate-600 leading-relaxed">
-                      Outages and boil orders are clearly called out. A banner and notice cards keep everyone informed right away.
-                    </p>
-                  </div>
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[3] ? "visible" : ""}`}>
+                  <div>
+                    <h4 className="font-serif text-xl font-semibold mb-4">About Page in Plain Language</h4>
+                    <p className="font-sans text-slate-600 leading-relaxed">
+                      No jargon. The About page clearly explains who West Prairie Water is, the area they serve, and what residents can expect.
+                    </p>
+                  </div>
                   <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/wpAbout.png"
@@ -437,15 +453,15 @@ export default function WestPrairieWaterCaseStudy() {
                       onClick={() => setLightboxIndex(3)}
                     />
                   </div>
-                  <div>
-                    <h4 className="font-serif text-xl font-semibold mb-4">About Page in Plain Language</h4>
-                    <p className="font-sans text-slate-600 leading-relaxed">
-                      No jargon. The About page clearly explains who West Prairie Water is, the area they serve, and what residents can expect.
-                    </p>
-                  </div>
                 </div>
 
                 <div className={`space-y-6 stagger-item ${resultItems[4] ? "visible" : ""}`}>
+                  <div>
+                    <h4 className="font-serif text-xl font-semibold mb-4">Getting in Touch Is Easy</h4>
+                    <p className="font-sans text-slate-600 leading-relaxed">
+                      Residents can call, email, or use a short form. Whatever they choose, they get a quick response.
+                    </p>
+                  </div>
                   <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 hover:border-[#D4AF37]">
                     <img
                       src="/wpContact.png"
@@ -454,17 +470,14 @@ export default function WestPrairieWaterCaseStudy() {
                       onClick={() => setLightboxIndex(4)}
                     />
                   </div>
-                  <div>
-                    <h4 className="font-serif text-xl font-semibold mb-4">Getting in Touch Is Easy</h4>
-                    <p className="font-sans text-slate-600 leading-relaxed">
-                      Residents can call, email, or use a short form. Whatever they choose, they get a quick response.
-                    </p>
-                  </div>
                 </div>
               </div>
               {/* Lightbox */}
               <Dialog open={lightboxIndex !== null} onOpenChange={(open) => { if (!open) setLightboxIndex(null) }}>
                 <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-none sm:max-w-none md:max-w-none lg:max-w-none xl:max-w-none 2xl:max-w-none w-screen" showCloseButton>
+                  <DialogTitle className="sr-only">
+                    {lightboxIndex !== null ? gallery[lightboxIndex].alt : "Image gallery"}
+                  </DialogTitle>
                   {lightboxIndex !== null && (
                     <div className="relative">
                       <button
@@ -569,15 +582,15 @@ export default function WestPrairieWaterCaseStudy() {
           <div className="grid items-center justify-center place-items-center gap-4 md:gap-6 md:grid-cols-2">
             <div>
               <p className="font-sans text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Next Case Study</p>
-              <h3 className="font-serif text-3xl font-bold mb-4">Innovations MFG – Website Redesign</h3>
+              <h3 className="font-serif text-3xl font-bold mb-4">BNB Breeze – Website Redesign</h3>
               <p className="font-sans text-slate-600 mb-3 leading-relaxed md:text-lg">
-                A complete redesign for a precision metal‑fabrication company, elevating credibility and creating a conversion‑focused experience.
+                Redesigned the Homeowner Information page for a short‑term rental management company, creating a clear path for property owners to understand services and get started.
               </p>
-              <a href="/case-studies/innovations-mfg" className="inline-block rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-3 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all">
+              <a href="/case-studies/bnb-breeze" className="inline-block rounded-xl bg-[#D4AF37] text-[#0B132B] px-6 py-3 font-semibold shadow-lg hover:bg-[#D4AF37]/90 hover:shadow-xl transition-all">
                 View case study
               </a>
             </div>
-            <img src="/mfgLaptop.png" alt="MFG mockup" className="w-full h-auto max-h-72 max-w-lg object-contain mx-auto" />
+            <img src="/bnb Laptop.png" alt="BNB Breeze mockup" className="w-full h-auto max-h-72 max-w-lg object-contain mx-auto" />
           </div>
         </div>
       </section>
