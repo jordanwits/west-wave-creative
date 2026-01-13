@@ -143,7 +143,7 @@ export default function AletheiaLifeCaseStudy() {
               Aletheia Life <span className="text-[#D4AF37]">Website</span>
             </h1>
             <p className="font-sans text-lg md:text-xl mb-8 text-[#F5F3F4]/90 leading-relaxed max-w-3xl mx-auto">
-              A comprehensive website project showcasing modern design and user-focused functionality, built to deliver clear value and seamless user experience.
+              Launched Aletheia Life’s first digital presence—a health & wellness website built for clarity, trust, and conversion-focused flow.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
               <a
@@ -151,6 +151,18 @@ export default function AletheiaLifeCaseStudy() {
                 className="inline-flex items-center justify-center bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               >
                 Get Your Free Quote
+              </a>
+              <a
+                href="https://aletheialife.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 border-2 border-white/30 backdrop-blur-sm hover:bg-white/10 text-white font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+              >
+                View Live Site
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <path d="M13 5h6v6h-2V8.414l-8.293 8.293-1.414-1.414L15.586 7H13V5z" />
+                  <path d="M19 19H5V5h6V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-2v6z" />
+                </svg>
               </a>
             </div>
           </div>

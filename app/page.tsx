@@ -792,7 +792,91 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Case Study 2: Innovations MFG */}
+      {/* Case Study 2: Aletheia Life */}
+      <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
+        <div className="absolute inset-0">
+          <img
+            src="/AletheiaCaseHero.jpg"
+            alt="Aletheia Life project background"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: 'center 25%' }}
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+        </div>
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-end">
+            <div>
+              <div
+                ref={castRef<HTMLDivElement>(cs4LabelAnimation.ref)}
+                className={`transition-all duration-700 ${
+                  cs4LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+                }`}
+              >
+                <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-6">portfolio</p>
+              </div>
+              <h2
+                ref={castRef<HTMLHeadingElement>(cs4TitleAnimation.ref)}
+                className={`font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
+                  cs4TitleAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+              >
+                Aletheia Life
+              </h2>
+              <p
+                ref={castRef<HTMLParagraphElement>(cs4DescAnimation.ref)}
+                className={`font-sans text-xl md:text-2xl text-white/90 mb-8 max-w-2xl leading-relaxed transition-all duration-700 delay-200 ${
+                  cs4DescAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+              >
+                Launched Aletheia Life's first digital presence—a health & wellness website designed for clarity, trust, and effortless next steps.
+              </p>
+              <div
+                ref={castRef<HTMLDivElement>(cs4ButtonAnimation.ref)}
+                className={`transition-all duration-700 delay-300 ${
+                  cs4ButtonAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+              >
+                <Button
+                  size="lg"
+                  className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  onClick={() => (window.location.href = "/case-studies/aletheia-life")}
+                >
+                  View Project
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div
+                ref={castRef<HTMLDivElement>(cs4InfoAnimation.ref)}
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-300 ${
+                  cs4InfoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                }`}
+              >
+                <div className="space-y-6">
+                  <div>
+                    <p className="font-sans text-sm text-white/60 mb-2">Category</p>
+                    <p className="font-serif text-2xl text-white font-semibold">Health & Wellness</p>
+                  </div>
+                  <div>
+                    <p className="font-sans text-sm text-white/60 mb-2">Impact</p>
+                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">First Digital Presence</p>
+                  </div>
+                  <div>
+                    <p className="font-sans text-sm text-white/60 mb-2">Timeline</p>
+                    <p className="font-serif text-2xl text-white font-semibold">4 Weeks</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Study 3: Innovations MFG */}
       <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
         <div className="absolute inset-0">
           <img
@@ -878,7 +962,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Case Study 3: West Prairie Water Co */}
+      {/* Case Study 4: West Prairie Water Co */}
       <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
         <div className="absolute inset-0">
           <img
@@ -962,90 +1046,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Case Study 4: Aletheia Life */}
-      <section className="relative w-full overflow-hidden bg-[#0B132B] py-28 md:py-40">
-        <div className="absolute inset-0">
-          <img
-            src="/AletheiaCaseHero.jpg"
-            alt="Aletheia Life project background"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: 'center 25%' }}
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-        </div>
-        <div className="relative z-10">
-          <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <div className="grid md:grid-cols-2 gap-12 items-end">
-            <div>
-              <div
-                ref={castRef<HTMLDivElement>(cs4LabelAnimation.ref)}
-                className={`transition-all duration-700 ${
-                  cs4LabelAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-                }`}
-              >
-                <p className="inline-block rounded-full bg-[#D4AF37]/20 px-4 py-1 font-sans text-sm uppercase tracking-widest text-[#D4AF37] mb-6">portfolio</p>
-              </div>
-              <h2
-                ref={castRef<HTMLHeadingElement>(cs4TitleAnimation.ref)}
-                className={`font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
-                  cs4TitleAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                Aletheia Life
-              </h2>
-              <p
-                ref={castRef<HTMLParagraphElement>(cs4DescAnimation.ref)}
-                className={`font-sans text-xl md:text-2xl text-white/90 mb-8 max-w-2xl leading-relaxed transition-all duration-700 delay-200 ${
-                  cs4DescAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                A comprehensive website project showcasing modern design and user-focused functionality, built to deliver clear value and seamless user experience.
-              </p>
-              <div
-                ref={castRef<HTMLDivElement>(cs4ButtonAnimation.ref)}
-                className={`transition-all duration-700 delay-300 ${
-                  cs4ButtonAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Button
-                  size="lg"
-                  className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B132B] font-bold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
-                  onClick={() => (window.location.href = "/case-studies/aletheia-life")}
-                >
-                  View Project
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-            </div>
-            <div className="hidden md:block">
-              <div
-                ref={castRef<HTMLDivElement>(cs4InfoAnimation.ref)}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-sm ml-auto transition-all duration-700 delay-300 ${
-                  cs4InfoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-                }`}
-              >
-                <div className="space-y-6">
-                  <div>
-                    <p className="font-sans text-sm text-white/60 mb-2">Category</p>
-                    <p className="font-serif text-2xl text-white font-semibold">Health & Wellness</p>
-                  </div>
-                  <div>
-                    <p className="font-sans text-sm text-white/60 mb-2">Impact</p>
-                    <p className="font-serif text-2xl text-[#D4AF37] font-semibold">First Digital Presence</p>
-                  </div>
-                  <div>
-                    <p className="font-sans text-sm text-white/60 mb-2">Timeline</p>
-                    <p className="font-serif text-2xl text-white font-semibold">4 Weeks</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Ready to Chat CTA (moved above Reviews) */}
       <section className="py-20 px-4 bg-[#F5F3F4]">
         <div
@@ -1111,51 +1111,111 @@ export default function HomePage() {
           ref={castRef<HTMLDivElement>(testimonialsAnimation.ref)}
           className={`relative z-10 max-w-7xl mx-auto animate-slide-up ${testimonialsAnimation.isVisible ? "visible" : ""}`}
         >
-          <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-stretch w-full">
-            {/* Left: Big review card */}
-            <div className="md:col-span-7">
-              <div className="relative h-full rounded-2xl border border-white/15 bg-black/40 backdrop-blur-sm p-8 md:p-10 shadow-2xl min-h-[460px] md:min-h-[560px]">
-                <div className="flex items-center gap-1 text-[#D4AF37] mb-6">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 fill-current" />
-                  ))}
-                </div>
-                <blockquote className="font-sans text-white/95 text-lg md:text-xl leading-relaxed italic">
-                  "West Wave helped me create a web page for my company. They brought ideas and professionalism to the table, 
-                  and they were able to deliver a great result very efficiently. I would recommend working with West Wave. 
-                  Throughout the process they were engaged and professional. "
-                </blockquote>
-                <div className="mt-8 flex items-center gap-4">
-                  <img src="/marc-profile.jpg" alt="Marc Catalano, owner of Innovations Manufacturing" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" loading="lazy" />
-                  <div>
-                    <p className="font-sans text-white font-semibold">Marc Catalano</p>
-                    <p className="font-sans text-white/70 text-sm">Innovations Manufacturing</p>
+          {(() => {
+            const [currentReview, setCurrentReview] = useState(0)
+            const reviews = [
+              {
+                quote: "West Wave helped me create a web page for my company. They brought ideas and professionalism to the table, and they were able to deliver a great result very efficiently. I would recommend working with West Wave. Throughout the process they were engaged and professional.",
+                name: "Marc Catalano",
+                company: "Innovations Manufacturing",
+                image: "/marc-profile.jpg"
+              },
+              {
+                quote: "Working with Jordan from Westwave Creative was an exceptional experience from start to finish. He delivered an incredible website for Aletheia, followed through on every promise, met every timeline, and went above and beyond with research and tech integrations. Jordan is not only highly skilled, but also kind, encouraging, and deeply committed to excellence. I would recommend him without hesitation.",
+                name: "Kate Hamilton",
+                company: "Aletheia Life",
+                image: "/Kate-Photoshoot-46-MAIN.JPG"
+              }
+            ]
+
+            useEffect(() => {
+              const interval = setInterval(() => {
+                setCurrentReview((prev) => (prev + 1) % reviews.length)
+              }, 10000)
+              return () => clearInterval(interval)
+            }, [])
+
+            const nextReview = () => setCurrentReview((prev) => (prev + 1) % reviews.length)
+            const prevReview = () => setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length)
+
+            return (
+              <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-stretch w-full">
+                {/* Left: Big review card */}
+                <div className="md:col-span-7">
+                  <div className="relative h-full rounded-2xl border border-white/15 bg-black/40 backdrop-blur-sm p-8 md:p-10 shadow-2xl min-h-[460px] md:min-h-[560px]">
+                    <div className="flex items-center gap-1 text-[#D4AF37] mb-6">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-6 w-6 fill-current" />
+                      ))}
+                    </div>
+                    <blockquote className="font-sans text-white/95 text-lg md:text-xl leading-relaxed italic">
+                      "{reviews[currentReview].quote}"
+                    </blockquote>
+                    <div className="mt-8 flex items-center gap-4">
+                      <img src={reviews[currentReview].image} alt={`${reviews[currentReview].name}, ${reviews[currentReview].company}`} className="w-14 h-14 rounded-full object-cover border-2 border-white/30" loading="lazy" />
+                      <div>
+                        <p className="font-sans text-white font-semibold">{reviews[currentReview].name}</p>
+                        <p className="font-sans text-white/70 text-sm">{reviews[currentReview].company}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="pointer-events-none select-none absolute bottom-6 right-8 text-[#D4AF37]">
+                      <span className="block leading-none text-7xl md:text-8xl font-black">"</span>
+                    </div>
+
+                    {/* Carousel controls */}
+                    <div className="absolute bottom-8 left-8 flex items-center gap-3">
+                      <button
+                        onClick={prevReview}
+                        className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 flex items-center justify-center transition-all"
+                        aria-label="Previous review"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+                          <path fillRule="evenodd" d="M15.75 19.5L8.25 12l7.5-7.5" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                      <div className="flex gap-2">
+                        {reviews.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setCurrentReview(i)}
+                            className={`w-2 h-2 rounded-full transition-all ${i === currentReview ? 'bg-[#D4AF37] w-6' : 'bg-white/40'}`}
+                            aria-label={`Go to review ${i + 1}`}
+                          />
+                        ))}
+                      </div>
+                      <button
+                        onClick={nextReview}
+                        className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 flex items-center justify-center transition-all"
+                        aria-label="Next review"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+                          <path fillRule="evenodd" d="M8.25 4.5l7.5 7.5-7.5 7.5" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="pointer-events-none select-none absolute bottom-6 right-8 text-[#D4AF37]">
-                  <span className="block leading-none text-7xl md:text-8xl font-black">”</span>
+
+                {/* Right: Heading and copy */}
+                <div className="md:col-span-5 flex items-center">
+                  <div className="text-left">
+                    <div className="font-sans text-sm uppercase tracking-widest text-white/80 mb-3">Testimonials</div>
+                    <h2 className="font-serif text-5xl md:text-6xl font-extrabold leading-[1.05] text-white mb-6">
+                      What our
+                      <br />
+                      <span className="text-[#D4AF37]">Clients</span> say...
+                    </h2>
+                    <p className="font-sans text-white/90 text-lg leading-relaxed max-w-md">
+                      We're proud to share feedback from our loyal clients who continue to support and enjoy our work. Their
+                      stories and experiences inspire us to keep bringing fresh, engaging, and high-quality content to the
+                      community.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Right: Heading and copy */}
-            <div className="md:col-span-5 flex items-center">
-              <div className="text-left">
-                <div className="font-sans text-sm uppercase tracking-widest text-white/80 mb-3">Testimonials</div>
-                <h2 className="font-serif text-5xl md:text-6xl font-extrabold leading-[1.05] text-white mb-6">
-                  What our
-                  <br />
-                  <span className="text-[#D4AF37]">Clients</span> say...
-                </h2>
-                <p className="font-sans text-white/90 text-lg leading-relaxed max-w-md">
-                  We're proud to share feedback from our loyal clients who continue to support and enjoy our work. Their
-                  stories and experiences inspire us to keep bringing fresh, engaging, and high-quality content to the
-                  community.
-                </p>
-              </div>
-            </div>
-          </div>
+            )
+          })()}
         </div>
       </section>
 
