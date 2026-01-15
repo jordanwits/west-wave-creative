@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Innovations MFG Website Redesign Case Study | West Wave Creative",
     description: "A complete redesign for a precision metal-fabrication company, elevating their credibility and creating a conversion-focused experience that showcases their expertise.",
-    url: "/case-studies/innovations-mfg",
+    url: "https://westwavecreative.com/case-studies/innovations-mfg",
     type: "article",
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ["/plasma-cutter.webp"],
   },
   alternates: {
-    canonical: "/case-studies/innovations-mfg",
+    canonical: "https://westwavecreative.com/case-studies/innovations-mfg",
   },
 }
 

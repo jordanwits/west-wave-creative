@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "/",
+    url: "https://westwavecreative.com",
     siteName: "West Wave Creative",
     title: "Pro Websites, Built Fast | West Wave Creative",
     description: "Get a professional website designed to attract customers — at a price that works for small businesses.",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "/",
+    canonical: "https://westwavecreative.com",
   },
 }
 

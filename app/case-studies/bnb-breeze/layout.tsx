@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "BNB Breeze Website Redesign Case Study | West Wave Creative",
     description: "Redesigned the Homeowner Information page for a short-term rental management company, creating a clear path for property owners to understand services and get started.",
-    url: "/case-studies/bnb-breeze",
+    url: "https://westwavecreative.com/case-studies/bnb-breeze",
     type: "article",
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ["/bnb-card-background.jpeg"],
   },
   alternates: {
-    canonical: "/case-studies/bnb-breeze",
+    canonical: "https://westwavecreative.com/case-studies/bnb-breeze",
   },
 }
 

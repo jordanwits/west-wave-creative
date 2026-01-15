@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Get Your Free Website Quote | West Wave Creative",
     description: "Answer a few quick questions and get a personalized website quote in 24 hours. Professional websites for small businesses, built fast and priced fairly.",
-    url: "/discovery",
+    url: "https://westwavecreative.com/discovery",
     type: "website",
     images: [
       {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ["/west-wave-logo.png"],
   },
   alternates: {
-    canonical: "/discovery",
+    canonical: "https://westwavecreative.com/discovery",
   },
 }
 

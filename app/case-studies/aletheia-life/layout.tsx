@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Aletheia Life Website Case Study | West Wave Creative",
     description: "A comprehensive website project for Aletheia Life, showcasing modern design and user-focused functionality.",
-    url: "/case-studies/aletheia-life",
+    url: "https://westwavecreative.com/case-studies/aletheia-life",
     type: "article",
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ["/nature shot.jpeg"],
   },
   alternates: {
-    canonical: "/case-studies/aletheia-life",
+    canonical: "https://westwavecreative.com/case-studies/aletheia-life",
   },
 }
 

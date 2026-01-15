@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "West Prairie Water Website Launch Case Study | West Wave Creative",
     description: "Created the first website for a water utility company, delivering a clear, accessible platform that helps residents access information and services with ease.",
-    url: "/case-studies/west-prairie-water",
+    url: "https://westwavecreative.com/case-studies/west-prairie-water",
     type: "article",
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ["/prairie-river-background.jpeg"],
   },
   alternates: {
-    canonical: "/case-studies/west-prairie-water",
+    canonical: "https://westwavecreative.com/case-studies/west-prairie-water",
   },
 }
 
