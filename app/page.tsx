@@ -1125,6 +1125,12 @@ export default function HomePage() {
                 name: "Kate Hamilton",
                 company: "Aletheia Life",
                 image: "/Kate-Photoshoot-46-MAIN.JPG"
+              },
+              {
+                quote: "West wave was excellent to work with. I love how \"us\" the website they designed feels. They took the time to get to know us and our business to really be able to communicate our heart through our page! It was an amazing experience!!",
+                name: "Andie King",
+                company: "Simple & Clean",
+                image: "/Andie.jpg"
               }
             ]
 
