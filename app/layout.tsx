@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Poppins, Inter } from "next/font/google"
+import { Poppins, Inter, Cinzel } from "next/font/google"
 import { Analytics } from "@/components/analytics"
 import "./globals.css"
 
@@ -15,6 +15,13 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+})
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-cinzel",
+  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
@@ -138,7 +145,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${poppins.variable} ${inter.variable} ${cinzel.variable} antialiased`}>
       <head>
         <link rel="icon" href="/WWC Icon Color.png" type="image/png" sizes="32x32" />
         <link rel="icon" href="/WWC Icon Color.png" type="image/png" sizes="16x16" />

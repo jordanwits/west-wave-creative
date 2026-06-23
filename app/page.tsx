@@ -25,6 +25,7 @@ export default function HomePage() {
   const testimonialsAnimation = useScrollAnimation({ threshold: 0.1 })
   const ctaAnimation = useScrollAnimation({ threshold: 0.1 })
   const contactAnimation = useScrollAnimation({ threshold: 0.1 })
+  const otherSitesAnimation = useScrollAnimation({ threshold: 0.1 })
 
   const cs1LabelAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
   const cs1TitleAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: false })
@@ -1042,6 +1043,70 @@ export default function HomePage() {
               </div>
             </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Other Sites We've Built */}
+      <section className="py-20 px-4 bg-white">
+        <div
+          ref={castRef<HTMLDivElement>(otherSitesAnimation.ref)}
+          className={`max-w-7xl mx-auto text-center transition-all duration-700 ${
+            otherSitesAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#0B132B] leading-tight">
+            Other Sites We've Built
+          </h2>
+          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
+            <a
+              href="https://www.arthurchristian.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Arthur Christian School"
+              className="opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
+            >
+              <img
+                src="/AcsLogo.png"
+                alt="Arthur Christian School logo"
+                className="h-24 md:h-28 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://www.aurorahomes.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Aurora Homes"
+              className="flex h-24 md:h-28 flex-col items-center justify-center opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
+            >
+              <img
+                src="/AH-Stag.png"
+                alt="Aurora Homes logo"
+                className="h-16 md:h-20 w-auto object-contain"
+                loading="lazy"
+              />
+              <span
+                style={{ fontFamily: "var(--font-cinzel)" }}
+                className="mt-1 text-[#0B132B] text-[0.7rem] md:text-sm font-medium tracking-[0.2em] whitespace-nowrap"
+              >
+                AURORA HOMES
+              </span>
+            </a>
+            <a
+              href="https://www.simpleandcleanredding.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Simple & Clean"
+              className="opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
+            >
+              <img
+                src="/S%26C%20Color.png"
+                alt="Simple &amp; Clean logo"
+                className="h-24 md:h-28 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
           </div>
         </div>
       </section>
