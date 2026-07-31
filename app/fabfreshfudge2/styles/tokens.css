@@ -1,0 +1,119 @@
+/* ============================================================
+   Fab Fresh Fudge — Design Tokens
+   "The Counter" — warm bone paper · espresso ink · wine-berry accent.
+   Editorial, hairline-ruled, type-forward. All color in OKLCH.
+
+   Ported into the West Wave Creative site as a direct-link concept preview.
+   Tokens are also hung off #fff2-root so they beat app/globals.css whatever
+   order the two sheets load in; see global.css for the html/body integration.
+   ============================================================ */
+
+:root,
+#fff2-root {
+  /* ---- Paper & ink (light surfaces) ---- */
+  --paper: oklch(0.964 0.012 80); /* warm bone */
+  --paper-2: oklch(0.942 0.014 76); /* sunk panel */
+  --paper-3: oklch(0.915 0.016 74); /* card tint */
+  --ink: oklch(0.225 0.018 48); /* espresso near-black */
+  --ink-2: oklch(0.355 0.022 47);
+  --muted: oklch(0.5 0.022 50);
+  --rule: oklch(0.83 0.014 68); /* hairline */
+  --rule-2: oklch(0.73 0.02 60); /* stronger rule */
+
+  /* ---- Accents ---- */
+  --berry: oklch(0.50 0.175 248); /* logo cobalt blue */
+  --berry-deep: oklch(0.41 0.18 252);
+  --berry-soft: oklch(0.93 0.04 232);
+  --caramel: oklch(0.73 0.122 66);
+  --caramel-deep: oklch(0.63 0.13 62);
+
+  /* ---- Espresso (dark surfaces) ---- */
+  --espresso: oklch(0.228 0.022 42);
+  --espresso-2: oklch(0.285 0.024 42);
+  --ivory: oklch(0.952 0.014 82);
+  --ivory-muted: oklch(0.78 0.02 80);
+
+  /* ---- Semantic (flip inside .on-dark) ---- */
+  --bg: var(--paper);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --line: var(--rule);
+  --accent: var(--berry);
+
+  /* ---- Type ---- */
+  --font-display: var(--fff2-display), 'Hoefler Text', Georgia, 'Times New Roman', serif;
+  --font-body: var(--fff2-body), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--fff2-mono), ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.85rem, 1.1rem + 7vw, 5.75rem);
+  --fs-h1: clamp(2.05rem, 1.25rem + 3.3vw, 3.5rem);
+  --fs-h2: clamp(1.55rem, 1.15rem + 1.85vw, 2.35rem);
+  --fs-h3: clamp(1.2rem, 1.02rem + 0.75vw, 1.55rem);
+  --fs-lead: clamp(1.1rem, 1.0rem + 0.5vw, 1.32rem);
+  --fs-body: 1.0625rem;
+  --fs-sm: 0.9375rem;
+  --fs-xs: 0.8125rem;
+  --fs-kicker: 0.72rem;
+
+  --lh-tight: 1.0;
+  --lh-snug: 1.14;
+  --lh-body: 1.62;
+
+  --track-kicker: 0.22em;
+  --track-mono: 0.04em;
+
+  /* ---- Spacing (4pt scale) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  --section-y: clamp(4.5rem, 3rem + 6.5vw, 8.5rem);
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* ---- Sizing ---- */
+  --topbar-h: 72px; /* sticky header height */
+  --maxw: 78rem; /* ~1248px */
+  --maxw-text: 70rem;
+  --maxw-prose: 62ch;
+
+  /* ---- Radii (sharp / editorial) ---- */
+  --r-xs: 2px;
+  --r-sm: 3px;
+  --r-md: 5px;
+
+  /* ---- Shadows (crisp, low, neutral) ---- */
+  --sh-sm: 0 1px 2px oklch(0.2 0.02 50 / 0.08), 0 1px 1px oklch(0.2 0.02 50 / 0.06);
+  --sh-md: 0 8px 24px oklch(0.2 0.02 50 / 0.1), 0 2px 6px oklch(0.2 0.02 50 / 0.06);
+  --sh-lg: 0 26px 60px oklch(0.16 0.02 50 / 0.18), 0 8px 18px oklch(0.16 0.02 50 / 0.1);
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur: 240ms;
+  --dur-slow: 540ms;
+
+  /* ---- Z-index ---- */
+  --z-base: 1;
+  --z-rail: 50;
+  --z-top: 60;
+  --z-drawer: 95;
+}
+
+/* Drenched espresso sections: flip semantic colors */
+.on-dark {
+  --bg: var(--espresso);
+  --text: var(--ivory);
+  --text-muted: var(--ivory-muted);
+  --line: oklch(1 0 0 / 0.16);
+  --rule: oklch(1 0 0 / 0.16);
+  --rule-2: oklch(1 0 0 / 0.28);
+  color: var(--ivory);
+}

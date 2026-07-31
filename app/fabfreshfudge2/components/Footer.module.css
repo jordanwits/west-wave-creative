@@ -1,0 +1,191 @@
+.footer {
+  background: var(--espresso);
+  color: var(--ivory);
+  padding-block: clamp(3rem, 2rem + 4vw, 5rem);
+  position: relative;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+}
+.logo {
+  width: clamp(60px, 7vw, 88px);
+  height: auto;
+  flex-shrink: 0;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.2rem + 4vw, 4rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--ivory);
+}
+.wordmark .ital {
+  color: var(--caramel);
+}
+.tagline {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.02em;
+  color: var(--ivory-muted);
+}
+
+.rule {
+  height: 1px;
+  border: 0;
+  background: var(--line);
+  margin-block: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1.3fr;
+  gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+}
+.colTitle {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: var(--space-4);
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.links a {
+  color: var(--ivory-muted);
+  font-size: var(--fs-sm);
+  transition: color var(--dur) var(--ease);
+}
+.links a:hover {
+  color: var(--ivory);
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.info li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: var(--ivory-muted);
+}
+.info svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--caramel);
+}
+.emailLink {
+  color: var(--ivory-muted);
+  border-bottom: 1px solid oklch(1 0 0 / 0.3);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.emailLink:hover {
+  color: var(--ivory);
+  border-color: var(--ivory);
+}
+.newsText {
+  font-size: var(--fs-sm);
+  color: var(--ivory-muted);
+  margin-bottom: var(--space-4);
+  max-width: 34ch;
+}
+.form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 22rem;
+}
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  background: oklch(1 0 0 / 0.06);
+  border: 1px solid oklch(1 0 0 / 0.22);
+  border-radius: var(--r-xs);
+  color: var(--ivory);
+  font-size: var(--fs-sm);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.input::placeholder {
+  color: var(--ivory-muted);
+}
+.input:focus-visible {
+  border-color: var(--caramel);
+  background: oklch(1 0 0 / 0.1);
+  outline: none;
+}
+.submit {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  flex-shrink: 0;
+  background: var(--caramel);
+  color: var(--espresso);
+  border-radius: var(--r-xs);
+  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.submit:hover {
+  background: var(--ivory);
+  transform: translateY(-2px);
+}
+.social {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: var(--space-5);
+}
+.soc {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--ivory);
+  border: 1px solid oklch(1 0 0 / 0.22);
+  border-radius: var(--r-xs);
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.soc:hover {
+  background: var(--caramel);
+  border-color: var(--caramel);
+  color: var(--espresso);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-top: clamp(2.5rem, 2rem + 3vw, 4rem);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: var(--ivory-muted);
+}
+.credit a {
+  color: var(--ivory);
+  border-bottom: 1px solid var(--caramel);
+  transition: color var(--dur) var(--ease);
+}
+.credit a:hover {
+  color: var(--caramel);
+}
+
+@media (max-width: 760px) {
+  .cols {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+}

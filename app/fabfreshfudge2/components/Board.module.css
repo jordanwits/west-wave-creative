@@ -1,0 +1,208 @@
+.section {
+  background: var(--paper);
+}
+.title {
+  margin: 0;
+}
+
+/* ---- House favorites ---- */
+.features {
+  margin-top: clamp(2.5rem, 2rem + 4vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+}
+.feature {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+}
+.feature:nth-child(even) .featMedia {
+  order: 2;
+}
+.featMedia {
+  position: relative;
+  margin: 0;
+}
+.featMedia img {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--r-sm);
+  box-shadow: var(--sh-md);
+}
+.featMedia img.featImgTop {
+  object-position: top;
+}
+.featBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.featTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.featName {
+  font-size: clamp(1.7rem, 1.3rem + 2vw, 2.6rem);
+  line-height: 1.04;
+  margin: 0;
+}
+.featDesc {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 42ch;
+}
+.featCat {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding-top: var(--space-2);
+}
+
+/* ---- Full menu ---- */
+.menuHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(3.5rem, 2.5rem + 5vw, 6rem);
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--ink);
+}
+.menuTitle {
+  font-size: var(--fs-h2);
+  margin: 0;
+}
+.menuNote {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  text-align: right;
+}
+
+.menu {
+  margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  columns: 2;
+  column-gap: clamp(2rem, 1rem + 4vw, 5rem);
+}
+.group {
+  break-inside: avoid;
+  margin-bottom: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+}
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+.groupName {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--berry);
+}
+.groupCount {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-block: 0.6rem;
+}
+.thumb {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: var(--r-xs);
+  background: var(--paper-3);
+  display: grid;
+  place-items: center;
+}
+.thumb svg {
+  width: 22px;
+}
+.rowName {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  max-width: 62%;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.new {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--berry);
+  border: 1px solid var(--berry);
+  border-radius: var(--r-xs);
+  padding: 0.05rem 0.3rem;
+  transform: translateY(-2px);
+}
+.leader {
+  flex: 1;
+  align-self: flex-end;
+  height: 0;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px dotted var(--rule-2);
+}
+.rowNote {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* ---- CTAs ---- */
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+  padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  border-top: 1px solid var(--rule);
+}
+
+@media (max-width: 800px) {
+  .feature {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .feature:nth-child(even) .featMedia {
+    order: 0;
+  }
+  .feature:nth-child(even) .featNum {
+    left: -0.2em;
+    right: auto;
+  }
+  .menu {
+    columns: 1;
+  }
+  .menuNote {
+    display: none;
+  }
+}

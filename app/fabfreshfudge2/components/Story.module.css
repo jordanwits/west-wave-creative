@@ -1,0 +1,112 @@
+.section {
+  background: var(--paper);
+}
+.head {
+  max-width: 40rem;
+}
+.title {
+  margin: 0.6rem 0 0;
+}
+
+.figure {
+  margin: clamp(2.25rem, 1.5rem + 3vw, 3.5rem) 0 0;
+  position: relative;
+}
+.photo {
+  width: 100%;
+  aspect-ratio: 16 / 7.7;
+  object-fit: cover;
+  object-position: center 5%;
+  border-radius: var(--r-sm);
+  box-shadow: var(--sh-md);
+}
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.est {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--berry);
+  border-radius: var(--r-xs);
+  color: var(--berry);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.64rem;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(1.75rem, 1rem + 4vw, 4rem);
+  margin-top: clamp(2.5rem, 2rem + 3vw, 4rem);
+}
+.aside {
+  border-top: 2px solid var(--ink);
+  padding-top: var(--space-5);
+}
+.pull {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.2rem);
+  line-height: 1.16;
+  color: var(--ink);
+  margin: 0;
+}
+.sign {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.03em;
+  color: var(--berry);
+}
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.prose p {
+  font-size: var(--fs-lead);
+  line-height: 1.62;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.75rem;
+  margin-top: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+.values li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.values svg {
+  color: var(--berry);
+}
+
+@media (max-width: 800px) {
+  .body {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+  .photo {
+    aspect-ratio: 3 / 2;
+  }
+}
